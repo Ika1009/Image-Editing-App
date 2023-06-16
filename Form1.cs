@@ -19,8 +19,8 @@ namespace Image_Editing_app
         public Form1()
         {
             InitializeComponent();
-            originalImage = Image.FromFile("image.jpg");
-            pictureBox1.Image = originalImage;
+            //originalImage = Image.FromFile("image.jpg");
+            //pictureBox1.Image = originalImage;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -41,7 +41,7 @@ namespace Image_Editing_app
                     // Save the image to the selected file
                     image.Save(fileName);
 
-                    MessageBox.Show("Image saved successfully!", "Save Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // MessageBox.Show("Image saved successfully!", "Save Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace Image_Editing_app
                     // Save the image to the selected file
                     image.Save(fileName);
 
-                    MessageBox.Show("Image exported successfully!", "Export Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // MessageBox.Show("Image exported successfully!", "Export Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace Image_Editing_app
                     // Optionally, you can resize the PictureBox to fit the image
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
-                    MessageBox.Show("Image imported successfully!", "Import Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // MessageBox.Show("Image imported successfully!", "Import Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace Image_Editing_app
                 graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
                 // Draw the scaled image onto the Graphics object
-                graphics.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight));
+                // graphics.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight));
             }
 
             return scaledBitmap;
@@ -170,7 +170,7 @@ namespace Image_Editing_app
                 // Copy the image to the clipboard
                 Clipboard.SetImage(pictureBox1.Image);
 
-                MessageBox.Show("Image copied to clipboard!", "Copy Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // MessageBox.Show("Image copied to clipboard!", "Copy Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -188,7 +188,7 @@ namespace Image_Editing_app
                 // Assign the image to the PictureBox control
                 pictureBox1.Image = image;
 
-                MessageBox.Show("Image pasted successfully!", "Paste Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // MessageBox.Show("Image pasted successfully!", "Paste Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -200,7 +200,7 @@ namespace Image_Editing_app
         {
             pictureBox1.Image = null;
 
-            MessageBox.Show("Image deleted!", "Delete Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show("Image deleted!", "Delete Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
