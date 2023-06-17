@@ -25,7 +25,6 @@ namespace Image_Editing_app
             redoStack = new Stack<PictureBox>();
             layers = new List<PictureBox>();
             brojac = 1;
-            this.DoubleBuffered = true;
         }
 
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -50,6 +49,9 @@ namespace Image_Editing_app
                     undoStack.Push(pictureBox);
                 }
             }
+
+            listView1.Items.Add($"Layer {brojac}: vidljiv");
+            brojac++;
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -147,19 +149,6 @@ namespace Image_Editing_app
         //    undoStack.Push(currentState);
         //    provera();
         //}
-
-        private void provera()
-        {
-            if (undoStack.Count > 0)
-            {
-                undoToolStripMenuItem.Enabled = true;
-            }
-
-            else
-            {
-                undoToolStripMenuItem.Enabled = false;
-            }
-        }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
