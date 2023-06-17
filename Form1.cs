@@ -170,5 +170,15 @@ namespace Image_Editing_app
                 pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
             }
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButton1_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
