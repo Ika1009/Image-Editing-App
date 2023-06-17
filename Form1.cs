@@ -13,22 +13,23 @@ namespace Image_Editing_app
 {
     public partial class Form1 : Form
     {
-        PictureBox org;
-        private Stack<Image> undoStack;
-        int brojac;
+        private Stack<PictureBox> undoStack;
+        private Stack<PictureBox> redoStack;
+        private List<PictureBox> layers;
+        private int brojac;
 
         public Form1()
         {
             InitializeComponent();
-            undoStack = new Stack<Image>();
+            undoStack = new Stack<PictureBox>();
+            redoStack = new Stack<PictureBox>();
+            layers = new List<PictureBox>();
             brojac = 1;
             this.DoubleBuffered = true;
         }
 
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ModifyImage();
-
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
@@ -36,72 +37,15 @@ namespace Image_Editing_app
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    /*string fileName = openFileDialog.FileName;
-                    Image image = Image.FromFile(fileName);
-                    pictureBox1.Image = image;
-                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;*/
-                    org = new PictureBox();
-                    org.Load(openFileDialog.FileName);
-                    pictureBox1.Load(openFileDialog.FileName);
-                }
-            }
-        }
-
-        private void exportImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-            {
-                saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
-                saveFileDialog.Title = "Export Image";
-                saveFileDialog.FileName = "image";
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string fileName = saveFileDialog.FileName;
-                    Image image = pictureBox1.Image;
-                    image.Save(fileName);
-                }
-            }
-        }
-
-        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (pictureBox1.Image != null)
-            {
-                Clipboard.SetImage(pictureBox1.Image);
-            }
-        }
-
-        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ModifyImage();
-
-            if (Clipboard.ContainsImage())
-            {
-                Image image = Clipboard.GetImage();
-                pictureBox1.Image = image;
-            }
-        }
-
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ModifyImage();
-            pictureBox1.Image = null;
-        }
-
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-            {
-                saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
-                saveFileDialog.Title = "Save Image As";
-                saveFileDialog.FileName = "image";
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string fileName = saveFileDialog.FileName;
-                    Image image = pictureBox1.Image;
-                    image.Save(fileName);
+                    PictureBox pictureBox = new PictureBox();
+                    Image importedImage = Image.FromFile(openFileDialog.FileName);
+                    pictureBox.Size = importedImage.Size; // set size of PictureBox to the size of the imported image
+                    pictureBox.Image = importedImage;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.BackColor = Color.Transparent;
+                    pictureBox.BringToFront();
+                    layers.Add(pictureBox);
+                    undoStack.Push(pictureBox);
                 }
             }
         }
@@ -110,17 +54,87 @@ namespace Image_Editing_app
         {
             if (undoStack.Count > 0)
             {
-                Image previousState = undoStack.Pop();
-                pictureBox1.Image = previousState;
+                PictureBox lastPictureBox = undoStack.Pop();
+                redoStack.Push(lastPictureBox);
+                lastPictureBox.Visible = false;
             }
         }
 
-        private void ModifyImage()
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Image currentState = pictureBox1.Image;
-            undoStack.Push(currentState);
-            provera();
+            if (redoStack.Count > 0)
+            {
+                PictureBox lastPictureBox = redoStack.Pop();
+                undoStack.Push(lastPictureBox);
+                lastPictureBox.Visible = true;
+            }
         }
+
+        private void exportImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            //{
+            //    saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
+            //    saveFileDialog.Title = "Export Image";
+            //    saveFileDialog.FileName = "image";
+
+            //    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            //    {
+            //        string fileName = saveFileDialog.FileName;
+            //        Image image = pictureBox1.Image;
+            //        image.Save(fileName);
+            //    }
+            //}
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //if (pictureBox1.Image != null)
+            //{
+            //    Clipboard.SetImage(pictureBox1.Image);
+            //}
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // ModifyImage();
+
+            //if (Clipboard.ContainsImage())
+            //{
+            //    Image image = Clipboard.GetImage();
+            //    pictureBox1.Image = image;
+            //}
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // ModifyImage();
+           // pictureBox1.Image = null;
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            //{
+            //    saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
+            //    saveFileDialog.Title = "Save Image As";
+            //    saveFileDialog.FileName = "image";
+
+            //    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            //    {
+            //        string fileName = saveFileDialog.FileName;
+            //        Image image = pictureBox1.Image;
+            //        image.Save(fileName);
+            //    }
+            //}
+        }
+
+        //private void ModifyImage()
+        //{
+        //    Image currentState = pictureBox1.Image;
+        //    undoStack.Push(currentState);
+        //    provera();
+        //}
 
         private void provera()
         {
@@ -140,10 +154,7 @@ namespace Image_Editing_app
             this.Close();
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
 
         Image ZoomPicture(Image img, Size size)
         {
@@ -156,29 +167,19 @@ namespace Image_Editing_app
 
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            brojac++;
-            pictureBox1.Image = null;
-            pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
+            //brojac++;
+            //pictureBox1.Image = null;
+            //pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
         }
 
         private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
-        {   
-            if (brojac > 1)
-            {
-                brojac--;
-                pictureBox1.Image = null;
-                pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
-            }
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void toolStripButton1_Click_1(object sender, EventArgs e)
-        {
-
+            //if (brojac > 1)
+            //{
+            //    brojac--;
+            //    pictureBox1.Image = null;
+            //    pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
+            //}
         }
     }
 }
