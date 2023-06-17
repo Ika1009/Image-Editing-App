@@ -37,12 +37,14 @@ namespace Image_Editing_app
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    undoToolStripMenuItem.Enabled = true;
                     PictureBox pictureBox = new PictureBox();
                     Image importedImage = Image.FromFile(openFileDialog.FileName);
                     pictureBox.Size = importedImage.Size; // set size of PictureBox to the size of the imported image
                     pictureBox.Image = importedImage;
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox.BackColor = Color.Transparent;
+                    pictureBox.Parent = pictureBox1;
                     pictureBox.BringToFront();
                     layers.Add(pictureBox);
                     undoStack.Push(pictureBox);
@@ -57,6 +59,11 @@ namespace Image_Editing_app
                 PictureBox lastPictureBox = undoStack.Pop();
                 redoStack.Push(lastPictureBox);
                 lastPictureBox.Visible = false;
+                if (undoStack.Count == 0)
+                    undoToolStripMenuItem.Enabled = false;
+
+                if (!redoToolStripMenuItem.Enabled)
+                    redoToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -67,6 +74,11 @@ namespace Image_Editing_app
                 PictureBox lastPictureBox = redoStack.Pop();
                 undoStack.Push(lastPictureBox);
                 lastPictureBox.Visible = true;
+                if (redoStack.Count == 0)
+                    redoToolStripMenuItem.Enabled = false;
+
+                if (!undoToolStripMenuItem.Enabled)
+                    undoToolStripMenuItem.Enabled = true;
             }
         }
 
