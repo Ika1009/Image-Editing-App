@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 
 namespace Image_Editing_app
@@ -18,6 +19,10 @@ namespace Image_Editing_app
         private List<PictureBox> layers;
         private int brojac;
 
+        // Class-level variable to store the currently selected button
+        private ToolStripButton? currentlySelectedButton = null;
+
+        readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
         public Form1()
         {
             InitializeComponent();
@@ -155,6 +160,24 @@ namespace Image_Editing_app
             this.Close();
         }
 
+        // Draw click
+        private void DrawCircleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelektujIliDeselektuj(toolStripButton11);
+        }
+        private void DrawLineToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelektujIliDeselektuj(toolStripButton12);
+        }
+        private void DrawPolygonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelektujIliDeselektuj(toolStripButton13);
+        }
+        private void TextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelektujIliDeselektuj(toolStripButton14);
+        }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
 
         Image ZoomPicture(Image img, Size size)
@@ -168,6 +191,7 @@ namespace Image_Editing_app
 
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SelektujIliDeselektuj(toolStripButton9);
             //brojac++;
             //pictureBox1.Image = null;
             //pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
@@ -175,12 +199,31 @@ namespace Image_Editing_app
 
         private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SelektujIliDeselektuj(toolStripButton10);
             //if (brojac > 1)
             //{
             //    brojac--;
             //    pictureBox1.Image = null;
             //    pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
             //}
+        }
+        private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelektujIliDeselektuj(toolStripButton5);
+        }
+
+
+        private void SelektujIliDeselektuj(ToolStripButton stripButton) // selektuje ako treba ili deselektuje
+        {
+            if (currentlySelectedButton == stripButton) // duplo je selektovana
+            {
+                stripButton.BackColor = obicnaBackgroundColor;
+                currentlySelectedButton = null;
+                return;
+            }
+            stripButton.BackColor = SystemColors.Highlight;
+            if(currentlySelectedButton is not null) currentlySelectedButton.BackColor = obicnaBackgroundColor;
+            currentlySelectedButton = stripButton;
         }
     }
 }
