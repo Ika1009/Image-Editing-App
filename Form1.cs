@@ -48,7 +48,7 @@ namespace Image_Editing_app
                     pictureBox.Image = importedImage;
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox.BackColor = Color.Transparent;
-                    pictureBox.Parent = pictureBox1;
+                    pictureBox.Parent = panel1;
                     pictureBox.BringToFront();
                     layers.Add(pictureBox);
                     undoStack.Push(pictureBox);
@@ -91,26 +91,59 @@ namespace Image_Editing_app
 
         private void exportImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-            //{
-            //    saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
-            //    saveFileDialog.Title = "Export Image";
-            //    saveFileDialog.FileName = "image";
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
+                saveFileDialog.Title = "Export Image";
+                saveFileDialog.FileName = "image";
 
-            //    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            //    {
-            //        string fileName = saveFileDialog.FileName;
-            //        Image image = pictureBox1.Image;
-            //        image.Save(fileName);
-            //    }
-            //}
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = saveFileDialog.FileName;
+
+
+                    // Calculate the bounding rectangle
+                    int minX = layers.Min(pb => pb.Left);
+                    int minY = layers.Min(pb => pb.Top);
+                    int maxX = layers.Max(pb => pb.Right);
+                    int maxY = layers.Max(pb => pb.Bottom);
+
+                    int width = maxX - minX;
+                    int height = maxY - minY;
+
+                    // Create a new bitmap the size of the PictureBox you're using as your canvas
+                    Bitmap bmp = new Bitmap(width, height);
+
+                    // Create a new graphics object from the bitmap
+                    Graphics g = Graphics.FromImage(bmp);
+
+                    // Loop through the PictureBoxes in your layers list
+                    foreach (PictureBox pb in layers)
+                    {
+                        // If the PictureBox is visible, draw it on the bitmap
+                        if (pb.Visible)
+                        {
+                            g.DrawImage(pb.Image, pb.Location);
+                        }
+                    }
+
+                    // Dispose of the Graphics object now we're done with it
+                    g.Dispose();
+
+                    // Save the bitmap as an image
+                    bmp.Save(fileName);
+
+                    // Dispose of the bitmap to free up memory
+                    bmp.Dispose();
+                }
+            }
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (pictureBox1.Image != null)
+            //if (panel1.Image != null)
             //{
-            //    Clipboard.SetImage(pictureBox1.Image);
+            //    Clipboard.SetImage(panel1.Image);
             //}
         }
 
@@ -121,14 +154,14 @@ namespace Image_Editing_app
             //if (Clipboard.ContainsImage())
             //{
             //    Image image = Clipboard.GetImage();
-            //    pictureBox1.Image = image;
+            //    panel1.Image = image;
             //}
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // ModifyImage();
-           // pictureBox1.Image = null;
+           // panel1.Image = null;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -142,7 +175,7 @@ namespace Image_Editing_app
             //    if (saveFileDialog.ShowDialog() == DialogResult.OK)
             //    {
             //        string fileName = saveFileDialog.FileName;
-            //        Image image = pictureBox1.Image;
+            //        Image image = panel1.Image;
             //        image.Save(fileName);
             //    }
             //}
@@ -150,7 +183,7 @@ namespace Image_Editing_app
 
         //private void ModifyImage()
         //{
-        //    Image currentState = pictureBox1.Image;
+        //    Image currentState = panel1.Image;
         //    undoStack.Push(currentState);
         //    provera();
         //}
@@ -193,8 +226,8 @@ namespace Image_Editing_app
         {
             SelektujIliDeselektuj(toolStripButton9);
             //brojac++;
-            //pictureBox1.Image = null;
-            //pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
+            //panel1.Image = null;
+            //panel1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
         }
 
         private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -203,8 +236,8 @@ namespace Image_Editing_app
             //if (brojac > 1)
             //{
             //    brojac--;
-            //    pictureBox1.Image = null;
-            //    pictureBox1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
+            //    panel1.Image = null;
+            //    panel1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
             //}
         }
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
