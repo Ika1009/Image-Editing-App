@@ -19,8 +19,8 @@ namespace Image_Editing_app
         private List<PictureBox> layers;
         private int brojac;
 
-        // Class-level variable to store the currently selected button
         private ToolStripButton? currentlySelectedButton = null;
+        private PictureBox? selectedPictureBox = null;
 
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
         public Form1()
@@ -49,6 +49,7 @@ namespace Image_Editing_app
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox.BackColor = Color.Transparent;
                     pictureBox.Parent = panel1;
+                    pictureBox.Click += PictureBox_Click;
                     pictureBox.BringToFront();
                     layers.Add(pictureBox);
                     undoStack.Push(pictureBox);
@@ -57,6 +58,20 @@ namespace Image_Editing_app
 
             listView1.Items.Add($"Layer {brojac}: vidljiv");
             brojac++;
+        }
+
+        private void PictureBox_Click(object sender, EventArgs e)
+        {
+            if (selectedPictureBox != null)
+            {
+                // Reset the border style of the previously selected PictureBox
+                selectedPictureBox.BorderStyle = BorderStyle.None;
+            }
+
+            selectedPictureBox = (PictureBox)sender;
+
+            // Set the border style of the selected PictureBox
+            selectedPictureBox.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -160,8 +175,21 @@ namespace Image_Editing_app
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // ModifyImage();
-           // panel1.Image = null;
+            if (selectedPictureBox == null)
+                return;
+            // Remove from collections
+            layers.Remove(selectedPictureBox);
+            if (undoStack.Contains(selectedPictureBox))
+                undoStack = new Stack<PictureBox>(undoStack.Where(p => p != selectedPictureBox));
+            if (redoStack.Contains(selectedPictureBox))
+                redoStack = new Stack<PictureBox>(redoStack.Where(p => p != selectedPictureBox));
+
+            // Remove from form and dispose
+            this.Controls.Remove(selectedPictureBox);
+            selectedPictureBox.Dispose();
+
+            // Reset selected PictureBox
+            selectedPictureBox = null;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
