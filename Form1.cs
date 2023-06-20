@@ -9,11 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace Image_Editing_app
 {
     public partial class Form1 : Form
     {
+        private string savedFileName;
+
         private Stack<(PictureBox, bool, int)> undoStack;  // true = create, false = delete, int = index
         private Stack<(PictureBox, bool, int)> redoStack;
         private List<PictureBox> layers;
@@ -57,16 +60,8 @@ namespace Image_Editing_app
                     pictureBox.Image = importedImage;
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox.BackColor = Color.Transparent;
-                    pictureBox.Parent = panel1;
 
-                    pictureBox.Click += PictureBox_Click;
-                    pictureBox.MouseDown += PictureBox_MouseDown;
-                    pictureBox.MouseMove += PictureBox_MouseMove;
-                    pictureBox.MouseUp += PictureBox_MouseUp;
-
-                    pictureBox.BringToFront();
-                    layers.Add(pictureBox);
-                    undoStack.Push((pictureBox, true, layers.Count - 1));
+                    AddPictureBox(pictureBox);
                 }
             }
 
@@ -278,27 +273,95 @@ namespace Image_Editing_app
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-            //{
-            //    saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
-            //    saveFileDialog.Title = "Save Image As";
-            //    saveFileDialog.FileName = "image";
+            SaveAs();
+        }
+        private void SaveAs()
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Work File|*.wrk";
+                saveFileDialog.Title = "Save As";
 
-            //    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            //    {
-            //        string fileName = saveFileDialog.FileName;
-            //        Image image = panel1.Image;
-            //        image.Save(fileName);
-            //    }
-            //}
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = saveFileDialog.FileName;
+
+                    // Create a StateData object to hold the necessary data
+                    StateData stateData = new StateData
+                    {
+                        Layers = layers.Select(layer => StateData.LayerDTO.FromPictureBox(layer)).ToList(),
+                    };
+
+                    // Serialize the StateData object to JSON
+                    string json = stateData.SerializeToJson();
+
+                    // Save the JSON data to the file
+                    File.WriteAllText(fileName, json);
+                }
+            }
         }
 
-        //private void ModifyImage()
-        //{
-        //    Image currentState = panel1.Image;
-        //    undoStack.Push(currentState);
-        //    provera();
-        //}
+        private void Save(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(savedFileName))
+            {
+                SaveAs();
+                return;
+            }
+
+            StateData stateData = new StateData
+            {
+                Layers = layers.Select(layer => StateData.LayerDTO.FromPictureBox(layer)).ToList(),
+            };
+
+            string json = stateData.SerializeToJson();
+            File.WriteAllText(savedFileName, json);
+        }
+        private void Open(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Work File|*.wrk";
+                openFileDialog.Title = "Open";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileName = openFileDialog.FileName;
+
+                    // Read the JSON data from the file
+                    string json = File.ReadAllText(fileName);
+
+                    // Deserialize the JSON data to StateData object
+                    StateData stateData = StateData.DeserializeFromJson(json);
+
+                    // Clear existing layers
+                    ClearLayers();
+
+                    // Create PictureBoxes from the deserialized StateData object
+                    foreach (var layerDTO in stateData.Layers)
+                        AddPictureBox(layerDTO.ToPictureBox());
+
+                    // Update the savedFileName
+                    savedFileName = fileName;
+
+                    // Enable necessary controls
+                    undoToolStripMenuItem.Enabled = false;
+                    redoToolStripMenuItem.Enabled = false;
+                    deleteToolStripMenuItem.Enabled = false;
+                }
+            }
+        }
+
+        private void ClearLayers()
+        {
+            foreach (PictureBox pictureBox in layers)
+            {
+                panel1.Controls.Remove(pictureBox);
+                pictureBox.Dispose();
+            }
+
+            layers.Clear();
+        }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -331,18 +394,7 @@ namespace Image_Editing_app
             addPictureBox();
             index = 5;
         }
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
-
-        Image ZoomPicture(Image img, Size size)
-        {
-            Bitmap bm = new Bitmap(img, Convert.ToInt32(img.Width * size.Width),
-                Convert.ToInt32(img.Height * size.Height));
-            Graphics gpu = Graphics.FromImage(bm);
-            gpu.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            return bm;
-        }
-
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton9);
@@ -389,7 +441,12 @@ namespace Image_Editing_app
             pictureBox.Location = new Point(183, 99); // Adjust the location based on the desired positioning
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
+            AddPictureBox(pictureBox);
+        }
 
+        public void AddPictureBox(PictureBox pictureBox)
+        {
+            pictureBox.Parent = panel1;
             layers.Add(pictureBox); // Add the PictureBox to the list
             this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
             pictureBox.BringToFront();
