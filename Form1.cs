@@ -42,6 +42,7 @@ namespace Image_Editing_app
             undoStack = new Stack<(PictureBox, bool, int)>();
             redoStack = new Stack<(PictureBox, bool, int)>();
             layers = new List<PictureBox>();
+            g = CreateGraphics();
         }
 
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -59,6 +60,7 @@ namespace Image_Editing_app
                     pictureBox.Size = importedImage.Size; // set size of PictureBox to the size of the imported image
                     pictureBox.Image = importedImage;
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.Location = new Point(200, 100);
                     pictureBox.BackColor = Color.Transparent;
 
                     AddPictureBox(pictureBox);
@@ -87,10 +89,19 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && index == 5)
             {
                 isDragging = true;
                 startPoint = e.Location;
+            }
+
+            else
+            {
+                paint = true;
+                py = e.Location;
+
+                cx = e.X;
+                cy = e.Y;
             }
         }
 
@@ -105,11 +116,49 @@ namespace Image_Editing_app
                 currentPoint.Offset(deltaX, deltaY);
                 pictureBox.Location = currentPoint;
             }
+
+            if (paint)
+            {
+                if (index == 1)
+                {
+                    px = e.Location;
+                    g.DrawLine(p, px, py);
+                    py = px;
+                }
+            }
+
+            //selectedPictureBox.Refresh();
+
+            x = e.X;
+            y = e.Y;
+            sx = e.X - cx;
+            sy = e.Y - cy;
         }
 
         private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
+            Brush brush = Brushes.Black;
             isDragging = false;
+            paint = false;
+
+            sx = x - cx;
+            sy = y - cy;
+
+            switch (index)
+            {
+                case 1:
+                    g.DrawEllipse(p, cx, cy, sx, sy);
+                    break;
+                case 2:
+                    g.DrawRectangle(p, cx, cy, sx, sy);
+                    break;
+                case 3:
+                    g.DrawLine(p, cx, cy, x, y);
+                    break;
+                case 4:
+                    g.DrawString("Hello, world!", new Font("Poppins", 12), brush, new Point(50, 50));
+                    break;
+            }
         }
 
         // Add this field to your Form1 class
@@ -174,7 +223,6 @@ namespace Image_Editing_app
 
                 if (!undoToolStripMenuItem.Enabled)
                     undoToolStripMenuItem.Enabled = true;
-
             }
         }
 
@@ -381,28 +429,34 @@ namespace Image_Editing_app
         {
             SelektujIliDeselektuj(toolStripButton11);
             addPictureBox();
-            index = 2;
+            index = 1;
         }
         private void DrawLineToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton12);
             addPictureBox();
-            index = 4;
+            index = 3;
         }
 
         private void DrawPolygonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton13);
             addPictureBox();
-            index = 3;
+            index = 2;
         }
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton14);
             addPictureBox();
-            index = 5;
+            index = 4;
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
+
+        private void moveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            index = 5;
+        }
+
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton9);
@@ -450,6 +504,13 @@ namespace Image_Editing_app
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
             AddPictureBox(pictureBox);
+
+
+            bm = new Bitmap(pictureBox.Width, pictureBox.Height);
+            g = Graphics.FromImage(bm);
+            g.Clear(Color.White);
+            //pomeranje = new List<bool>();
+            pictureBox.Image = bm;
 
             return pictureBox;
         }
