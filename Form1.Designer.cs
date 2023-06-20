@@ -447,7 +447,7 @@
             this.toolStripButton8.Name = "toolStripButton8";
             this.toolStripButton8.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton8.Text = "toolStripButton8";
-            this.toolStripButton8.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.toolStripButton8.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // toolStripButton9
             // 

@@ -14,8 +14,8 @@ namespace Image_Editing_app
 {
     public partial class Form1 : Form
     {
-        private Stack<PictureBox> undoStack;
-        private Stack<PictureBox> redoStack;
+        private Stack<(PictureBox, bool, int)> undoStack;  // true = create, false = delete, int = index
+        private Stack<(PictureBox, bool, int)> redoStack;
         private List<PictureBox> layers;
         private int brojac;
 
@@ -26,8 +26,8 @@ namespace Image_Editing_app
         public Form1()
         {
             InitializeComponent();
-            undoStack = new Stack<PictureBox>();
-            redoStack = new Stack<PictureBox>();
+            undoStack = new Stack<(PictureBox, bool, int)>();
+            redoStack = new Stack<(PictureBox, bool, int)>();
             layers = new List<PictureBox>();
             brojac = 1;
         }
@@ -52,7 +52,7 @@ namespace Image_Editing_app
                     pictureBox.Click += PictureBox_Click;
                     pictureBox.BringToFront();
                     layers.Add(pictureBox);
-                    undoStack.Push(pictureBox);
+                    undoStack.Push((pictureBox, true, layers.Count - 1));
                 }
             }
 
@@ -78,9 +78,20 @@ namespace Image_Editing_app
         {
             if (undoStack.Count > 0)
             {
-                PictureBox lastPictureBox = undoStack.Pop();
-                redoStack.Push(lastPictureBox);
-                lastPictureBox.Visible = false;
+                (PictureBox lastPictureBox, bool wasCreated, int index) = undoStack.Pop();
+                if (wasCreated)
+                {
+                    redoStack.Push((lastPictureBox, true, index));
+                    lastPictureBox.Visible = false; // Hide the PictureBox
+                    layers.RemoveAt(index);
+                }
+                else
+                {
+                    redoStack.Push((lastPictureBox, false, index));
+                    lastPictureBox.Visible = true;  // Show the PictureBox
+                    layers.Insert(index, lastPictureBox);
+                }
+
                 if (undoStack.Count == 0)
                     undoToolStripMenuItem.Enabled = false;
 
@@ -93,9 +104,21 @@ namespace Image_Editing_app
         {
             if (redoStack.Count > 0)
             {
-                PictureBox lastPictureBox = redoStack.Pop();
-                undoStack.Push(lastPictureBox);
-                lastPictureBox.Visible = true;
+                (PictureBox pictureBox, bool wasCreated, int index) = redoStack.Pop();
+
+                if (wasCreated)
+                {
+                    pictureBox.Visible = true;  // Show the PictureBox
+                    layers.Insert(index, pictureBox);
+                    undoStack.Push((pictureBox, true, index));
+                }
+                else
+                {
+                    pictureBox.Visible = false; // Hide the PictureBox
+                    layers.RemoveAt(index);
+                    undoStack.Push((pictureBox, false, index));
+                }
+
                 if (redoStack.Count == 0)
                     redoToolStripMenuItem.Enabled = false;
 
@@ -177,20 +200,22 @@ namespace Image_Editing_app
         {
             if (selectedPictureBox == null)
                 return;
-            // Remove from collections
-            layers.Remove(selectedPictureBox);
-            if (undoStack.Contains(selectedPictureBox))
-                undoStack = new Stack<PictureBox>(undoStack.Where(p => p != selectedPictureBox));
-            if (redoStack.Contains(selectedPictureBox))
-                redoStack = new Stack<PictureBox>(redoStack.Where(p => p != selectedPictureBox));
 
-            // Remove from form and dispose
-            this.Controls.Remove(selectedPictureBox);
-            selectedPictureBox.Dispose();
+            // Remove from collections
+            int index = layers.IndexOf(selectedPictureBox);
+            layers.RemoveAt(index);
+            undoStack.Push((selectedPictureBox, false, index));
+
+            // Hide the PictureBox
+            selectedPictureBox.Visible = false;
 
             // Reset selected PictureBox
             selectedPictureBox = null;
+
+            if (!undoToolStripMenuItem.Enabled)
+                undoToolStripMenuItem.Enabled = true;
         }
+
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -283,7 +308,7 @@ namespace Image_Editing_app
                 return;
             }
             stripButton.BackColor = SystemColors.Highlight;
-            if(currentlySelectedButton is not null) currentlySelectedButton.BackColor = obicnaBackgroundColor;
+            if (currentlySelectedButton is not null) currentlySelectedButton.BackColor = obicnaBackgroundColor;
             currentlySelectedButton = stripButton;
         }
     }
