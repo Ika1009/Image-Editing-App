@@ -23,13 +23,22 @@ namespace Image_Editing_app
         private PictureBox? selectedPictureBox = null;
 
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
+
+        Bitmap bm;
+        Graphics g;
+        bool paint = false;
+        Point px, py;
+        Pen p = new Pen(Color.Black, 1);
+        int index;
+        int x, y, sx, sy, cx, cy;
+        int i;
+
         public Form1()
         {
             InitializeComponent();
             undoStack = new Stack<(PictureBox, bool, int)>();
             redoStack = new Stack<(PictureBox, bool, int)>();
             layers = new List<PictureBox>();
-            brojac = 1;
         }
 
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -49,7 +58,12 @@ namespace Image_Editing_app
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox.BackColor = Color.Transparent;
                     pictureBox.Parent = panel1;
+
                     pictureBox.Click += PictureBox_Click;
+                    pictureBox.MouseDown += PictureBox_MouseDown;
+                    pictureBox.MouseMove += PictureBox_MouseMove;
+                    pictureBox.MouseUp += PictureBox_MouseUp;
+
                     pictureBox.BringToFront();
                     layers.Add(pictureBox);
                     undoStack.Push((pictureBox, true, layers.Count - 1));
@@ -72,6 +86,35 @@ namespace Image_Editing_app
 
             // Set the border style of the selected PictureBox
             selectedPictureBox.BorderStyle = BorderStyle.FixedSingle;
+        }
+        private bool isDragging = false;
+        private Point startPoint;
+
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                startPoint = e.Location;
+            }
+        }
+
+        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                PictureBox pictureBox = (PictureBox)sender;
+                Point currentPoint = pictureBox.Location;
+                int deltaX = e.X - startPoint.X;
+                int deltaY = e.Y - startPoint.Y;
+                currentPoint.Offset(deltaX, deltaY);
+                pictureBox.Location = currentPoint;
+            }
+        }
+
+        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragging = false;
         }
 
         // Add this field to your Form1 class
@@ -152,27 +195,29 @@ namespace Image_Editing_app
                 {
                     string fileName = saveFileDialog.FileName;
 
+                    // Calculate the bounding rectangle based on the panel's bounds
+                    int minX = panel1.Left;
+                    int minY = panel1.Top;
+                    int maxX = panel1.Right;
+                    int maxY = panel1.Bottom;
 
-                    // Calculate the bounding rectangle
-                    int minX = layers.Min(pb => pb.Left);
-                    int minY = layers.Min(pb => pb.Top);
-                    int maxX = layers.Max(pb => pb.Right);
-                    int maxY = layers.Max(pb => pb.Bottom);
+                    int width = panel1.Width;
+                    int height = panel1.Height;
 
-                    int width = maxX - minX;
-                    int height = maxY - minY;
-
-                    // Create a new bitmap the size of the PictureBox you're using as your canvas
+                    // Create a new bitmap the size of the panel
                     Bitmap bmp = new Bitmap(width, height);
 
                     // Create a new graphics object from the bitmap
                     Graphics g = Graphics.FromImage(bmp);
 
+                    // Adjust the graphics object to the panel's position
+                    g.TranslateTransform(-minX, -minY);
+
                     // Loop through the PictureBoxes in your layers list
                     foreach (PictureBox pb in layers)
                     {
-                        // If the PictureBox is visible, draw it on the bitmap
-                        if (pb.Visible)
+                        // If the PictureBox is visible and intersects with the panel's bounds, draw it on the bitmap
+                        if (pb.Visible && pb.Bounds.IntersectsWith(panel1.Bounds))
                         {
                             g.DrawImage(pb.Image, pb.Location);
                         }
@@ -189,6 +234,7 @@ namespace Image_Editing_app
                 }
             }
         }
+
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -263,18 +309,27 @@ namespace Image_Editing_app
         private void DrawCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton11);
+            addPictureBox();
+            index = 2;
         }
         private void DrawLineToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton12);
+            addPictureBox();
+            index = 4;
         }
+
         private void DrawPolygonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton13);
+            addPictureBox();
+            index = 3;
         }
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton14);
+            addPictureBox();
+            index = 5;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
@@ -323,6 +378,28 @@ namespace Image_Editing_app
             stripButton.BackColor = SystemColors.Highlight;
             if (currentlySelectedButton is not null) currentlySelectedButton.BackColor = obicnaBackgroundColor;
             currentlySelectedButton = stripButton;
+        }
+
+        private void addPictureBox()
+        {
+            PictureBox pictureBox = new PictureBox();
+            pictureBox.BackColor = Color.AliceBlue;
+            pictureBox.Name = "pictureBox" + (i + 1);
+            pictureBox.Size = new Size(570, 324); // Set the desired size
+            pictureBox.Location = new Point(183, 99); // Adjust the location based on the desired positioning
+
+            // Set other properties as desired, e.g., pictureBox.Image = yourImage;
+
+            layers.Add(pictureBox); // Add the PictureBox to the list
+            this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
+            pictureBox.BringToFront();
+
+            pictureBox.Click += PictureBox_Click;
+            pictureBox.MouseDown += PictureBox_MouseDown;
+            pictureBox.MouseMove += PictureBox_MouseMove;
+            pictureBox.MouseUp += PictureBox_MouseUp;
+
+            undoStack.Push((pictureBox, true, layers.Count - 1));
         }
     }
 }
