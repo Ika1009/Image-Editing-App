@@ -1,71 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
-namespace Image_Editing_app
+public class StateData
 {
-    [Serializable]
-    public class StateData
+    public List<LayerDTO> Layers { get; set; }
+
+    public int Brojac { get; set; }
+
+    public string SerializeToJson()
     {
-        public List<LayerDTO> Layers { get; set; }
+        return JsonSerializer.Serialize(this);
+    }
 
-        public string SerializeToJson()
+    public static StateData DeserializeFromJson(string json)
+    {
+        return JsonSerializer.Deserialize<StateData>(json);
+    }
+
+    public class LayerDTO
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public byte[] ImageBytes { get; set; }
+        public Point Location { get; set; }
+
+        public PictureBox ToPictureBox()
         {
-            return JsonSerializer.Serialize(this);
+            PictureBox pictureBox = new PictureBox();
+            pictureBox.Width = Width;
+            pictureBox.Height = Height;
+            pictureBox.Image = ByteArrayToImage(ImageBytes);
+            pictureBox.Location = Location;
+            return pictureBox;
         }
 
-        public static StateData DeserializeFromJson(string json)
+        public static LayerDTO FromPictureBox(PictureBox pictureBox)
         {
-            return JsonSerializer.Deserialize<StateData>(json);
+            Image image = pictureBox.Image;
+            byte[] imageBytes = ImageToByteArray(image);
+
+            return new LayerDTO
+            {
+                Width = pictureBox.Width,
+                Height = pictureBox.Height,
+                ImageBytes = imageBytes,
+                Location = pictureBox.Location
+            };
         }
 
-        public class LayerDTO
+        private static byte[] ImageToByteArray(Image image)
         {
-            public int Width { get; set; }
-            public int Height { get; set; }
-            public byte[] ImageBytes { get; set; }
-
-            public PictureBox ToPictureBox()
+            using (MemoryStream ms = new MemoryStream())
             {
-                PictureBox pictureBox = new PictureBox();
-                pictureBox.Width = Width;
-                pictureBox.Height = Height;
-                pictureBox.Image = ByteArrayToImage(ImageBytes);
-                return pictureBox;
+                image.Save(ms, image.RawFormat);
+                return ms.ToArray();
             }
+        }
 
-            public static LayerDTO FromPictureBox(PictureBox pictureBox)
+        private static Image ByteArrayToImage(byte[] byteArray)
+        {
+            using (MemoryStream ms = new MemoryStream(byteArray))
             {
-                Image image = pictureBox.Image;
-                byte[] imageBytes = ImageToByteArray(image);
-
-                return new LayerDTO
-                {
-                    Width = pictureBox.Width,
-                    Height = pictureBox.Height,
-                    ImageBytes = imageBytes
-                };
-            }
-
-            private static byte[] ImageToByteArray(Image image)
-            {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    image.Save(ms, image.RawFormat);
-                    return ms.ToArray();
-                }
-            }
-
-            private static Image ByteArrayToImage(byte[] byteArray)
-            {
-                using (MemoryStream ms = new MemoryStream(byteArray))
-                {
-                    return Image.FromStream(ms);
-                }
+                return Image.FromStream(ms);
             }
         }
     }

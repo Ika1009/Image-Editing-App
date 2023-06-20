@@ -233,21 +233,20 @@ namespace Image_Editing_app
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (panel1.Image != null)
-            //{
-            //    Clipboard.SetImage(panel1.Image);
-            //}
+            if (selectedPictureBox?.Image != null)
+            {
+                Clipboard.SetImage(selectedPictureBox.Image);
+            }
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // ModifyImage();
-
-            //if (Clipboard.ContainsImage())
-            //{
-            //    Image image = Clipboard.GetImage();
-            //    panel1.Image = image;
-            //}
+            if (Clipboard.ContainsImage())
+            {
+                Image image = Clipboard.GetImage();
+                var picturebox = addPictureBox();
+                picturebox.Image = image;
+            }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -311,12 +310,18 @@ namespace Image_Editing_app
 
             StateData stateData = new StateData
             {
-                Layers = layers.Select(layer => StateData.LayerDTO.FromPictureBox(layer)).ToList(),
+                Layers = layers.Select(layer =>
+                {
+                    StateData.LayerDTO layerDTO = StateData.LayerDTO.FromPictureBox(layer);
+                    layerDTO.Location = layer.Location;
+                    return layerDTO;
+                }).ToList(),
             };
 
             string json = stateData.SerializeToJson();
             File.WriteAllText(savedFileName, json);
         }
+
         private void Open(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -339,7 +344,11 @@ namespace Image_Editing_app
 
                     // Create PictureBoxes from the deserialized StateData object
                     foreach (var layerDTO in stateData.Layers)
-                        AddPictureBox(layerDTO.ToPictureBox());
+                    {
+                        PictureBox pictureBox = layerDTO.ToPictureBox();
+                        pictureBox.Location = layerDTO.Location;
+                        AddPictureBox(pictureBox);
+                    }
 
                     // Update the savedFileName
                     savedFileName = fileName;
@@ -351,7 +360,6 @@ namespace Image_Editing_app
                 }
             }
         }
-
         private void ClearLayers()
         {
             foreach (PictureBox pictureBox in layers)
@@ -432,7 +440,7 @@ namespace Image_Editing_app
             currentlySelectedButton = stripButton;
         }
 
-        private void addPictureBox()
+        private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
             pictureBox.BackColor = Color.AliceBlue;
@@ -442,6 +450,8 @@ namespace Image_Editing_app
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
             AddPictureBox(pictureBox);
+
+            return pictureBox;
         }
 
         public void AddPictureBox(PictureBox pictureBox)
