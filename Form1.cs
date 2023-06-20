@@ -74,6 +74,9 @@ namespace Image_Editing_app
             selectedPictureBox.BorderStyle = BorderStyle.FixedSingle;
         }
 
+        // Add this field to your Form1 class
+        private bool undoWasLastOperation = false;
+
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (undoStack.Count > 0)
@@ -82,14 +85,16 @@ namespace Image_Editing_app
                 if (wasCreated)
                 {
                     redoStack.Push((lastPictureBox, true, index));
-                    lastPictureBox.Visible = false; // Hide the PictureBox
-                    layers.RemoveAt(index);
+                    lastPictureBox.Visible = false;
+                    if (layers.Contains(lastPictureBox))
+                        layers.Remove(lastPictureBox);
                 }
                 else
                 {
                     redoStack.Push((lastPictureBox, false, index));
-                    lastPictureBox.Visible = true;  // Show the PictureBox
-                    layers.Insert(index, lastPictureBox);
+                    lastPictureBox.Visible = true;
+                    if (!layers.Contains(lastPictureBox))
+                        layers.Insert(index, lastPictureBox);
                 }
 
                 if (undoStack.Count == 0)
@@ -97,25 +102,32 @@ namespace Image_Editing_app
 
                 if (!redoToolStripMenuItem.Enabled)
                     redoToolStripMenuItem.Enabled = true;
+
+                undoWasLastOperation = true; // Set the flag here
             }
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // If undo was not the last operation, return early
+            if (!undoWasLastOperation) return;
+
             if (redoStack.Count > 0)
             {
                 (PictureBox pictureBox, bool wasCreated, int index) = redoStack.Pop();
 
                 if (wasCreated)
                 {
-                    pictureBox.Visible = true;  // Show the PictureBox
-                    layers.Insert(index, pictureBox);
+                    pictureBox.Visible = true;
+                    if (!layers.Contains(pictureBox))
+                        layers.Insert(index, pictureBox);
                     undoStack.Push((pictureBox, true, index));
                 }
                 else
                 {
-                    pictureBox.Visible = false; // Hide the PictureBox
-                    layers.RemoveAt(index);
+                    pictureBox.Visible = false;
+                    if (layers.Contains(pictureBox))
+                        layers.Remove(pictureBox);
                     undoStack.Push((pictureBox, false, index));
                 }
 
@@ -124,6 +136,7 @@ namespace Image_Editing_app
 
                 if (!undoToolStripMenuItem.Enabled)
                     undoToolStripMenuItem.Enabled = true;
+
             }
         }
 
