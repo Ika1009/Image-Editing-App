@@ -83,6 +83,16 @@ namespace Image_Editing_app.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ellipseIcon {
+            get {
+                object obj = ResourceManager.GetObject("ellipseIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap folderIcon {
             get {
                 object obj = ResourceManager.GetObject("folderIcon", resourceCulture);
@@ -96,6 +106,16 @@ namespace Image_Editing_app.Properties {
         internal static System.Drawing.Bitmap lineIcon {
             get {
                 object obj = ResourceManager.GetObject("lineIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap moveIcon {
+            get {
+                object obj = ResourceManager.GetObject("moveIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -166,16 +186,6 @@ namespace Image_Editing_app.Properties {
         internal static System.Drawing.Bitmap undoIcon {
             get {
                 object obj = ResourceManager.GetObject("undoIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap zoomIcon {
-            get {
-                object obj = ResourceManager.GetObject("zoomIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

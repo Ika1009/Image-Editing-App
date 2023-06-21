@@ -82,7 +82,10 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && index == 5)
+            if (currentlySelectedButton != toolStripButton15)  // move tool selected
+                return;
+
+            if (e.Button == MouseButtons.Left)
             {
                 isDragging = true;
                 startPoint = e.Location;
@@ -99,6 +102,9 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
+            if (currentlySelectedButton != toolStripButton15)
+                return;
+
             if (isDragging)
             {
                 PictureBox pictureBox = (PictureBox)sender;
@@ -444,9 +450,9 @@ namespace Image_Editing_app
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
 
-        private void moveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            index = 5;
+            SelektujIliDeselektuj(toolStripButton15);
         }
 
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
