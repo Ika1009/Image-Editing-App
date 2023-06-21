@@ -514,7 +514,7 @@
             // listView1
             // 
             this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.listView1.Location = new System.Drawing.Point(1829, 133);
+            this.listView1.Location = new System.Drawing.Point(1550, 100);
             this.listView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(342, 1172);

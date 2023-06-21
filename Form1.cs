@@ -16,25 +16,20 @@ namespace Image_Editing_app
     public partial class Form1 : Form
     {
         private string savedFileName;
-
         private Stack<(PictureBox, bool, int)> undoStack;  // true = create, false = delete, int = index
         private Stack<(PictureBox, bool, int)> redoStack;
         private List<PictureBox> layers;
-        private int brojac;
-
         private ToolStripButton? currentlySelectedButton = null;
+        private CheckBox? currentlySelectedCheckBox = null;
         private PictureBox? selectedPictureBox = null;
-
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
 
         Bitmap bm;
         Graphics g;
-        bool paint = false;
-        Point px, py;
         Pen p = new Pen(Color.Black, 1);
-        int index;
-        int x, y, sx, sy, cx, cy;
-        int i;
+        Point px, py;
+        bool paint = false;
+        int index, x, y, sx, sy, cx, cy, i;
 
         public Form1()
         {
@@ -43,6 +38,7 @@ namespace Image_Editing_app
             redoStack = new Stack<(PictureBox, bool, int)>();
             layers = new List<PictureBox>();
             g = CreateGraphics();
+            i = 0;
         }
 
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,9 +62,6 @@ namespace Image_Editing_app
                     AddPictureBox(pictureBox);
                 }
             }
-
-            listView1.Items.Add($"Layer {brojac}: vidljiv");
-            brojac++;
         }
 
         private void PictureBox_Click(object sender, EventArgs e)
@@ -99,7 +92,6 @@ namespace Image_Editing_app
             {
                 paint = true;
                 py = e.Location;
-
                 cx = e.X;
                 cy = e.Y;
             }
@@ -460,20 +452,11 @@ namespace Image_Editing_app
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton9);
-            //brojac++;
-            //panel1.Image = null;
-            //panel1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
         }
 
         private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton10);
-            //if (brojac > 1)
-            //{
-            //    brojac--;
-            //    panel1.Image = null;
-            //    panel1.Image = ZoomPicture(org.Image, new Size(brojac, brojac));
-            //}
         }
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -498,7 +481,6 @@ namespace Image_Editing_app
         {
             PictureBox pictureBox = new PictureBox();
             pictureBox.BackColor = Color.AliceBlue;
-            pictureBox.Name = "pictureBox" + (i + 1);
             pictureBox.Size = new Size(570, 324); // Set the desired size
             pictureBox.Location = new Point(183, 99); // Adjust the location based on the desired positioning
 
@@ -509,7 +491,6 @@ namespace Image_Editing_app
             bm = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bm);
             g.Clear(Color.White);
-            //pomeranje = new List<bool>();
             pictureBox.Image = bm;
 
             return pictureBox;
@@ -517,6 +498,8 @@ namespace Image_Editing_app
 
         public void AddPictureBox(PictureBox pictureBox)
         {
+            pictureBox.Name = "Layer: " + (i + 1);
+            i++;
             pictureBox.Parent = panel1;
             layers.Add(pictureBox); // Add the PictureBox to the list
             this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
@@ -528,6 +511,9 @@ namespace Image_Editing_app
             pictureBox.MouseUp += PictureBox_MouseUp;
 
             undoStack.Push((pictureBox, true, layers.Count - 1));
+            listView1.BringToFront();
+            listView1.Items.Add(pictureBox.Name);
+            listView1.CheckBoxes = true;
         }
     }
 }
