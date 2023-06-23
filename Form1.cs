@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Text.Json;
 using System.Reflection.Emit;
 using Microsoft.VisualBasic;
+using System.Reflection;
 
 namespace Image_Editing_app
 {
@@ -26,13 +27,14 @@ namespace Image_Editing_app
         private CheckBox? currentlySelectedCheckBox = null;
         private PictureBox? selectedPictureBox = null;
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
-
-        Bitmap bm;
-        Graphics g;
-        Pen p = new Pen(Color.Black, 1);
-        Point px, py;
-        bool paint = false;
-        int index, x, y, sx, sy, cx, cy, i;
+        private Bitmap bm;
+        private Graphics g;
+        private List<Point> polygonPoints;
+        private bool polygonCompleted;
+        private Pen p = new Pen(Color.Black, 1);
+        private Point px, py;
+        private bool paint = false;
+        private int index, x, y, sx, sy, cx, cy, i;
 
         public Form1()
         {
@@ -41,6 +43,8 @@ namespace Image_Editing_app
             redoStack = new Stack<(PictureBox, bool, int)>();
             layers = new List<PictureBox>();
             g = CreateGraphics();
+            polygonCompleted = false;
+            polygonPoints = new List<Point>();
             i = 0;
         }
 
@@ -85,10 +89,14 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (currentlySelectedButton != toolStripButton15)  // move tool selected
-                return;
+            /*if (index == 2)
+            {
+                polygonPoints.Clear(); // Clear polygon points
+            }*/
+            /*if (currentlySelectedButton != toolStripButton15)  // move tool selected
+                return;*/
 
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && index == 5)
             {
                 isDragging = true;
                 startPoint = e.Location;
@@ -105,8 +113,17 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (currentlySelectedButton != toolStripButton15)
-                return;
+            /*if (index == 2)
+            {
+                if (paint)
+                {
+                    px = e.Location;
+                    polygonPoints.Add(px); // Add the current point to the polygon points list
+                }
+            }*/
+
+            /*if (currentlySelectedButton != toolStripButton15)
+                return;*/
 
             if (isDragging)
             {
@@ -116,16 +133,6 @@ namespace Image_Editing_app
                 int deltaY = e.Y - startPoint.Y;
                 currentPoint.Offset(deltaX, deltaY);
                 pictureBox.Location = currentPoint;
-            }
-
-            if (paint)
-            {
-                if (index == 1)
-                {
-                    px = e.Location;
-                    g.DrawLine(p, px, py);
-                    py = px;
-                }
             }
 
             //selectedPictureBox.Refresh();
@@ -148,13 +155,26 @@ namespace Image_Editing_app
             {
                 case 1:
                     g.DrawEllipse(p, cx, cy, sx, sy);
+                    SelektujIliDeselektuj(toolStripButton11);
+                    selectedPictureBox.Enabled = false;
                     break;
                 case 2:
-                    g.DrawRectangle(p, cx, cy, sx, sy);
+                    //DrawPolygon();
                     break;
                 case 3:
                     g.DrawLine(p, cx, cy, x, y);
+                    SelektujIliDeselektuj(toolStripButton12);
+                    selectedPictureBox.Enabled = false;
                     break;
+            }
+        }
+
+        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (!polygonCompleted && e.Button == MouseButtons.Left)
+            {
+                polygonPoints.Add(e.Location);
+                selectedPictureBox.Invalidate();
             }
         }
 
@@ -468,9 +488,27 @@ namespace Image_Editing_app
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.KeyPreview = true;
+            this.KeyDown += Form1_KeyDown;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                i++;
+                polygonCompleted = true;
+                //selectedPictureBox.Invalidate();
+                DrawPolygon();
+            }
+        }
+
         private void MoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton15);
+            index = 5;
         }
 
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
@@ -504,8 +542,8 @@ namespace Image_Editing_app
         private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
-            pictureBox.Size = new Size(570, 324); // Set the desired size
-            pictureBox.Location = new Point(183, 99); // Adjust the location based on the desired positioning
+            pictureBox.Size = new Size(ClientRectangle.Width, ClientRectangle.Height - 80); // Set the desired size
+            pictureBox.Location = new Point(0, 75); // Adjust the location based on the desired positioning
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
             AddPictureBox(pictureBox);
@@ -516,6 +554,17 @@ namespace Image_Editing_app
             pictureBox.Image = bm;
 
             return pictureBox;
+        }
+
+        private void DrawPolygon()
+        {
+            if (polygonPoints.Count >= 3) // Check if there are at least 3 points to form a polygon
+            {
+                //g.DrawString("hello world", new Font("Poppins", 12), new SolidBrush(Color.Black), new Point(200, 100));
+                g.DrawPolygon(p, polygonPoints.ToArray()); // Draw the polygon using the collected points
+                SelektujIliDeselektuj(toolStripButton13);
+                selectedPictureBox.Enabled = false;
+            }
         }
 
         public void AddPictureBox(PictureBox pictureBox)
