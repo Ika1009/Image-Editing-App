@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows.Forms;
 using System.Text.Json;
+using System.Reflection.Emit;
+using Microsoft.VisualBasic;
 
 namespace Image_Editing_app
 {
     public partial class Form1 : Form
     {
         private string savedFileName;
+        private string stringText;
         private Stack<(PictureBox, bool, int)> undoStack;  // true = create, false = delete, int = index
         private Stack<(PictureBox, bool, int)> redoStack;
         private List<PictureBox> layers;
@@ -135,7 +138,6 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            Brush brush = Brushes.Black;
             isDragging = false;
             paint = false;
 
@@ -152,9 +154,6 @@ namespace Image_Editing_app
                     break;
                 case 3:
                     g.DrawLine(p, cx, cy, x, y);
-                    break;
-                case 4:
-                    g.DrawString("Hello, world!", new Font("Poppins", 12), brush, new Point(50, 50));
                     break;
             }
         }
@@ -444,10 +443,29 @@ namespace Image_Editing_app
         }
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Brush brush = Brushes.Black;
             SelektujIliDeselektuj(toolStripButton14);
-            addPictureBox();
-            index = 4;
+            stringText = addString();
+            g.DrawString(stringText, new Font("Poppins", 12), brush, new Point(0, 0));
         }
+
+        private string addString()
+        {
+            string userInput = Interaction.InputBox("Enter text:", "Text Input");
+            PictureBox pictureBox = new PictureBox();
+            pictureBox.BackColor = Color.Transparent;
+            pictureBox.Size = new Size(200, 100);
+            pictureBox.Location = new Point(200, 100);
+            pictureBox.BorderStyle = BorderStyle.None;
+            bm = new Bitmap(pictureBox.Width, pictureBox.Height);
+            g = Graphics.FromImage(bm);
+            pictureBox.Image = bm;
+
+            AddPictureBox(pictureBox);
+
+            return userInput;
+        }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
 
         private void MoveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -486,7 +504,6 @@ namespace Image_Editing_app
         private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
-            pictureBox.BackColor = Color.AliceBlue;
             pictureBox.Size = new Size(570, 324); // Set the desired size
             pictureBox.Location = new Point(183, 99); // Adjust the location based on the desired positioning
 
@@ -496,7 +513,6 @@ namespace Image_Editing_app
 
             bm = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bm);
-            g.Clear(Color.White);
             pictureBox.Image = bm;
 
             return pictureBox;
