@@ -13,11 +13,13 @@ using System.Text.Json;
 using System.Reflection.Emit;
 using Microsoft.VisualBasic;
 using System.Reflection;
+using Label = System.Windows.Forms.Label;
 
 namespace Image_Editing_app
 {
     public partial class Form1 : Form
     {
+
         private string savedFileName;
         private string stringText;
         private Stack<(PictureBox, bool, int)> undoStack;  // true = create, false = delete, int = index
@@ -36,15 +38,18 @@ namespace Image_Editing_app
         private bool paint = false;
         private int index, x, y, sx, sy, cx, cy, i;
 
+        private List<CheckBox> visibilityCheckboxes;  // List to hold the visibility checkboxes
+
         public Form1()
         {
             InitializeComponent();
-            undoStack = new Stack<(PictureBox, bool, int)>();
-            redoStack = new Stack<(PictureBox, bool, int)>();
-            layers = new List<PictureBox>();
+            undoStack = new();
+            redoStack = new();
+            layers = new();
             g = CreateGraphics();
             polygonCompleted = false;
-            polygonPoints = new List<Point>();
+            polygonPoints = new();
+            visibilityCheckboxes = new();
             i = 0;
         }
 
@@ -570,7 +575,6 @@ namespace Image_Editing_app
         public void AddPictureBox(PictureBox pictureBox)
         {
             pictureBox.Name = "Layer: " + (i + 1);
-            i++;
             pictureBox.Parent = panel1;
             layers.Add(pictureBox); // Add the PictureBox to the list
             this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
@@ -582,9 +586,102 @@ namespace Image_Editing_app
             pictureBox.MouseUp += PictureBox_MouseUp;
 
             undoStack.Push((pictureBox, true, layers.Count - 1));
-            listView1.BringToFront();
-            listView1.Items.Add(pictureBox.Name);
-            listView1.CheckBoxes = true;
+
+            // Add item to the TableLayoutPanel
+            int row = i;
+            i++;
+            tableLayoutPanel1.RowCount++;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            Label layerLabel = new Label()
+            {
+                Text = pictureBox.Name
+            };
+            tableLayoutPanel1.Controls.Add(layerLabel, 0, row);
+
+            CheckBox visibilityCheckbox = new CheckBox();
+            visibilityCheckbox.Checked = true;
+            visibilityCheckbox.CheckedChanged += (sender, e) =>
+            {
+                CheckBox checkbox = (CheckBox)sender;
+                PictureBox pb = (PictureBox)checkbox.Tag;
+                pb.Visible = checkbox.Checked;
+            };
+            visibilityCheckbox.Tag = pictureBox;
+            visibilityCheckbox.AutoSize = true;
+            tableLayoutPanel1.Controls.Add(visibilityCheckbox, 1, row);
+
+            // Enable row reordering
+            layerLabel.MouseDown += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    tableLayoutPanel1.DoDragDrop(layerLabel, DragDropEffects.Move);
+                }
+            };
+
+            tableLayoutPanel1.DragOver += (sender, e) =>
+            {
+                e.Effect = DragDropEffects.Move;
+            };
+
+            tableLayoutPanel1.DragDrop += (sender, e) =>
+            {
+                Label sourceLabel = (Label)e.Data.GetData(typeof(Label));
+                Label targetLabel = (Label)tableLayoutPanel1.GetChildAtPoint(tableLayoutPanel1.PointToClient(new Point(e.X, e.Y)));
+
+                if (sourceLabel != null && targetLabel != null)
+                {
+                    int sourceRow = tableLayoutPanel1.GetRow(sourceLabel);
+                    int targetRow = tableLayoutPanel1.GetRow(targetLabel);
+
+                    if (sourceRow != targetRow)
+                    {
+                        tableLayoutPanel1.SuspendLayout();
+                        tableLayoutPanel1.Controls.SetChildIndex(sourceLabel, targetRow * tableLayoutPanel1.ColumnCount);
+                        tableLayoutPanel1.Controls.SetChildIndex(targetLabel, sourceRow * tableLayoutPanel1.ColumnCount);
+                        tableLayoutPanel1.ResumeLayout();
+
+                        // Swap the rows in the layers list
+                        PictureBox sourcePictureBox = layers[sourceRow];
+                        layers[sourceRow] = layers[targetRow];
+                        layers[targetRow] = sourcePictureBox;
+
+                        // Create a copy of the undoStack
+                        var undoStackCopy = new Stack<(PictureBox, bool, int)>(undoStack);
+
+                        // Update the layer index in the undoStack
+                        undoStack.Clear();
+                        foreach (var item in undoStackCopy)
+                        {
+                            int updatedIndex = item.Item3;
+                            if (item.Item3 == sourceRow)
+                            {
+                                updatedIndex = targetRow;
+                            }
+                            else if (item.Item3 == targetRow)
+                            {
+                                updatedIndex = sourceRow;
+                            }
+                            else if (item.Item3 > sourceRow && item.Item3 <= targetRow)
+                            {
+                                updatedIndex--;
+                            }
+                            else if (item.Item3 < sourceRow && item.Item3 >= targetRow)
+                            {
+                                updatedIndex++;
+                            }
+
+                            undoStack.Push((item.Item1, item.Item2, updatedIndex));
+                        }
+                    }
+                }
+            };
+
+            tableLayoutPanel1.BringToFront();
         }
+
+
+
     }
 }
