@@ -590,14 +590,14 @@ namespace Image_Editing_app
             // Add item to the TableLayoutPanel
             int row = i;
             i++;
+            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
             tableLayoutPanel1.RowCount++;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             Label layerLabel = new Label()
             {
                 Text = pictureBox.Name
             };
-            tableLayoutPanel1.Controls.Add(layerLabel, 0, row);
+            tableLayoutPanel1.Controls.Add(layerLabel, 0, i);
 
             CheckBox visibilityCheckbox = new CheckBox();
             visibilityCheckbox.Checked = true;
@@ -609,7 +609,7 @@ namespace Image_Editing_app
             };
             visibilityCheckbox.Tag = pictureBox;
             visibilityCheckbox.AutoSize = true;
-            tableLayoutPanel1.Controls.Add(visibilityCheckbox, 1, row);
+            tableLayoutPanel1.Controls.Add(visibilityCheckbox, 1, i);
 
             // Enable row reordering
             layerLabel.MouseDown += (sender, e) =>
@@ -642,37 +642,17 @@ namespace Image_Editing_app
                         tableLayoutPanel1.Controls.SetChildIndex(targetLabel, sourceRow * tableLayoutPanel1.ColumnCount);
                         tableLayoutPanel1.ResumeLayout();
 
-                        // Swap the rows in the layers list
-                        PictureBox sourcePictureBox = layers[sourceRow];
-                        layers[sourceRow] = layers[targetRow];
-                        layers[targetRow] = sourcePictureBox;
+                        // Update the order of layers in the 'layers' list
+                        layers.RemoveAt(sourceRow);
+                        layers.Insert(targetRow, pictureBox);
 
-                        // Create a copy of the undoStack
+                        // Update the layer indices in the undoStack
                         var undoStackCopy = new Stack<(PictureBox, bool, int)>(undoStack);
-
-                        // Update the layer index in the undoStack
                         undoStack.Clear();
-                        foreach (var item in undoStackCopy)
-                        {
-                            int updatedIndex = item.Item3;
-                            if (item.Item3 == sourceRow)
-                            {
-                                updatedIndex = targetRow;
-                            }
-                            else if (item.Item3 == targetRow)
-                            {
-                                updatedIndex = sourceRow;
-                            }
-                            else if (item.Item3 > sourceRow && item.Item3 <= targetRow)
-                            {
-                                updatedIndex--;
-                            }
-                            else if (item.Item3 < sourceRow && item.Item3 >= targetRow)
-                            {
-                                updatedIndex++;
-                            }
 
-                            undoStack.Push((item.Item1, item.Item2, updatedIndex));
+                        for (int index = 0; index < tableLayoutPanel1.RowCount; index++)
+                        {
+                            undoStack.Push((undoStackCopy.ElementAt(index).Item1, undoStackCopy.ElementAt(index).Item2, index));
                         }
                     }
                 }
@@ -680,6 +660,7 @@ namespace Image_Editing_app
 
             tableLayoutPanel1.BringToFront();
         }
+
 
 
 
