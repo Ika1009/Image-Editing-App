@@ -581,7 +581,7 @@ namespace Image_Editing_app
             pictureBox.BringToFront();
 
             pictureBox.Click += PictureBox_Click;
-            pictureBox.MouseDown += PictureBox_MouseDown;
+            pictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
             pictureBox.MouseMove += PictureBox_MouseMove;
             pictureBox.MouseUp += PictureBox_MouseUp;
 
@@ -616,7 +616,8 @@ namespace Image_Editing_app
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    tableLayoutPanel1.DoDragDrop(layerLabel, DragDropEffects.Move);
+                    Label label = (Label)sender;
+                    label.DoDragDrop(label, DragDropEffects.Move);
                 }
             };
 
@@ -644,7 +645,7 @@ namespace Image_Editing_app
 
                         // Update the order of layers in the 'layers' list
                         layers.RemoveAt(sourceRow);
-                        layers.Insert(targetRow, pictureBox);
+                        layers.Insert(targetRow, layers[sourceRow]);
 
                         // Update the layer indices in the undoStack
                         var undoStackCopy = new Stack<(PictureBox, bool, int)>(undoStack);
@@ -660,9 +661,5 @@ namespace Image_Editing_app
 
             tableLayoutPanel1.BringToFront();
         }
-
-
-
-
     }
 }
