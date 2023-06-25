@@ -36,7 +36,7 @@ namespace Image_Editing_app
         private Pen p = new Pen(Color.Black, 1);
         private Point px, py;
         private bool paint = false;
-        private int index, x, y, sx, sy, cx, cy, i;
+        private int x, y, sx, sy, cx, cy, i;
 
         private List<CheckBox> visibilityCheckboxes;  // List to hold the visibility checkboxes
 
@@ -101,7 +101,7 @@ namespace Image_Editing_app
             /*if (currentlySelectedButton != toolStripButton15)  // move tool selected
                 return;*/
 
-            if (e.Button == MouseButtons.Left && index == 5)
+            if (e.Button == MouseButtons.Left && currentlySelectedButton == toolStripButton15)
             {
                 isDragging = true;
                 startPoint = e.Location;
@@ -156,22 +156,23 @@ namespace Image_Editing_app
             sx = x - cx;
             sy = y - cy;
 
-            switch (index)
+            if(currentlySelectedButton == toolStripButton11) // ellipse
             {
-                case 1:
-                    g.DrawEllipse(p, cx, cy, sx, sy);
-                    SelektujIliDeselektuj(toolStripButton11);
-                    selectedPictureBox.Enabled = false;
-                    break;
-                case 2:
-                    //DrawPolygon();
-                    break;
-                case 3:
-                    g.DrawLine(p, cx, cy, x, y);
-                    SelektujIliDeselektuj(toolStripButton12);
-                    selectedPictureBox.Enabled = false;
-                    break;
+                g.DrawEllipse(p, cx, cy, sx, sy);
+                SelektujIliDeselektuj(toolStripButton11);
+                selectedPictureBox.Enabled = false;
             }
+            else if(currentlySelectedButton == toolStripButton13) // polygon
+            {
+                //DrawPolygon();
+            }
+            else if (currentlySelectedButton == toolStripButton13) // Line
+            {
+                g.DrawLine(p, cx, cy, x, y);
+                SelektujIliDeselektuj(toolStripButton12);
+                selectedPictureBox.Enabled = false;
+            }
+
         }
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -451,20 +452,17 @@ namespace Image_Editing_app
         {
             SelektujIliDeselektuj(toolStripButton11);
             addPictureBox();
-            index = 1;
         }
         private void DrawLineToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton12);
             addPictureBox();
-            index = 3;
         }
 
         private void DrawPolygonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton13);
             addPictureBox();
-            index = 2;
         }
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -513,7 +511,6 @@ namespace Image_Editing_app
         private void MoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton15);
-            index = 5;
         }
 
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
