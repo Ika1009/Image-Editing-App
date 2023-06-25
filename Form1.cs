@@ -483,7 +483,6 @@ namespace Image_Editing_app
             bm = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bm);
             pictureBox.Image = bm;
-
             AddPictureBox(pictureBox);
 
             return userInput;
@@ -572,9 +571,18 @@ namespace Image_Editing_app
         public void AddPictureBox(PictureBox pictureBox)
         {
             pictureBox.Name = "Layer: " + (i + 1);
-            pictureBox.Parent = panel1;
+            pictureBox.BackColor = Color.Transparent;
+
+            //Controls.Add(pictureBox);
+
+
+            if (layers.Count == 0)
+                this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
+            else
+                layers[^1].Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
+
             layers.Add(pictureBox); // Add the PictureBox to the list
-            this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
+
             pictureBox.BringToFront();
 
             pictureBox.Click += PictureBox_Click;
@@ -583,80 +591,7 @@ namespace Image_Editing_app
             pictureBox.MouseUp += PictureBox_MouseUp;
 
             undoStack.Push((pictureBox, true, layers.Count - 1));
-
-            // Add item to the TableLayoutPanel
-            int row = i;
-            i++;
-            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
-            tableLayoutPanel1.RowCount++;
-
-            Label layerLabel = new Label()
-            {
-                Text = pictureBox.Name
-            };
-            tableLayoutPanel1.Controls.Add(layerLabel, 0, i);
-
-            CheckBox visibilityCheckbox = new CheckBox();
-            visibilityCheckbox.Checked = true;
-            visibilityCheckbox.CheckedChanged += (sender, e) =>
-            {
-                CheckBox checkbox = (CheckBox)sender;
-                PictureBox pb = (PictureBox)checkbox.Tag;
-                pb.Visible = checkbox.Checked;
-            };
-            visibilityCheckbox.Tag = pictureBox;
-            visibilityCheckbox.AutoSize = true;
-            tableLayoutPanel1.Controls.Add(visibilityCheckbox, 1, i);
-
-            // Enable row reordering
-            layerLabel.MouseDown += (sender, e) =>
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    Label label = (Label)sender;
-                    label.DoDragDrop(label, DragDropEffects.Move);
-                }
-            };
-
-            tableLayoutPanel1.DragOver += (sender, e) =>
-            {
-                e.Effect = DragDropEffects.Move;
-            };
-
-            tableLayoutPanel1.DragDrop += (sender, e) =>
-            {
-                Label sourceLabel = (Label)e.Data.GetData(typeof(Label));
-                Label targetLabel = (Label)tableLayoutPanel1.GetChildAtPoint(tableLayoutPanel1.PointToClient(new Point(e.X, e.Y)));
-
-                if (sourceLabel != null && targetLabel != null)
-                {
-                    int sourceRow = tableLayoutPanel1.GetRow(sourceLabel);
-                    int targetRow = tableLayoutPanel1.GetRow(targetLabel);
-
-                    if (sourceRow != targetRow)
-                    {
-                        tableLayoutPanel1.SuspendLayout();
-                        tableLayoutPanel1.Controls.SetChildIndex(sourceLabel, targetRow * tableLayoutPanel1.ColumnCount);
-                        tableLayoutPanel1.Controls.SetChildIndex(targetLabel, sourceRow * tableLayoutPanel1.ColumnCount);
-                        tableLayoutPanel1.ResumeLayout();
-
-                        // Update the order of layers in the 'layers' list
-                        layers.RemoveAt(sourceRow);
-                        layers.Insert(targetRow, layers[sourceRow]);
-
-                        // Update the layer indices in the undoStack
-                        var undoStackCopy = new Stack<(PictureBox, bool, int)>(undoStack);
-                        undoStack.Clear();
-
-                        for (int index = 0; index < tableLayoutPanel1.RowCount; index++)
-                        {
-                            undoStack.Push((undoStackCopy.ElementAt(index).Item1, undoStackCopy.ElementAt(index).Item2, index));
-                        }
-                    }
-                }
-            };
-
-            tableLayoutPanel1.BringToFront();
         }
+
     }
 }
