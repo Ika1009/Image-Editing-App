@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Image_Editing_app;
+using System.Text.Json;
 
 public class StateData
 {
@@ -46,7 +47,27 @@ public class StateData
                 Location = pictureBox.Location
             };
         }
+        public Layer ToLayer()
+        {
+            Layer layer = new Layer(ToPictureBox());
+            layer.PictureBox.Location = Location;
+            return layer;
+        }
 
+        public static LayerDTO FromLayer(Layer layer)
+        {
+            PictureBox pictureBox = layer.PictureBox;
+            Image image = pictureBox.Image;
+            byte[] imageBytes = ImageToByteArray(image);
+
+            return new LayerDTO
+            {
+                Width = pictureBox.Width,
+                Height = pictureBox.Height,
+                ImageBytes = imageBytes,
+                Location = pictureBox.Location
+            };
+        }
         private static byte[] ImageToByteArray(Image image)
         {
             using (MemoryStream ms = new MemoryStream())

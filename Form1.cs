@@ -22,12 +22,12 @@ namespace Image_Editing_app
 
         private string savedFileName;
         private string stringText;
-        private Stack<(PictureBox, bool, int)> undoStack;  // true = create, false = delete, int = index
-        private Stack<(PictureBox, bool, int)> redoStack;
-        private List<PictureBox> layers;
+        private Stack<(Layer, bool, int)> undoStack;  // true = create, false = delete, int = index
+        private Stack<(Layer, bool, int)> redoStack;
+        private BindingList<Layer> layers;
         private ToolStripButton? currentlySelectedButton = null;
         private CheckBox? currentlySelectedCheckBox = null;
-        private PictureBox? selectedPictureBox = null;
+        private Layer? selectedLayer = null;
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
         private Bitmap bm;
         private Graphics g;
@@ -53,6 +53,28 @@ namespace Image_Editing_app
             i = 0;
         }
 
+        private void YourForm_Load(object sender, EventArgs e)
+        {
+            // Set up the DataGridView
+            dataGridView1.AutoGenerateColumns = false;
+
+            // Define the columns
+            DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
+            nameColumn.DataPropertyName = "Name";
+            nameColumn.HeaderText = "Name";
+
+            DataGridViewCheckBoxColumn visibleColumn = new DataGridViewCheckBoxColumn();
+            visibleColumn.DataPropertyName = "Visible";
+            visibleColumn.HeaderText = "Visible";
+
+            // Add the columns to the DataGridView
+            dataGridView1.Columns.Add(nameColumn);
+            dataGridView1.Columns.Add(visibleColumn);
+
+            // Set the DataSource to the BindingList
+            dataGridView1.DataSource = layers;
+        }
+
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -71,24 +93,25 @@ namespace Image_Editing_app
                     pictureBox.Location = new Point(200, 100);
                     pictureBox.BackColor = Color.Transparent;
 
-                    AddPictureBox(pictureBox);
+                    AddPictureBox(pictureBox, true);
                 }
             }
         }
 
         private void PictureBox_Click(object sender, EventArgs e)
         {
-            if (selectedPictureBox != null)
+            if (selectedLayer != null)
             {
-                // Reset the border style of the previously selected PictureBox
-                selectedPictureBox.BorderStyle = BorderStyle.None;
+                // Reset the border style of the previously selected Layer's PictureBox
+                selectedLayer.PictureBox.BorderStyle = BorderStyle.None;
             }
 
-            selectedPictureBox = (PictureBox)sender;
+            selectedLayer = layers.FirstOrDefault(layer => layer.PictureBox == (PictureBox)sender);
 
-            // Set the border style of the selected PictureBox
-            selectedPictureBox.BorderStyle = BorderStyle.FixedSingle;
+            // Set the border style of the selected Layer's PictureBox
+            selectedLayer.PictureBox.BorderStyle = BorderStyle.FixedSingle;
         }
+
         private bool isDragging = false;
         private Point startPoint;
 
@@ -156,23 +179,22 @@ namespace Image_Editing_app
             sx = x - cx;
             sy = y - cy;
 
-            if(currentlySelectedButton == toolStripButton11) // ellipse
+            if (currentlySelectedButton == toolStripButton11) // ellipse
             {
-                g.DrawEllipse(p, cx, cy, sx, sy);
+                selectedLayer.PictureBox.CreateGraphics().DrawEllipse(p, cx, cy, sx, sy);
                 SelektujIliDeselektuj(toolStripButton11);
-                selectedPictureBox.Enabled = false;
+                selectedLayer.PictureBox.Enabled = false;
             }
-            else if(currentlySelectedButton == toolStripButton13) // polygon
+            else if (currentlySelectedButton == toolStripButton13) // polygon
             {
-                //DrawPolygon();
+                // DrawPolygon();
             }
-            else if (currentlySelectedButton == toolStripButton13) // Line
+            else if (currentlySelectedButton == toolStripButton12) // Line
             {
-                g.DrawLine(p, cx, cy, x, y);
+                selectedLayer.PictureBox.CreateGraphics().DrawLine(p, cx, cy, x, y);
                 SelektujIliDeselektuj(toolStripButton12);
-                selectedPictureBox.Enabled = false;
+                selectedLayer.PictureBox.Enabled = false;
             }
-
         }
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -180,7 +202,7 @@ namespace Image_Editing_app
             if (!polygonCompleted && e.Button == MouseButtons.Left)
             {
                 polygonPoints.Add(e.Location);
-                selectedPictureBox.Invalidate();
+                selectedLayer.PictureBox.Invalidate();
             }
         }
 
@@ -191,20 +213,20 @@ namespace Image_Editing_app
         {
             if (undoStack.Count > 0)
             {
-                (PictureBox lastPictureBox, bool wasCreated, int index) = undoStack.Pop();
+                (Layer lastLayer, bool wasCreated, int index) = undoStack.Pop();
                 if (wasCreated)
                 {
-                    redoStack.Push((lastPictureBox, true, index));
-                    lastPictureBox.Visible = false;
-                    if (layers.Contains(lastPictureBox))
-                        layers.Remove(lastPictureBox);
+                    redoStack.Push((lastLayer, true, index));
+                    lastLayer.Visible = false;
+                    if (layers.Contains(lastLayer))
+                        layers.Remove(lastLayer);
                 }
                 else
                 {
-                    redoStack.Push((lastPictureBox, false, index));
-                    lastPictureBox.Visible = true;
-                    if (!layers.Contains(lastPictureBox))
-                        layers.Insert(index, lastPictureBox);
+                    redoStack.Push((lastLayer, false, index));
+                    lastLayer.Visible = true;
+                    if (!layers.Contains(lastLayer))
+                        layers.Insert(index, lastLayer);
                 }
 
                 if (undoStack.Count == 0)
@@ -224,21 +246,21 @@ namespace Image_Editing_app
 
             if (redoStack.Count > 0)
             {
-                (PictureBox pictureBox, bool wasCreated, int index) = redoStack.Pop();
+                (Layer layer, bool wasCreated, int index) = redoStack.Pop();
 
                 if (wasCreated)
                 {
-                    pictureBox.Visible = true;
-                    if (!layers.Contains(pictureBox))
-                        layers.Insert(index, pictureBox);
-                    undoStack.Push((pictureBox, true, index));
+                    layer.Visible = true;
+                    if (!layers.Contains(layer))
+                        layers.Insert(index, layer);
+                    undoStack.Push((layer, true, index));
                 }
                 else
                 {
-                    pictureBox.Visible = false;
-                    if (layers.Contains(pictureBox))
-                        layers.Remove(pictureBox);
-                    undoStack.Push((pictureBox, false, index));
+                    layer.Visible = false;
+                    if (layers.Contains(layer))
+                        layers.Remove(layer);
+                    undoStack.Push((layer, false, index));
                 }
 
                 if (redoStack.Count == 0)
@@ -248,6 +270,7 @@ namespace Image_Editing_app
                     undoToolStripMenuItem.Enabled = true;
             }
         }
+
 
         private void exportImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -280,8 +303,9 @@ namespace Image_Editing_app
                     g.TranslateTransform(-minX, -minY);
 
                     // Loop through the PictureBoxes in your layers list
-                    foreach (PictureBox pb in layers)
+                    foreach (Layer layer in layers)
                     {
+                        PictureBox pb = layer.PictureBox;
                         // If the PictureBox is visible and intersects with the panel's bounds, draw it on the bitmap
                         if (pb.Visible && pb.Bounds.IntersectsWith(panel1.Bounds))
                         {
@@ -304,9 +328,9 @@ namespace Image_Editing_app
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedPictureBox?.Image != null)
+            if (selectedLayer?.PictureBox.Image != null)
             {
-                Clipboard.SetImage(selectedPictureBox.Image);
+                Clipboard.SetImage(selectedLayer.PictureBox.Image);
             }
         }
 
@@ -322,23 +346,27 @@ namespace Image_Editing_app
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedPictureBox == null)
+            if (selectedLayer == null)
                 return;
 
             // Remove from collections
-            int index = layers.IndexOf(selectedPictureBox);
+            int index = layers.IndexOf(selectedLayer);
+            foreach (Layer layer in layers)
+                if (layer.PictureBox.Parent == selectedLayer.PictureBox)
+                    layer.PictureBox.Parent = selectedLayer.PictureBox.Parent;
+
             layers.RemoveAt(index);
-            undoStack.Push((selectedPictureBox, false, index));
 
             // Hide the PictureBox
-            selectedPictureBox.Visible = false;
+            selectedLayer.Visible = false;
 
-            // Reset selected PictureBox
-            selectedPictureBox = null;
+            // Reset selected Layer
+            selectedLayer = null;
 
             if (!undoToolStripMenuItem.Enabled)
                 undoToolStripMenuItem.Enabled = true;
         }
+
 
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -359,7 +387,7 @@ namespace Image_Editing_app
                     // Create a StateData object to hold the necessary data
                     StateData stateData = new StateData
                     {
-                        Layers = layers.Select(layer => StateData.LayerDTO.FromPictureBox(layer)).ToList(),
+                        Layers = layers.Select(layer => StateData.LayerDTO.FromLayer(layer)).ToList(),
                     };
 
                     // Serialize the StateData object to JSON
@@ -370,6 +398,7 @@ namespace Image_Editing_app
                 }
             }
         }
+
 
         private void Save(object sender, EventArgs e)
         {
@@ -383,8 +412,8 @@ namespace Image_Editing_app
             {
                 Layers = layers.Select(layer =>
                 {
-                    StateData.LayerDTO layerDTO = StateData.LayerDTO.FromPictureBox(layer);
-                    layerDTO.Location = layer.Location;
+                    StateData.LayerDTO layerDTO = StateData.LayerDTO.FromLayer(layer);
+                    layerDTO.Location = layer.PictureBox.Location;
                     return layerDTO;
                 }).ToList(),
             };
@@ -413,12 +442,13 @@ namespace Image_Editing_app
                     // Clear existing layers
                     ClearLayers();
 
-                    // Create PictureBoxes from the deserialized StateData object
+                    // Create Layers from the deserialized StateData object
                     foreach (var layerDTO in stateData.Layers)
                     {
-                        PictureBox pictureBox = layerDTO.ToPictureBox();
-                        pictureBox.Location = layerDTO.Location;
-                        AddPictureBox(pictureBox);
+                        Layer layer = new Layer(layerDTO.ToPictureBox());
+                        layer.PictureBox.Location = layerDTO.Location;
+                        layers.Add(layer);
+                        AddPictureBox(layer.PictureBox, false);
                     }
 
                     // Update the savedFileName
@@ -433,14 +463,18 @@ namespace Image_Editing_app
         }
         private void ClearLayers()
         {
-            foreach (PictureBox pictureBox in layers)
+            foreach (Layer layer in layers)
             {
-                panel1.Controls.Remove(pictureBox);
+                PictureBox pictureBox = layer.PictureBox;
+                Control parentContainer = pictureBox.Parent;
+
+                parentContainer.Controls.Remove(pictureBox);
                 pictureBox.Dispose();
             }
 
             layers.Clear();
         }
+
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -483,7 +517,8 @@ namespace Image_Editing_app
             bm = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bm);
             pictureBox.Image = bm;
-            AddPictureBox(pictureBox);
+
+            AddPictureBox(pictureBox, false);
 
             return userInput;
         }
@@ -547,7 +582,7 @@ namespace Image_Editing_app
             pictureBox.Location = new Point(0, 75); // Adjust the location based on the desired positioning
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
-            AddPictureBox(pictureBox);
+            AddPictureBox(pictureBox, false);
 
 
             bm = new Bitmap(pictureBox.Width, pictureBox.Height);
@@ -564,33 +599,42 @@ namespace Image_Editing_app
                 //g.DrawString("hello world", new Font("Poppins", 12), new SolidBrush(Color.Black), new Point(200, 100));
                 g.DrawPolygon(p, polygonPoints.ToArray()); // Draw the polygon using the collected points
                 SelektujIliDeselektuj(toolStripButton13);
-                selectedPictureBox.Enabled = false;
+                selectedLayer.PictureBox.Enabled = false;
             }
         }
 
-        public void AddPictureBox(PictureBox pictureBox)
+        public void AddPictureBox(PictureBox pictureBox, bool onPanel)
         {
             pictureBox.Name = "Layer: " + (i + 1);
-            pictureBox.BackColor = Color.Transparent;
+            pictureBox.Parent = panel1;
 
-            //Controls.Add(pictureBox);
-
-
-            if (layers.Count == 0)
-                this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
+            if (layers.Count == 0 || onPanel)
+                panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
             else
-                layers[^1].Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
+            {
+                PictureBox lastPictureBox = layers[^1].PictureBox;
+                if (pictureBox != lastPictureBox)
+                {
+                    lastPictureBox.Controls.Add(pictureBox);
+                }
+                else
+                    panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
 
-            layers.Add(pictureBox); // Add the PictureBox to the list
+            }
+
+            Layer layer = new Layer(pictureBox);
+            layers.Add(layer); // Add the Layer to the list
 
             pictureBox.BringToFront();
 
-            pictureBox.Click += PictureBox_Click;
-            pictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
-            pictureBox.MouseMove += PictureBox_MouseMove;
-            pictureBox.MouseUp += PictureBox_MouseUp;
+            layer.PictureBox.Click += PictureBox_Click;
+            layer.PictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
+            layer.PictureBox.MouseMove += PictureBox_MouseMove;
+            layer.PictureBox.MouseUp += PictureBox_MouseUp;
 
-            undoStack.Push((pictureBox, true, layers.Count - 1));
+            undoStack.Push((layer, true, layers.Count - 1));
+
+            i++;
         }
 
     }
