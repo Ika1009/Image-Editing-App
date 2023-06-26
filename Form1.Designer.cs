@@ -72,6 +72,7 @@
             this.toolStripButton15 = new System.Windows.Forms.ToolStripButton();
             this.listView1 = new System.Windows.Forms.ListView();
             this.panel1 = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -79,8 +80,6 @@
             // dataGridView1
             // 
             this.dataGridView1.BackgroundColor = System.Drawing.Color.LightGray;
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.dataGridView1.ColumnCount = 2;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Right;
             this.dataGridView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dataGridView1.Location = new System.Drawing.Point(1019, 72);
@@ -91,7 +90,7 @@
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(231, 586);
             this.dataGridView1.TabIndex = 0;
-
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             // 
             // menuStrip1
             // 
@@ -504,8 +503,9 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.Form_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);

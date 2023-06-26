@@ -53,10 +53,11 @@ namespace Image_Editing_app
             i = 0;
         }
 
-        private void YourForm_Load(object sender, EventArgs e)
+        private void Form_Load(object sender, EventArgs e)
         {
             // Set up the DataGridView
             dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.AllowDrop = true;
 
             // Define the columns
             DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
@@ -70,9 +71,149 @@ namespace Image_Editing_app
             // Add the columns to the DataGridView
             dataGridView1.Columns.Add(nameColumn);
             dataGridView1.Columns.Add(visibleColumn);
+            dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
+            dataGridView1.CurrentCellDirtyStateChanged += dataGridView1_CurrentCellDirtyStateChanged;
+            dataGridView1.CellFormatting += dataGridView1_CellFormatting;
+
 
             // Set the DataSource to the BindingList
             dataGridView1.DataSource = layers;
+
+            dataGridView1.MouseMove += dataGridView1_MouseMove;
+            dataGridView1.MouseDown += dataGridView1_MouseDown;
+            dataGridView1.DragOver += dataGridView1_DragOver;
+            dataGridView1.DragDrop += dataGridView1_DragDrop;
+
+        }
+
+        private Rectangle dragBoxFromMouseDown;
+        private int rowIndexFromMouseDown;
+        private int rowIndexOfItemUnderMouseToDrop;
+        private void dataGridView1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                // If the mouse moves outside the rectangle, start the drag.
+                if (dragBoxFromMouseDown != Rectangle.Empty &&
+                    !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                {
+
+                    // Proceed with the drag and drop, passing in the list item.                    
+                    DragDropEffects dropEffect = dataGridView1.DoDragDrop(
+                    dataGridView1.Rows[rowIndexFromMouseDown],
+                    DragDropEffects.Move);
+                }
+            }
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Get the index of the item the mouse is below.
+            rowIndexFromMouseDown = dataGridView1.HitTest(e.X, e.Y).RowIndex;
+            if (rowIndexFromMouseDown != -1)
+            {
+                // Remember the point where the mouse down occurred. 
+                // The DragSize indicates the size that the mouse can move 
+                // before a drag event should be started.                
+                Size dragSize = SystemInformation.DragSize;
+
+                // Create a rectangle using the DragSize, with the mouse position being
+                // at the center of the rectangle.
+                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2),
+                                                               e.Y - (dragSize.Height / 2)),
+                                    dragSize);
+            }
+            else
+                // Reset the rectangle if the mouse is not over an item in the ListBox.
+                dragBoxFromMouseDown = Rectangle.Empty;
+        }
+
+        private void dataGridView1_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void dataGridView1_DragDrop(object sender, DragEventArgs e)
+        {
+            // The mouse locations are relative to the screen, so they must be 
+            // converted to client coordinates.
+            Point clientPoint = dataGridView1.PointToClient(new Point(e.X, e.Y));
+
+            // Get the row index of the item the mouse is below. 
+            rowIndexOfItemUnderMouseToDrop =
+                dataGridView1.HitTest(clientPoint.X, clientPoint.Y).RowIndex;
+
+            // If the drag operation was a move then remove and insert the row.
+            if (e.Effect == DragDropEffects.Move)
+            {
+                DataGridViewRow? rowToMove = e.Data.GetData(
+                    typeof(DataGridViewRow)) as DataGridViewRow;
+
+                Layer layerToMove = layers[rowIndexFromMouseDown];
+                layers.RemoveAt(rowIndexFromMouseDown);
+
+                // Adjust the row index if it's out of bounds
+                if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= layers.Count)
+                {
+                    rowIndexOfItemUnderMouseToDrop = layers.Count;
+                }
+
+                // Insert the layerToMove at the rowIndexOfItemUnderMouseToDrop index
+                layers.Insert(rowIndexOfItemUnderMouseToDrop, layerToMove);
+
+                // Iterate through the layers list to change display order
+                foreach (Layer layer in layers)
+                {
+                    // Find the PictureBox associated with the current layer
+                    PictureBox pictureBox = layer.PictureBox;
+
+                    if (pictureBox != null)
+                    {
+                        // Bring the PictureBox to the front
+                        pictureBox.BringToFront();
+                    }
+                }
+            }
+        }
+
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // Check if the current cell is in the selected row
+            if (e.RowIndex >= 0 && dataGridView1.Rows[e.RowIndex].Selected)
+            {
+                // Set custom selection colors
+                e.CellStyle.SelectionBackColor = Color.Red; // Change to the desired background color
+                e.CellStyle.SelectionForeColor = Color.White; // Change to the desired foreground color
+            }
+            else
+            {
+                // Reset the cell style for non-selected cells
+                e.CellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.SelectionBackColor;
+                e.CellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.SelectionForeColor;
+            }
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if the modified cell belongs to the visibleColumn
+            if (e.ColumnIndex == 1 && e.RowIndex >= 0)
+            {
+                // Get the Layer object bound to the current row
+                Layer layer = (Layer)dataGridView1.Rows[e.RowIndex].DataBoundItem;
+
+                // Update the Visible property of the Layer object based on the checkbox value
+                layer.Visible = (bool)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+            }
+        }
+
+        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            // Commit the changes when the checkbox cell is clicked
+            if (dataGridView1.IsCurrentCellDirty)
+            {
+                dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
         }
 
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -524,12 +665,6 @@ namespace Image_Editing_app
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this.KeyPreview = true;
-            this.KeyDown += Form1_KeyDown;
-        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
