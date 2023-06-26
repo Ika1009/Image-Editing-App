@@ -22,12 +22,12 @@ namespace Image_Editing_app
 
         private string savedFileName;
         private string stringText;
-        private Stack<(PictureBox, bool, int)> undoStack;  // true = create, false = delete, int = index
-        private Stack<(PictureBox, bool, int)> redoStack;
-        private List<PictureBox> layers;
+        private Stack<(Layer, bool, int)> undoStack;  // true = create, false = delete, int = index
+        private Stack<(Layer, bool, int)> redoStack;
+        private BindingList<Layer> layers;
         private ToolStripButton? currentlySelectedButton = null;
         private CheckBox? currentlySelectedCheckBox = null;
-        private PictureBox? selectedPictureBox = null;
+        private Layer? selectedLayer = null;
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
         private Bitmap bm;
         private Graphics g;
@@ -53,6 +53,169 @@ namespace Image_Editing_app
             i = 0;
         }
 
+        private void Form_Load(object sender, EventArgs e)
+        {
+            // Set up the DataGridView
+            dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.AllowDrop = true;
+
+            // Define the columns
+            DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
+            nameColumn.DataPropertyName = "Name";
+            nameColumn.HeaderText = "Name";
+
+            DataGridViewCheckBoxColumn visibleColumn = new DataGridViewCheckBoxColumn();
+            visibleColumn.DataPropertyName = "Visible";
+            visibleColumn.HeaderText = "Visible";
+
+            // Add the columns to the DataGridView
+            dataGridView1.Columns.Add(nameColumn);
+            dataGridView1.Columns.Add(visibleColumn);
+            dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
+            dataGridView1.CurrentCellDirtyStateChanged += dataGridView1_CurrentCellDirtyStateChanged;
+            dataGridView1.CellFormatting += dataGridView1_CellFormatting;
+
+
+            // Set the DataSource to the BindingList
+            dataGridView1.DataSource = layers;
+
+            dataGridView1.MouseMove += dataGridView1_MouseMove;
+            dataGridView1.MouseDown += dataGridView1_MouseDown;
+            dataGridView1.DragOver += dataGridView1_DragOver;
+            dataGridView1.DragDrop += dataGridView1_DragDrop;
+
+        }
+
+        private Rectangle dragBoxFromMouseDown;
+        private int rowIndexFromMouseDown;
+        private int rowIndexOfItemUnderMouseToDrop;
+        private void dataGridView1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                // If the mouse moves outside the rectangle, start the drag.
+                if (dragBoxFromMouseDown != Rectangle.Empty &&
+                    !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                {
+
+                    // Proceed with the drag and drop, passing in the list item.                    
+                    DragDropEffects dropEffect = dataGridView1.DoDragDrop(
+                    dataGridView1.Rows[rowIndexFromMouseDown],
+                    DragDropEffects.Move);
+                }
+            }
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Get the index of the item the mouse is below.
+            rowIndexFromMouseDown = dataGridView1.HitTest(e.X, e.Y).RowIndex;
+            if (rowIndexFromMouseDown != -1)
+            {
+                // Remember the point where the mouse down occurred. 
+                // The DragSize indicates the size that the mouse can move 
+                // before a drag event should be started.                
+                Size dragSize = SystemInformation.DragSize;
+
+                // Create a rectangle using the DragSize, with the mouse position being
+                // at the center of the rectangle.
+                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2),
+                                                               e.Y - (dragSize.Height / 2)),
+                                    dragSize);
+            }
+            else
+                // Reset the rectangle if the mouse is not over an item in the ListBox.
+                dragBoxFromMouseDown = Rectangle.Empty;
+        }
+
+        private void dataGridView1_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void dataGridView1_DragDrop(object sender, DragEventArgs e)
+        {
+            // The mouse locations are relative to the screen, so they must be 
+            // converted to client coordinates.
+            Point clientPoint = dataGridView1.PointToClient(new Point(e.X, e.Y));
+
+            // Get the row index of the item the mouse is below. 
+            rowIndexOfItemUnderMouseToDrop =
+                dataGridView1.HitTest(clientPoint.X, clientPoint.Y).RowIndex;
+
+            // If the drag operation was a move then remove and insert the row.
+            if (e.Effect == DragDropEffects.Move)
+            {
+                DataGridViewRow? rowToMove = e.Data.GetData(
+                    typeof(DataGridViewRow)) as DataGridViewRow;
+
+                Layer layerToMove = layers[rowIndexFromMouseDown];
+                layers.RemoveAt(rowIndexFromMouseDown);
+
+                // Adjust the row index if it's out of bounds
+                if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= layers.Count)
+                {
+                    rowIndexOfItemUnderMouseToDrop = layers.Count;
+                }
+
+                // Insert the layerToMove at the rowIndexOfItemUnderMouseToDrop index
+                layers.Insert(rowIndexOfItemUnderMouseToDrop, layerToMove);
+
+                // Iterate through the layers list to change display order
+                foreach (Layer layer in layers)
+                {
+                    // Find the PictureBox associated with the current layer
+                    PictureBox pictureBox = layer.PictureBox;
+
+                    if (pictureBox != null)
+                    {
+                        // Bring the PictureBox to the front
+                        pictureBox.BringToFront();
+                    }
+                }
+            }
+        }
+
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // Check if the current cell is in the selected row
+            if (e.RowIndex >= 0 && dataGridView1.Rows[e.RowIndex].Selected)
+            {
+                // Set custom selection colors
+                e.CellStyle.SelectionBackColor = Color.Red; // Change to the desired background color
+                e.CellStyle.SelectionForeColor = Color.White; // Change to the desired foreground color
+            }
+            else
+            {
+                // Reset the cell style for non-selected cells
+                e.CellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.SelectionBackColor;
+                e.CellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.SelectionForeColor;
+            }
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if the modified cell belongs to the visibleColumn
+            if (e.ColumnIndex == 1 && e.RowIndex >= 0)
+            {
+                // Get the Layer object bound to the current row
+                Layer layer = (Layer)dataGridView1.Rows[e.RowIndex].DataBoundItem;
+
+                // Update the Visible property of the Layer object based on the checkbox value
+                layer.Visible = (bool)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+            }
+        }
+
+        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            // Commit the changes when the checkbox cell is clicked
+            if (dataGridView1.IsCurrentCellDirty)
+            {
+                dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
         private void importImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -71,24 +234,25 @@ namespace Image_Editing_app
                     pictureBox.Location = new Point(200, 100);
                     pictureBox.BackColor = Color.Transparent;
 
-                    AddPictureBox(pictureBox);
+                    AddPictureBox(pictureBox, true);
                 }
             }
         }
 
         private void PictureBox_Click(object sender, EventArgs e)
         {
-            if (selectedPictureBox != null)
+            if (selectedLayer != null)
             {
-                // Reset the border style of the previously selected PictureBox
-                selectedPictureBox.BorderStyle = BorderStyle.None;
+                // Reset the border style of the previously selected Layer's PictureBox
+                selectedLayer.PictureBox.BorderStyle = BorderStyle.None;
             }
 
-            selectedPictureBox = (PictureBox)sender;
+            selectedLayer = layers.FirstOrDefault(layer => layer.PictureBox == (PictureBox)sender);
 
-            // Set the border style of the selected PictureBox
-            selectedPictureBox.BorderStyle = BorderStyle.FixedSingle;
+            // Set the border style of the selected Layer's PictureBox
+            selectedLayer.PictureBox.BorderStyle = BorderStyle.FixedSingle;
         }
+
         private bool isDragging = false;
         private Point startPoint;
 
@@ -156,29 +320,22 @@ namespace Image_Editing_app
             sx = x - cx;
             sy = y - cy;
 
-            if(currentlySelectedButton == toolStripButton11) // ellipse
+            if (currentlySelectedButton == toolStripButton11) // ellipse
             {
-                SolidBrush brush = new SolidBrush(Color.Black);
-                g.DrawEllipse(p, cx, cy, sx, sy);
-                g.FillEllipse(brush, cx, cy, sx, sy);
+                selectedLayer.PictureBox.CreateGraphics().DrawEllipse(p, cx, cy, sx, sy);
                 SelektujIliDeselektuj(toolStripButton11);
-                layers[layers.Count - 1].Location = new Point(random.Next(layers[layers.Count - 1].Width), random.Next(layers[layers.Count - 1].Height));
-                layers[layers.Count - 1].Size = new Size(sx * 3, sy * 3);
-                //selectedPictureBox.Enabled = false;
+                selectedLayer.PictureBox.Enabled = false;
             }
-            else if(currentlySelectedButton == toolStripButton13) // polygon
+            else if (currentlySelectedButton == toolStripButton13) // polygon
             {
-                //DrawPolygon();
+                // DrawPolygon();
             }
             else if (currentlySelectedButton == toolStripButton12) // Line
             {
-                g.DrawLine(p, cx, cy, x, y);
+                selectedLayer.PictureBox.CreateGraphics().DrawLine(p, cx, cy, x, y);
                 SelektujIliDeselektuj(toolStripButton12);
-                layers[layers.Count - 1].Size = new Size(x * 2, y * 2);
-                layers[layers.Count - 1].Location = new Point(random.Next(layers[layers.Count - 1].Width), random.Next(layers[layers.Count - 1].Height));
-                //selectedPictureBox.Enabled = false;
+                selectedLayer.PictureBox.Enabled = false;
             }
-
         }
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -186,7 +343,7 @@ namespace Image_Editing_app
             if (!polygonCompleted && e.Button == MouseButtons.Left)
             {
                 polygonPoints.Add(e.Location);
-                selectedPictureBox.Invalidate();
+                selectedLayer.PictureBox.Invalidate();
             }
         }
 
@@ -197,20 +354,20 @@ namespace Image_Editing_app
         {
             if (undoStack.Count > 0)
             {
-                (PictureBox lastPictureBox, bool wasCreated, int index) = undoStack.Pop();
+                (Layer lastLayer, bool wasCreated, int index) = undoStack.Pop();
                 if (wasCreated)
                 {
-                    redoStack.Push((lastPictureBox, true, index));
-                    lastPictureBox.Visible = false;
-                    if (layers.Contains(lastPictureBox))
-                        layers.Remove(lastPictureBox);
+                    redoStack.Push((lastLayer, true, index));
+                    lastLayer.Visible = false;
+                    if (layers.Contains(lastLayer))
+                        layers.Remove(lastLayer);
                 }
                 else
                 {
-                    redoStack.Push((lastPictureBox, false, index));
-                    lastPictureBox.Visible = true;
-                    if (!layers.Contains(lastPictureBox))
-                        layers.Insert(index, lastPictureBox);
+                    redoStack.Push((lastLayer, false, index));
+                    lastLayer.Visible = true;
+                    if (!layers.Contains(lastLayer))
+                        layers.Insert(index, lastLayer);
                 }
 
                 if (undoStack.Count == 0)
@@ -230,21 +387,21 @@ namespace Image_Editing_app
 
             if (redoStack.Count > 0)
             {
-                (PictureBox pictureBox, bool wasCreated, int index) = redoStack.Pop();
+                (Layer layer, bool wasCreated, int index) = redoStack.Pop();
 
                 if (wasCreated)
                 {
-                    pictureBox.Visible = true;
-                    if (!layers.Contains(pictureBox))
-                        layers.Insert(index, pictureBox);
-                    undoStack.Push((pictureBox, true, index));
+                    layer.Visible = true;
+                    if (!layers.Contains(layer))
+                        layers.Insert(index, layer);
+                    undoStack.Push((layer, true, index));
                 }
                 else
                 {
-                    pictureBox.Visible = false;
-                    if (layers.Contains(pictureBox))
-                        layers.Remove(pictureBox);
-                    undoStack.Push((pictureBox, false, index));
+                    layer.Visible = false;
+                    if (layers.Contains(layer))
+                        layers.Remove(layer);
+                    undoStack.Push((layer, false, index));
                 }
 
                 if (redoStack.Count == 0)
@@ -254,6 +411,7 @@ namespace Image_Editing_app
                     undoToolStripMenuItem.Enabled = true;
             }
         }
+
 
         private void exportImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -286,8 +444,9 @@ namespace Image_Editing_app
                     g.TranslateTransform(-minX, -minY);
 
                     // Loop through the PictureBoxes in your layers list
-                    foreach (PictureBox pb in layers)
+                    foreach (Layer layer in layers)
                     {
+                        PictureBox pb = layer.PictureBox;
                         // If the PictureBox is visible and intersects with the panel's bounds, draw it on the bitmap
                         if (pb.Visible && pb.Bounds.IntersectsWith(panel1.Bounds))
                         {
@@ -310,9 +469,9 @@ namespace Image_Editing_app
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedPictureBox?.Image != null)
+            if (selectedLayer?.PictureBox.Image != null)
             {
-                Clipboard.SetImage(selectedPictureBox.Image);
+                Clipboard.SetImage(selectedLayer.PictureBox.Image);
             }
         }
 
@@ -328,23 +487,27 @@ namespace Image_Editing_app
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedPictureBox == null)
+            if (selectedLayer == null)
                 return;
 
             // Remove from collections
-            int index = layers.IndexOf(selectedPictureBox);
+            int index = layers.IndexOf(selectedLayer);
+            foreach (Layer layer in layers)
+                if (layer.PictureBox.Parent == selectedLayer.PictureBox)
+                    layer.PictureBox.Parent = selectedLayer.PictureBox.Parent;
+
             layers.RemoveAt(index);
-            undoStack.Push((selectedPictureBox, false, index));
 
             // Hide the PictureBox
-            selectedPictureBox.Visible = false;
+            selectedLayer.Visible = false;
 
-            // Reset selected PictureBox
-            selectedPictureBox = null;
+            // Reset selected Layer
+            selectedLayer = null;
 
             if (!undoToolStripMenuItem.Enabled)
                 undoToolStripMenuItem.Enabled = true;
         }
+
 
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -365,7 +528,7 @@ namespace Image_Editing_app
                     // Create a StateData object to hold the necessary data
                     StateData stateData = new StateData
                     {
-                        Layers = layers.Select(layer => StateData.LayerDTO.FromPictureBox(layer)).ToList(),
+                        Layers = layers.Select(layer => StateData.LayerDTO.FromLayer(layer)).ToList(),
                     };
 
                     // Serialize the StateData object to JSON
@@ -376,6 +539,7 @@ namespace Image_Editing_app
                 }
             }
         }
+
 
         private void Save(object sender, EventArgs e)
         {
@@ -389,8 +553,8 @@ namespace Image_Editing_app
             {
                 Layers = layers.Select(layer =>
                 {
-                    StateData.LayerDTO layerDTO = StateData.LayerDTO.FromPictureBox(layer);
-                    layerDTO.Location = layer.Location;
+                    StateData.LayerDTO layerDTO = StateData.LayerDTO.FromLayer(layer);
+                    layerDTO.Location = layer.PictureBox.Location;
                     return layerDTO;
                 }).ToList(),
             };
@@ -419,12 +583,13 @@ namespace Image_Editing_app
                     // Clear existing layers
                     ClearLayers();
 
-                    // Create PictureBoxes from the deserialized StateData object
+                    // Create Layers from the deserialized StateData object
                     foreach (var layerDTO in stateData.Layers)
                     {
-                        PictureBox pictureBox = layerDTO.ToPictureBox();
-                        pictureBox.Location = layerDTO.Location;
-                        AddPictureBox(pictureBox);
+                        Layer layer = new Layer(layerDTO.ToPictureBox());
+                        layer.PictureBox.Location = layerDTO.Location;
+                        layers.Add(layer);
+                        AddPictureBox(layer.PictureBox, false);
                     }
 
                     // Update the savedFileName
@@ -439,14 +604,18 @@ namespace Image_Editing_app
         }
         private void ClearLayers()
         {
-            foreach (PictureBox pictureBox in layers)
+            foreach (Layer layer in layers)
             {
-                panel1.Controls.Remove(pictureBox);
+                PictureBox pictureBox = layer.PictureBox;
+                Control parentContainer = pictureBox.Parent;
+
+                parentContainer.Controls.Remove(pictureBox);
                 pictureBox.Dispose();
             }
 
             layers.Clear();
         }
+
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -490,18 +659,12 @@ namespace Image_Editing_app
             g = Graphics.FromImage(bm);
             pictureBox.Image = bm;
 
-            AddPictureBox(pictureBox);
+            AddPictureBox(pictureBox, false);
 
             return userInput;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this.KeyPreview = true;
-            this.KeyDown += Form1_KeyDown;
-        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -554,7 +717,7 @@ namespace Image_Editing_app
             pictureBox.Location = layers[layers.Count - 1].Location;
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
-            AddPictureBox(pictureBox);
+            AddPictureBox(pictureBox, false);
 
 
             bm = new Bitmap(pictureBox.Width, pictureBox.Height);
@@ -571,108 +734,43 @@ namespace Image_Editing_app
                 //g.DrawString("hello world", new Font("Poppins", 12), new SolidBrush(Color.Black), new Point(200, 100));
                 g.DrawPolygon(p, polygonPoints.ToArray()); // Draw the polygon using the collected points
                 SelektujIliDeselektuj(toolStripButton13);
-                selectedPictureBox.Enabled = false;
+                selectedLayer.PictureBox.Enabled = false;
             }
         }
 
-        public void AddPictureBox(PictureBox pictureBox)
+        public void AddPictureBox(PictureBox pictureBox, bool onPanel)
         {
             pictureBox.Name = "Layer: " + (i + 1);
-            //pictureBox.Parent = panel1;
+            pictureBox.Parent = panel1;
 
-            if (layers.Count == 0)
-            {
-                this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
-            }
-
+            if (layers.Count == 0 || onPanel)
+                panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
             else
             {
-                layers[0].Controls.Add(pictureBox);
+                PictureBox lastPictureBox = layers[^1].PictureBox;
+                if (pictureBox != lastPictureBox)
+                {
+                    lastPictureBox.Controls.Add(pictureBox);
+                }
+                else
+                    panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
+
             }
 
-            layers.Add(pictureBox); // Add the PictureBox to the list
+            Layer layer = new Layer(pictureBox);
+            layers.Add(layer); // Add the Layer to the list
+
             pictureBox.BringToFront();
 
-            pictureBox.Click += PictureBox_Click;
-            pictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
-            pictureBox.MouseMove += PictureBox_MouseMove;
-            pictureBox.MouseUp += PictureBox_MouseUp;
+            layer.PictureBox.Click += PictureBox_Click;
+            layer.PictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
+            layer.PictureBox.MouseMove += PictureBox_MouseMove;
+            layer.PictureBox.MouseUp += PictureBox_MouseUp;
 
-            undoStack.Push((pictureBox, true, layers.Count - 1));
+            undoStack.Push((layer, true, layers.Count - 1));
 
-            // Add item to the TableLayoutPanel
-            int row = i;
             i++;
-            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
-            tableLayoutPanel1.RowCount++;
-
-            Label layerLabel = new Label()
-            {
-                Text = pictureBox.Name
-            };
-            tableLayoutPanel1.Controls.Add(layerLabel, 0, i);
-
-            CheckBox visibilityCheckbox = new CheckBox();
-            visibilityCheckbox.Checked = true;
-            visibilityCheckbox.CheckedChanged += (sender, e) =>
-            {
-                CheckBox checkbox = (CheckBox)sender;
-                PictureBox pb = (PictureBox)checkbox.Tag;
-                pb.Visible = checkbox.Checked;
-            };
-            visibilityCheckbox.Tag = pictureBox;
-            visibilityCheckbox.AutoSize = true;
-            tableLayoutPanel1.Controls.Add(visibilityCheckbox, 1, i);
-
-            // Enable row reordering
-            layerLabel.MouseDown += (sender, e) =>
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    Label label = (Label)sender;
-                    label.DoDragDrop(label, DragDropEffects.Move);
-                }
-            };
-
-            tableLayoutPanel1.DragOver += (sender, e) =>
-            {
-                e.Effect = DragDropEffects.Move;
-            };
-
-            tableLayoutPanel1.DragDrop += (sender, e) =>
-            {
-                Label sourceLabel = (Label)e.Data.GetData(typeof(Label));
-                Label targetLabel = (Label)tableLayoutPanel1.GetChildAtPoint(tableLayoutPanel1.PointToClient(new Point(e.X, e.Y)));
-
-                if (sourceLabel != null && targetLabel != null)
-                {
-                    int sourceRow = tableLayoutPanel1.GetRow(sourceLabel);
-                    int targetRow = tableLayoutPanel1.GetRow(targetLabel);
-
-                    if (sourceRow != targetRow)
-                    {
-                        tableLayoutPanel1.SuspendLayout();
-                        tableLayoutPanel1.Controls.SetChildIndex(sourceLabel, targetRow * tableLayoutPanel1.ColumnCount);
-                        tableLayoutPanel1.Controls.SetChildIndex(targetLabel, sourceRow * tableLayoutPanel1.ColumnCount);
-                        tableLayoutPanel1.ResumeLayout();
-
-                        // Update the order of layers in the 'layers' list
-                        layers.RemoveAt(sourceRow);
-                        layers.Insert(targetRow, layers[sourceRow]);
-
-                        // Update the layer indices in the undoStack
-                        var undoStackCopy = new Stack<(PictureBox, bool, int)>(undoStack);
-                        undoStack.Clear();
-
-                        for (int index = 0; index < tableLayoutPanel1.RowCount; index++)
-                        {
-                            undoStack.Push((undoStackCopy.ElementAt(index).Item1, undoStackCopy.ElementAt(index).Item2, index));
-                        }
-                    }
-                }
-            };
-
-            tableLayoutPanel1.BringToFront();
         }
+
     }
 }
