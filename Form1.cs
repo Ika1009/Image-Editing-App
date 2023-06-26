@@ -33,7 +33,7 @@ namespace Image_Editing_app
         private Graphics g;
         private List<Point> polygonPoints;
         private bool polygonCompleted;
-        private Pen p = new Pen(Color.Black, 1);
+        private Pen p = new Pen(Color.Black, 5);
         private Point px, py;
         private bool paint = false;
         private int x, y, sx, sy, cx, cy, i;
@@ -152,25 +152,31 @@ namespace Image_Editing_app
         {
             isDragging = false;
             paint = false;
-
+            Random random = new Random();
             sx = x - cx;
             sy = y - cy;
 
             if(currentlySelectedButton == toolStripButton11) // ellipse
             {
+                SolidBrush brush = new SolidBrush(Color.Black);
                 g.DrawEllipse(p, cx, cy, sx, sy);
+                g.FillEllipse(brush, cx, cy, sx, sy);
                 SelektujIliDeselektuj(toolStripButton11);
-                selectedPictureBox.Enabled = false;
+                layers[layers.Count - 1].Location = new Point(random.Next(layers[layers.Count - 1].Width), random.Next(layers[layers.Count - 1].Height));
+                layers[layers.Count - 1].Size = new Size(sx * 3, sy * 3);
+                //selectedPictureBox.Enabled = false;
             }
             else if(currentlySelectedButton == toolStripButton13) // polygon
             {
                 //DrawPolygon();
             }
-            else if (currentlySelectedButton == toolStripButton13) // Line
+            else if (currentlySelectedButton == toolStripButton12) // Line
             {
                 g.DrawLine(p, cx, cy, x, y);
                 SelektujIliDeselektuj(toolStripButton12);
-                selectedPictureBox.Enabled = false;
+                layers[layers.Count - 1].Size = new Size(x * 2, y * 2);
+                layers[layers.Count - 1].Location = new Point(random.Next(layers[layers.Count - 1].Width), random.Next(layers[layers.Count - 1].Height));
+                //selectedPictureBox.Enabled = false;
             }
 
         }
@@ -544,8 +550,8 @@ namespace Image_Editing_app
         private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
-            pictureBox.Size = new Size(ClientRectangle.Width, ClientRectangle.Height - 80); // Set the desired size
-            pictureBox.Location = new Point(0, 75); // Adjust the location based on the desired positioning
+            pictureBox.Size = new Size(layers[layers.Count - 1].Width, layers[layers.Count - 1].Height); // Set the desired size
+            pictureBox.Location = layers[layers.Count - 1].Location;
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
             AddPictureBox(pictureBox);
@@ -572,9 +578,19 @@ namespace Image_Editing_app
         public void AddPictureBox(PictureBox pictureBox)
         {
             pictureBox.Name = "Layer: " + (i + 1);
-            pictureBox.Parent = panel1;
+            //pictureBox.Parent = panel1;
+
+            if (layers.Count == 0)
+            {
+                this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
+            }
+
+            else
+            {
+                layers[0].Controls.Add(pictureBox);
+            }
+
             layers.Add(pictureBox); // Add the PictureBox to the list
-            this.Controls.Add(pictureBox); // Add the PictureBox to the form's Controls collection
             pictureBox.BringToFront();
 
             pictureBox.Click += PictureBox_Click;
