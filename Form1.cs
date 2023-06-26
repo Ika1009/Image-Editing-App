@@ -33,7 +33,7 @@ namespace Image_Editing_app
         private Graphics g;
         private List<Point> polygonPoints;
         private bool polygonCompleted;
-        private Pen p = new Pen(Color.Black, 1);
+        private Pen p = new Pen(Color.Black, 5);
         private Point px, py;
         private bool paint = false;
         private int x, y, sx, sy, cx, cy, i;
@@ -316,7 +316,7 @@ namespace Image_Editing_app
         {
             isDragging = false;
             paint = false;
-
+            Random random = new Random();
             sx = x - cx;
             sy = y - cy;
 
@@ -713,8 +713,8 @@ namespace Image_Editing_app
         private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
-            pictureBox.Size = new Size(ClientRectangle.Width, ClientRectangle.Height - 80); // Set the desired size
-            pictureBox.Location = new Point(0, 75); // Adjust the location based on the desired positioning
+            pictureBox.Size = new Size(layers[layers.Count - 1].Width, layers[layers.Count - 1].Height); // Set the desired size
+            pictureBox.Location = layers[layers.Count - 1].Location;
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
             AddPictureBox(pictureBox, false);
