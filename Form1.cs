@@ -713,8 +713,8 @@ namespace Image_Editing_app
         private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
-            pictureBox.Size = new Size(layers[layers.Count - 1].Width, layers[layers.Count - 1].Height); // Set the desired size
-            pictureBox.Location = layers[layers.Count - 1].Location;
+            pictureBox.Size = new Size(layers[layers.Count - 1].PictureBox.Width, layers[layers.Count - 1].PictureBox.Height); // Set the desired size
+            pictureBox.Location = layers[layers.Count - 1].PictureBox.Location;
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
             AddPictureBox(pictureBox, false);
@@ -743,18 +743,14 @@ namespace Image_Editing_app
             pictureBox.Name = "Layer: " + (i + 1);
             pictureBox.Parent = panel1;
 
-            if (layers.Count == 0 || onPanel)
+            if (layers.Count == 0 || onPanel || selectedLayer is null)
                 panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
             else
             {
-                PictureBox lastPictureBox = layers[^1].PictureBox;
-                if (pictureBox != lastPictureBox)
-                {
-                    lastPictureBox.Controls.Add(pictureBox);
-                }
+                if (pictureBox != selectedLayer.PictureBox)
+                    selectedLayer.PictureBox.Controls.Add(pictureBox);
                 else
                     panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
-
             }
 
             Layer layer = new Layer(pictureBox);
