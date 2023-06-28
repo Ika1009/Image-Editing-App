@@ -245,6 +245,11 @@ namespace Image_Editing_app
 
         private bool isDragging = false;
         private Point startPoint;
+        private bool isDrawingEllipse = false;
+        private Point initialMousePosition;
+        private bool isDrawingPolygon = false;
+        private List<Point> polygonPoints = new List<Point>();
+
 
         private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
@@ -252,6 +257,16 @@ namespace Image_Editing_app
             {
                 isDragging = true;
                 startPoint = e.Location;
+            }
+
+            if (isDrawingEllipse)
+            {
+                initialMousePosition = e.Location;
+            }
+
+            if (isDrawingPolygon)
+            {
+                polygonPoints.Add(e.Location);
             }
 
             draw = true;
@@ -270,11 +285,21 @@ namespace Image_Editing_app
                 currentPoint.Offset(deltaX, deltaY);
                 pictureBox.Location = currentPoint;
             }
+
+            if (isDrawingEllipse && e.Button == MouseButtons.Left)
+            {
+                int width = e.X - initialMousePosition.X;
+                int height = e.Y - initialMousePosition.Y;
+                Rectangle rect = new Rectangle(initialMousePosition.X, initialMousePosition.Y, width, height);
+                g.Clear(Color.Transparent);
+                g.DrawEllipse(Pens.Blue, rect);
+            }
         }
 
         private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
+            isDrawingEllipse = false;
 
             draw = false;
             lx = e.X;
@@ -290,13 +315,21 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (currentlySelectedButton == toolStripButton13)
+            if (isDrawingPolygon)
             {
-                points.Add(new Point(e.X, e.Y));
+                polygonPoints.Add(e.Location);
+                this.Invalidate(); // Invalidate the PictureBox to trigger a redraw
+            }
+        }
 
-                if (points.Count == 2)
+        private void PictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (isDrawingPolygon && polygonPoints.Count > 1)
+            {
+                // Draw the lines connecting the points of the polygon
+                using (Pen pen = new Pen(Color.Blue))
                 {
-                    g.DrawLine(new Pen(Color.Black, 3), points.First().X, points.First().Y, points.Last().X, points.Last().Y);
+                    e.Graphics.DrawLines(pen, polygonPoints.ToArray());
                 }
             }
         }
@@ -578,6 +611,7 @@ namespace Image_Editing_app
         {
             SelektujIliDeselektuj(toolStripButton11);
             addPictureBox();
+            isDrawingEllipse = true;
         }
 
         private void DrawLineToolStripMenuItem_Click(object sender, EventArgs e)
@@ -589,6 +623,9 @@ namespace Image_Editing_app
         private void DrawPolygonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton13);
+            addPictureBox();
+            isDrawingPolygon = true;
+            polygonPoints.Clear();
         }
 
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -650,6 +687,14 @@ namespace Image_Editing_app
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton5);
+        }
+
+        private void PictureBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && isDrawingPolygon)
+            {
+                isDrawingPolygon = false;
+            }
         }
 
         private void SelektujIliDeselektuj(ToolStripButton stripButton) // selektuje ako treba ili deselektuje
@@ -716,6 +761,9 @@ namespace Image_Editing_app
             layer.PictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
             layer.PictureBox.MouseMove += PictureBox_MouseMove;
             layer.PictureBox.MouseUp += PictureBox_MouseUp;
+            layer.PictureBox.Paint += PictureBox_Paint;
+            layer.PictureBox.MouseClick += PictureBox_MouseClick;
+            layer.PictureBox.KeyDown += PictureBox_KeyDown;
 
             undoStack.Push((layer, true, layers.Count - 1));
 
