@@ -12,33 +12,26 @@ using System.Windows.Forms;
 using System.Text.Json;
 using System.Reflection.Emit;
 using Microsoft.VisualBasic;
-using System.Reflection;
-using Label = System.Windows.Forms.Label;
 
 namespace Image_Editing_app
 {
     public partial class Form1 : Form
     {
-
         private string savedFileName;
         private string stringText;
         private Stack<(Layer, bool, int)> undoStack;  // true = create, false = delete, int = index
         private Stack<(Layer, bool, int)> redoStack;
         private BindingList<Layer> layers;
         private ToolStripButton? currentlySelectedButton = null;
-        private CheckBox? currentlySelectedCheckBox = null;
         private Layer? selectedLayer = null;
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
         private Bitmap bm;
         private Graphics g;
-        private List<Point> polygonPoints;
-        private bool polygonCompleted;
-        private Pen p = new Pen(Color.Black, 5);
-        private Point px, py;
-        private bool paint = false;
-        private int x, y, sx, sy, cx, cy, i;
+        int i;
 
-        private List<CheckBox> visibilityCheckboxes;  // List to hold the visibility checkboxes
+        bool draw = false;
+        int x, y, lx, ly = 0;
+        private List<Point> points = new List<Point>();
 
         public Form1()
         {
@@ -47,9 +40,6 @@ namespace Image_Editing_app
             redoStack = new();
             layers = new();
             g = CreateGraphics();
-            polygonCompleted = false;
-            polygonPoints = new();
-            visibilityCheckboxes = new();
             i = 0;
         }
 
@@ -89,6 +79,7 @@ namespace Image_Editing_app
         private Rectangle dragBoxFromMouseDown;
         private int rowIndexFromMouseDown;
         private int rowIndexOfItemUnderMouseToDrop;
+
         private void dataGridView1_MouseMove(object sender, MouseEventArgs e)
         {
             if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
@@ -176,7 +167,6 @@ namespace Image_Editing_app
             }
         }
 
-
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // Check if the current cell is in the selected row
@@ -258,42 +248,19 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            /*if (index == 2)
-            {
-                polygonPoints.Clear(); // Clear polygon points
-            }*/
-            /*if (currentlySelectedButton != toolStripButton15)  // move tool selected
-                return;*/
-
             if (e.Button == MouseButtons.Left && currentlySelectedButton == toolStripButton15)
             {
                 isDragging = true;
                 startPoint = e.Location;
             }
 
-            else
-            {
-                paint = true;
-                py = e.Location;
-                cx = e.X;
-                cy = e.Y;
-            }
+            draw = true;
+            x = e.X;
+            y = e.Y;
         }
 
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            /*if (index == 2)
-            {
-                if (paint)
-                {
-                    px = e.Location;
-                    polygonPoints.Add(px); // Add the current point to the polygon points list
-                }
-            }*/
-
-            /*if (currentlySelectedButton != toolStripButton15)
-                return;*/
-
             if (isDragging)
             {
                 PictureBox pictureBox = (PictureBox)sender;
@@ -303,47 +270,34 @@ namespace Image_Editing_app
                 currentPoint.Offset(deltaX, deltaY);
                 pictureBox.Location = currentPoint;
             }
-
-            //selectedPictureBox.Refresh();
-
-            x = e.X;
-            y = e.Y;
-            sx = e.X - cx;
-            sy = e.Y - cy;
         }
 
         private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
-            paint = false;
-            Random random = new Random();
-            sx = x - cx;
-            sy = y - cy;
 
-            if (currentlySelectedButton == toolStripButton11) // ellipse
+            draw = false;
+            lx = e.X;
+            ly = e.Y;
+
+            if (currentlySelectedButton == toolStripButton12)
             {
-                selectedLayer.PictureBox.CreateGraphics().DrawEllipse(p, cx, cy, sx, sy);
-                SelektujIliDeselektuj(toolStripButton11);
-                selectedLayer.PictureBox.Enabled = false;
-            }
-            else if (currentlySelectedButton == toolStripButton13) // polygon
-            {
-                // DrawPolygon();
-            }
-            else if (currentlySelectedButton == toolStripButton12) // Line
-            {
-                selectedLayer.PictureBox.CreateGraphics().DrawLine(p, cx, cy, x, y);
+                g.DrawLine(new Pen(new SolidBrush(Color.Blue), 5), new Point(x, y), new Point(lx, ly));
+                g.Dispose();
                 SelektujIliDeselektuj(toolStripButton12);
-                selectedLayer.PictureBox.Enabled = false;
             }
         }
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (!polygonCompleted && e.Button == MouseButtons.Left)
+            if (currentlySelectedButton == toolStripButton13)
             {
-                polygonPoints.Add(e.Location);
-                selectedLayer.PictureBox.Invalidate();
+                points.Add(new Point(e.X, e.Y));
+
+                if (points.Count == 2)
+                {
+                    g.DrawLine(new Pen(Color.Black, 3), points.First().X, points.First().Y, points.Last().X, points.Last().Y);
+                }
             }
         }
 
@@ -412,7 +366,6 @@ namespace Image_Editing_app
             }
         }
 
-
         private void exportImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
@@ -466,7 +419,6 @@ namespace Image_Editing_app
             }
         }
 
-
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (selectedLayer?.PictureBox.Image != null)
@@ -508,12 +460,11 @@ namespace Image_Editing_app
                 undoToolStripMenuItem.Enabled = true;
         }
 
-
-
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs();
         }
+
         private void SaveAs()
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
@@ -539,7 +490,6 @@ namespace Image_Editing_app
                 }
             }
         }
-
 
         private void Save(object sender, EventArgs e)
         {
@@ -602,6 +552,7 @@ namespace Image_Editing_app
                 }
             }
         }
+
         private void ClearLayers()
         {
             foreach (Layer layer in layers)
@@ -616,18 +567,19 @@ namespace Image_Editing_app
             layers.Clear();
         }
 
-
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
         // Draw click
+
         private void DrawCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton11);
             addPictureBox();
         }
+
         private void DrawLineToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton12);
@@ -637,8 +589,8 @@ namespace Image_Editing_app
         private void DrawPolygonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton13);
-            addPictureBox();
         }
+
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Brush brush = Brushes.Black;
@@ -666,17 +618,6 @@ namespace Image_Editing_app
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                i++;
-                polygonCompleted = true;
-                //selectedPictureBox.Invalidate();
-                DrawPolygon();
-            }
-        }
-
         private void MoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton15);
@@ -685,17 +626,31 @@ namespace Image_Editing_app
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton9);
+
+            if (selectedLayer != null)
+            {
+                PictureBox pictureBox = selectedLayer.PictureBox;
+                pictureBox.Width = (int)(pictureBox.Width * 1.2);
+                pictureBox.Height = (int)(pictureBox.Height * 1.2);
+            }
         }
 
         private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton10);
+
+            if (selectedLayer != null)
+            {
+                PictureBox pictureBox = selectedLayer.PictureBox;
+                pictureBox.Width = (int)(pictureBox.Width / 1.2);
+                pictureBox.Height = (int)(pictureBox.Height / 1.2);
+            }
         }
+
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton5);
         }
-
 
         private void SelektujIliDeselektuj(ToolStripButton stripButton) // selektuje ako treba ili deselektuje
         {
@@ -713,8 +668,18 @@ namespace Image_Editing_app
         private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
-            pictureBox.Size = new Size(layers[layers.Count - 1].PictureBox.Width, layers[layers.Count - 1].PictureBox.Height); // Set the desired size
-            pictureBox.Location = layers[layers.Count - 1].PictureBox.Location;
+
+            if (layers.Count > 0)
+            {
+                pictureBox.Size = new Size(layers[layers.Count - 1].PictureBox.Width, layers[layers.Count - 1].PictureBox.Height); // Set the desired size
+                pictureBox.Location = layers[layers.Count - 1].PictureBox.Location;
+            }
+            
+            else
+            {
+                pictureBox.Size = new Size(panel1.Width, panel1.Height); // Set the desired size
+                pictureBox.Location = new Point(0, 0);
+            }
 
             // Set other properties as desired, e.g., pictureBox.Image = yourImage;
             AddPictureBox(pictureBox, false);
@@ -725,17 +690,6 @@ namespace Image_Editing_app
             pictureBox.Image = bm;
 
             return pictureBox;
-        }
-
-        private void DrawPolygon()
-        {
-            if (polygonPoints.Count >= 3) // Check if there are at least 3 points to form a polygon
-            {
-                //g.DrawString("hello world", new Font("Poppins", 12), new SolidBrush(Color.Black), new Point(200, 100));
-                g.DrawPolygon(p, polygonPoints.ToArray()); // Draw the polygon using the collected points
-                SelektujIliDeselektuj(toolStripButton13);
-                selectedLayer.PictureBox.Enabled = false;
-            }
         }
 
         public void AddPictureBox(PictureBox pictureBox, bool onPanel)
@@ -767,6 +721,5 @@ namespace Image_Editing_app
 
             i++;
         }
-
     }
 }
