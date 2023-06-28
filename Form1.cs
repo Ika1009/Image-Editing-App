@@ -63,7 +63,6 @@ namespace Image_Editing_app
             dataGridView1.Columns.Add(visibleColumn);
             dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
             dataGridView1.CurrentCellDirtyStateChanged += dataGridView1_CurrentCellDirtyStateChanged;
-            dataGridView1.CellFormatting += dataGridView1_CellFormatting;
 
 
             // Set the DataSource to the BindingList
@@ -164,23 +163,6 @@ namespace Image_Editing_app
                         pictureBox.BringToFront();
                     }
                 }
-            }
-        }
-
-        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            // Check if the current cell is in the selected row
-            if (e.RowIndex >= 0 && dataGridView1.Rows[e.RowIndex].Selected)
-            {
-                // Set custom selection colors
-                e.CellStyle.SelectionBackColor = Color.Red; // Change to the desired background color
-                e.CellStyle.SelectionForeColor = Color.White; // Change to the desired foreground color
-            }
-            else
-            {
-                // Reset the cell style for non-selected cells
-                e.CellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.SelectionBackColor;
-                e.CellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.SelectionForeColor;
             }
         }
 
@@ -307,7 +289,7 @@ namespace Image_Editing_app
 
             if (currentlySelectedButton == toolStripButton12)
             {
-                g.DrawLine(new Pen(new SolidBrush(Color.Blue), 5), new Point(x, y), new Point(lx, ly));
+                g.DrawLine(new Pen(new SolidBrush(Color.White), 5), new Point(x, y), new Point(lx, ly));
                 g.Dispose();
                 SelektujIliDeselektuj(toolStripButton12);
             }
