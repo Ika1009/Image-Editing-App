@@ -17,15 +17,13 @@ namespace Image_Editing_app
 {
     public partial class Form1 : Form
     {
-        private string savedFileName;
-        private string stringText;
+        private string savedFileName = "";
         private Stack<(Layer, bool, int)> undoStack;  // true = create, false = delete, int = index
         private Stack<(Layer, bool, int)> redoStack;
         private BindingList<Layer> layers;
         private ToolStripButton? currentlySelectedButton = null;
         private Layer? selectedLayer = null;
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
-        private Bitmap bm;
         private Graphics g;
         private bool isDragging = false;
         private Point startPoint;
@@ -81,7 +79,7 @@ namespace Image_Editing_app
         private int rowIndexFromMouseDown;
         private int rowIndexOfItemUnderMouseToDrop;
 
-        private void dataGridView1_MouseMove(object sender, MouseEventArgs e)
+        private void dataGridView1_MouseMove(object? sender, MouseEventArgs e)
         {
             if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
             {
@@ -98,7 +96,7 @@ namespace Image_Editing_app
             }
         }
 
-        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        private void dataGridView1_MouseDown(object? sender, MouseEventArgs e)
         {
             // Get the index of the item the mouse is below.
             rowIndexFromMouseDown = dataGridView1.HitTest(e.X, e.Y).RowIndex;
@@ -120,12 +118,12 @@ namespace Image_Editing_app
                 dragBoxFromMouseDown = Rectangle.Empty;
         }
 
-        private void dataGridView1_DragOver(object sender, DragEventArgs e)
+        private void dataGridView1_DragOver(object? sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
         }
 
-        private void dataGridView1_DragDrop(object sender, DragEventArgs e)
+        private void dataGridView1_DragDrop(object? sender, DragEventArgs e)
         {
             // The mouse locations are relative to the screen, so they must be 
             // converted to client coordinates.
@@ -138,7 +136,7 @@ namespace Image_Editing_app
             // If the drag operation was a move then remove and insert the row.
             if (e.Effect == DragDropEffects.Move)
             {
-                DataGridViewRow? rowToMove = e.Data.GetData(
+                DataGridViewRow? rowToMove = e.Data!.GetData(
                     typeof(DataGridViewRow)) as DataGridViewRow;
 
                 Layer layerToMove = layers[rowIndexFromMouseDown];
@@ -168,7 +166,7 @@ namespace Image_Editing_app
             }
         }
 
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
             // Check if the modified cell belongs to the visibleColumn
             if (e.ColumnIndex == 1 && e.RowIndex >= 0)
@@ -181,7 +179,7 @@ namespace Image_Editing_app
             }
         }
 
-        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        private void dataGridView1_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
         {
             // Commit the changes when the checkbox cell is clicked
             if (dataGridView1.IsCurrentCellDirty)
@@ -213,7 +211,7 @@ namespace Image_Editing_app
             }
         }
 
-        private void PictureBox_Click(object sender, EventArgs e)
+        private void PictureBox_Click(object? sender, EventArgs e)
         {
             if (selectedLayer != null)
             {
@@ -221,13 +219,13 @@ namespace Image_Editing_app
                 selectedLayer.PictureBox.BorderStyle = BorderStyle.None;
             }
 
-            selectedLayer = layers.FirstOrDefault(layer => layer.PictureBox == (PictureBox)sender);
+            selectedLayer = layers.FirstOrDefault(layer => layer.PictureBox == (PictureBox)sender!);
 
             // Set the border style of the selected Layer's PictureBox
-            selectedLayer.PictureBox.BorderStyle = BorderStyle.FixedSingle;
+            selectedLayer!.PictureBox.BorderStyle = BorderStyle.FixedSingle;
         }
 
-        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
+        private void PictureBox_MouseDown(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && currentlySelectedButton == toolStripButton15)
             {
@@ -249,11 +247,11 @@ namespace Image_Editing_app
             y = e.Y;
         }
 
-        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
+        private void PictureBox_MouseMove(object? sender, MouseEventArgs e)
         {
             if (isDragging)
             {
-                PictureBox pictureBox = (PictureBox)sender;
+                PictureBox pictureBox = (PictureBox)sender!;
                 Point currentPoint = pictureBox.Location;
                 int deltaX = e.X - startPoint.X;
                 int deltaY = e.Y - startPoint.Y;
@@ -271,7 +269,7 @@ namespace Image_Editing_app
             }
         }
 
-        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
+        private void PictureBox_MouseUp(object? sender, MouseEventArgs e)
         {
             isDragging = false;
             isDrawingEllipse = false;
@@ -287,7 +285,7 @@ namespace Image_Editing_app
             }
         }
 
-        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox_MouseClick(object? sender, MouseEventArgs e)
         {
             if (currentlySelectedButton == toolStripButton13)
             {
@@ -481,11 +479,7 @@ namespace Image_Editing_app
                 undoToolStripMenuItem.Enabled = true;
         }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveAs();
-        }
-
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e) { SaveAs(); }
         private void SaveAs()
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
@@ -554,13 +548,16 @@ namespace Image_Editing_app
                     // Clear existing layers
                     ClearLayers();
 
-                    // Create Layers from the deserialized StateData object
-                    foreach (var layerDTO in stateData.Layers)
+                    if (stateData != null && stateData.Layers != null)
                     {
-                        Layer layer = new Layer(layerDTO.ToPictureBox(), layerDTO.IsDrawing);
-                        layer.PictureBox.Location = layerDTO.Location;
-                        layers.Add(layer);
-                        AddPictureBox(layer.PictureBox, layerDTO.IsDrawing);
+                        // Create Layers from the deserialized StateData object
+                        foreach (var layerDTO in stateData.Layers!)
+                        {
+                            Layer layer = new Layer(layerDTO.ToPictureBox(), layerDTO.IsDrawing);
+                            layer.PictureBox.Location = layerDTO.Location;
+                            layers.Add(layer);
+                            AddPictureBox(layer.PictureBox, layerDTO.IsDrawing);
+                        }
                     }
 
                     // Update the savedFileName
@@ -619,7 +616,7 @@ namespace Image_Editing_app
         {
             Brush brush = Brushes.Black;
             SelektujIliDeselektuj(toolStripButton14);
-            stringText = addString();
+            string stringText = addString();
             g.DrawString(stringText, new Font("Poppins", 12), brush, new Point(0, 0));
         }
 
@@ -631,7 +628,7 @@ namespace Image_Editing_app
             pictureBox.Size = new Size(200, 100);
             pictureBox.Location = new Point(200, 100);
             pictureBox.BorderStyle = BorderStyle.None;
-            bm = new Bitmap(pictureBox.Width, pictureBox.Height);
+            Bitmap bm = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bm);
             pictureBox.Image = bm;
 
@@ -671,6 +668,13 @@ namespace Image_Editing_app
             }
         }
 
+        private void deselectToolStripMenuItem_Click(object sender, EventArgs e) 
+        {
+            if (selectedLayer != null)
+                selectedLayer.PictureBox.BorderStyle = BorderStyle.None;
+            selectedLayer = null;
+        }
+
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton5);
@@ -708,7 +712,7 @@ namespace Image_Editing_app
 
             AddPictureBox(pictureBox, true);
 
-            bm = new Bitmap(pictureBox.Width, pictureBox.Height);
+            Bitmap bm = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bm);
             pictureBox.Image = bm;
 
