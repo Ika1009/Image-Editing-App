@@ -52,11 +52,11 @@ namespace Image_Editing_app
             // Define the columns
             DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
             nameColumn.DataPropertyName = "Name";
-            nameColumn.HeaderText = "Name";
+            nameColumn.HeaderText = "Layer name";
 
             DataGridViewCheckBoxColumn visibleColumn = new DataGridViewCheckBoxColumn();
             visibleColumn.DataPropertyName = "Visible";
-            visibleColumn.HeaderText = "Visible";
+            visibleColumn.HeaderText = "View";
 
             // Add the columns to the DataGridView
             dataGridView1.Columns.Add(nameColumn);
@@ -265,7 +265,8 @@ namespace Image_Editing_app
                 int height = e.Y - initialMousePosition.Y;
                 Rectangle rect = new Rectangle(initialMousePosition.X, initialMousePosition.Y, width, height);
                 g.Clear(Color.Transparent);
-                g.DrawEllipse(Pens.Blue, rect);
+                g.DrawEllipse(Pens.White, rect);
+                g.FillEllipse(new SolidBrush(Color.White), rect);
             }
         }
 
@@ -279,7 +280,7 @@ namespace Image_Editing_app
 
             if (currentlySelectedButton == toolStripButton12)
             {
-                g.DrawLine(new Pen(new SolidBrush(Color.White), 5), new Point(x, y), new Point(lx, ly));
+                g.DrawLine(new Pen(new SolidBrush(Color.White), 3), new Point(x, y), new Point(lx, ly));
                 g.Dispose();
                 SelektujIliDeselektuj(toolStripButton12);
             }
@@ -314,7 +315,8 @@ namespace Image_Editing_app
 
                     if (polygonPoints.Count >= 2)
                     {
-                        g.DrawPolygon(Pens.Blue, polygonPoints.ToArray());
+                        g.DrawPolygon(Pens.White, polygonPoints.ToArray());
+                        g.FillPolygon(new SolidBrush(Color.White), polygonPoints.ToArray());
                     }
                 }
             }
@@ -678,6 +680,12 @@ namespace Image_Editing_app
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton5);
+
+            if (selectedLayer != null)
+            {
+                selectedLayer.PictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                selectedLayer.PictureBox.Invalidate();
+            }
         }
 
         private void SelektujIliDeselektuj(ToolStripButton stripButton)
