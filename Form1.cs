@@ -297,22 +297,36 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (isDrawingPolygon)
+            if (e.Button == MouseButtons.Left)
             {
+                if (isDrawingPolygon)
+                {
+                    polygonPoints.Add(e.Location);
+                    this.Invalidate();
+                }
+
+                else
+                {
+                    isDrawingPolygon = true;
+                    polygonPoints.Clear();
+                    polygonPoints.Add(e.Location);
+                }
+            }
+
+            else if (e.Button == MouseButtons.Right && isDrawingPolygon)
+            {
+                isDrawingPolygon = false;
                 polygonPoints.Add(e.Location);
-                this.Invalidate(); // Invalidate the PictureBox to trigger a redraw
+                SelektujIliDeselektuj(toolStripButton13);
+                this.Invalidate();
             }
         }
 
         private void PictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (isDrawingPolygon && polygonPoints.Count > 1)
+            if (polygonPoints.Count >= 2)
             {
-                // Draw the lines connecting the points of the polygon
-                using (Pen pen = new Pen(Color.Blue))
-                {
-                    e.Graphics.DrawLines(pen, polygonPoints.ToArray());
-                }
+                e.Graphics.DrawPolygon(Pens.Blue, polygonPoints.ToArray());
             }
         }
 
@@ -671,14 +685,6 @@ namespace Image_Editing_app
             SelektujIliDeselektuj(toolStripButton5);
         }
 
-        private void PictureBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter && isDrawingPolygon)
-            {
-                isDrawingPolygon = false;
-            }
-        }
-
         private void SelektujIliDeselektuj(ToolStripButton stripButton) // selektuje ako treba ili deselektuje
         {
             if (currentlySelectedButton == stripButton) // duplo je selektovana
@@ -745,7 +751,6 @@ namespace Image_Editing_app
             layer.PictureBox.MouseUp += PictureBox_MouseUp;
             layer.PictureBox.Paint += PictureBox_Paint;
             layer.PictureBox.MouseClick += PictureBox_MouseClick;
-            layer.PictureBox.KeyDown += PictureBox_KeyDown;
 
             undoStack.Push((layer, true, layers.Count - 1));
 
