@@ -206,7 +206,7 @@ namespace Image_Editing_app
                     pictureBox.Location = new Point(200, 100);
                     pictureBox.BackColor = Color.Transparent;
 
-                    AddPictureBox(pictureBox, true);
+                    AddPictureBox(pictureBox, false);
                 }
             }
         }
@@ -568,10 +568,10 @@ namespace Image_Editing_app
                     // Create Layers from the deserialized StateData object
                     foreach (var layerDTO in stateData.Layers)
                     {
-                        Layer layer = new Layer(layerDTO.ToPictureBox());
+                        Layer layer = new Layer(layerDTO.ToPictureBox(), layerDTO.IsDrawing);
                         layer.PictureBox.Location = layerDTO.Location;
                         layers.Add(layer);
-                        AddPictureBox(layer.PictureBox, false);
+                        AddPictureBox(layer.PictureBox, layerDTO.IsDrawing);
                     }
 
                     // Update the savedFileName
@@ -646,7 +646,7 @@ namespace Image_Editing_app
             g = Graphics.FromImage(bm);
             pictureBox.Image = bm;
 
-            AddPictureBox(pictureBox, false);
+            AddPictureBox(pictureBox, true);
 
             return userInput;
         }
@@ -687,9 +687,9 @@ namespace Image_Editing_app
             SelektujIliDeselektuj(toolStripButton5);
         }
 
-        private void SelektujIliDeselektuj(ToolStripButton stripButton) // selektuje ako treba ili deselektuje
+        private void SelektujIliDeselektuj(ToolStripButton stripButton)
         {
-            if (currentlySelectedButton == stripButton) // duplo je selektovana
+            if (currentlySelectedButton == stripButton) // double selected, which means deselect
             {
                 stripButton.BackColor = obicnaBackgroundColor;
                 currentlySelectedButton = null;
@@ -703,6 +703,7 @@ namespace Image_Editing_app
         private PictureBox addPictureBox()
         {
             PictureBox pictureBox = new PictureBox();
+            pictureBox.BackColor = Color.Transparent;
 
             if (layers.Count > 0 && selectedLayer != null)
             {
@@ -716,9 +717,7 @@ namespace Image_Editing_app
                 pictureBox.Location = new Point(0, 0);
             }
 
-            // Set other properties as desired, e.g., pictureBox.Image = yourImage;
-            AddPictureBox(pictureBox, false);
-
+            AddPictureBox(pictureBox, true);
 
             bm = new Bitmap(pictureBox.Width, pictureBox.Height);
             g = Graphics.FromImage(bm);
@@ -727,28 +726,42 @@ namespace Image_Editing_app
             return pictureBox;
         }
 
-        public void AddPictureBox(PictureBox pictureBox, bool onPanel)
+        public void AddPictureBox(PictureBox pictureBox, bool isDrawing)
         {
             pictureBox.Name = "Layer: " + (i + 1);
             pictureBox.Parent = panel1;
 
-            if (layers.Count == 0 || onPanel || selectedLayer is null)
-                panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
+            // If the new layer is added onto the panel when it has already a drawing, it is added to the drawing to still display it
+            if (layers.Count != 0 && selectedLayer is null)
+                selectedLayer = layers.FirstOrDefault(x => x.PictureBox.Parent == panel1 && x.isDrawing);
+
+            if (layers.Count == 0 || selectedLayer is null)
+                panel1.Controls.Add(pictureBox);
             else
             {
+                // going to the the deepest drawing to add to the image so the drawings are visible
+                while (selectedLayer.PictureBox.HasChildren)
+                {
+                    var newSelectedLayer = layers.FirstOrDefault(x => x.PictureBox.Parent == selectedLayer.PictureBox);
+                    if (newSelectedLayer != null)
+                        selectedLayer = newSelectedLayer;
+                    else
+                        break; // Exit the loop if no layers are found
+                }
+
                 if (pictureBox != selectedLayer.PictureBox)
                     selectedLayer.PictureBox.Controls.Add(pictureBox);
                 else
-                    panel1.Controls.Add(pictureBox); // Add the PictureBox to the panel's Controls collection
+                    panel1.Controls.Add(pictureBox);
             }
 
-            Layer layer = new Layer(pictureBox);
-            layers.Add(layer); // Add the Layer to the list
+            Layer layer = new(pictureBox, isDrawing);
+            layers.Add(layer);
 
             pictureBox.BringToFront();
 
             layer.PictureBox.Click += PictureBox_Click;
-            layer.PictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
+            layer.PictureBox.MouseDown += PictureBox_MouseDown;
             layer.PictureBox.MouseMove += PictureBox_MouseMove;
             layer.PictureBox.MouseUp += PictureBox_MouseUp;
             layer.PictureBox.Paint += PictureBox_Paint;

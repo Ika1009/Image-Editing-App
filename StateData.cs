@@ -23,6 +23,7 @@ public class StateData
         public int Height { get; set; }
         public byte[] ImageBytes { get; set; }
         public Point Location { get; set; }
+        public bool IsDrawing { get; set; }
 
         public PictureBox ToPictureBox()
         {
@@ -44,12 +45,14 @@ public class StateData
                 Width = pictureBox.Width,
                 Height = pictureBox.Height,
                 ImageBytes = imageBytes,
-                Location = pictureBox.Location
+                Location = pictureBox.Location,
+                IsDrawing = false // Default value for IsDrawing
             };
         }
+
         public Layer ToLayer()
         {
-            Layer layer = new Layer(ToPictureBox());
+            Layer layer = new Layer(ToPictureBox(), IsDrawing);
             layer.PictureBox.Location = Location;
             return layer;
         }
@@ -65,9 +68,11 @@ public class StateData
                 Width = pictureBox.Width,
                 Height = pictureBox.Height,
                 ImageBytes = imageBytes,
-                Location = pictureBox.Location
+                Location = pictureBox.Location,
+                IsDrawing = layer.isDrawing
             };
         }
+
         private static byte[] ImageToByteArray(Image image)
         {
             using (MemoryStream ms = new MemoryStream())

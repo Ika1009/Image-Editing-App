@@ -11,7 +11,7 @@ namespace Image_Editing_app
     {
         public static int counter = 1;
         private bool visible;
-
+        public bool isDrawing;
         public PictureBox PictureBox { get; set; }
         public string Name { get; set; }
         public bool Visible 
@@ -32,7 +32,7 @@ namespace Image_Editing_app
             } 
         }
         public DataGridViewCheckBoxCell CheckboxCell { get; set; }
-        public Layer(PictureBox pictureBox)
+        public Layer(PictureBox pictureBox, bool isDrawing)
         {
             PictureBox = pictureBox;
             Name = "Layer " + counter;
@@ -41,6 +41,7 @@ namespace Image_Editing_app
             CheckboxCell = new DataGridViewCheckBoxCell();
             CheckboxCell.Value = Visible;
             counter++;
+            this.isDrawing = isDrawing;
         }
     }
 }
