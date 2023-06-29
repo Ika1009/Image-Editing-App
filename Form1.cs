@@ -40,8 +40,8 @@ namespace Image_Editing_app
             undoStack = new();
             redoStack = new();
             layers = new();
-            g = CreateGraphics();
             i = 0;
+            g = CreateGraphics();
         }
 
         private void Form_Load(object sender, EventArgs e)
@@ -74,8 +74,8 @@ namespace Image_Editing_app
             dataGridView1.MouseDown += dataGridView1_MouseDown;
             dataGridView1.DragOver += dataGridView1_DragOver;
             dataGridView1.DragDrop += dataGridView1_DragDrop;
-
         }
+        // Event handler for UserDeletingRow
 
         private Rectangle dragBoxFromMouseDown;
         private int rowIndexFromMouseDown;
@@ -201,7 +201,17 @@ namespace Image_Editing_app
                 {
                     undoToolStripMenuItem.Enabled = true;
                     PictureBox pictureBox = new PictureBox();
-                    Image importedImage = Image.FromFile(openFileDialog.FileName);
+                    Image importedImage;
+                    try
+                    {
+                        importedImage = Image.FromFile(openFileDialog.FileName);
+                        // Rest of the code to work with the imported image if the image is to big
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error loading the image: " + ex.Message);
+                        return;
+                    }
                     pictureBox.Size = importedImage.Size; // set size of PictureBox to the size of the imported image
                     pictureBox.Image = importedImage;
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -263,12 +273,15 @@ namespace Image_Editing_app
 
             if (isDrawingEllipse && e.Button == MouseButtons.Left)
             {
-                int width = e.X - initialMousePosition.X;
-                int height = e.Y - initialMousePosition.Y;
-                Rectangle rect = new Rectangle(initialMousePosition.X, initialMousePosition.Y, width, height);
-                g.Clear(Color.Transparent);
-                g.DrawEllipse(Pens.White, rect);
-                g.FillEllipse(new SolidBrush(Color.White), rect);
+                using (Graphics g = CreateGraphics())
+                {
+                    int width = e.X - initialMousePosition.X;
+                    int height = e.Y - initialMousePosition.Y;
+                    Rectangle rect = new Rectangle(initialMousePosition.X, initialMousePosition.Y, width, height);
+                    g.Clear(Color.Transparent);
+                    g.DrawEllipse(Pens.White, rect);
+                    g.FillEllipse(new SolidBrush(Color.White), rect);
+                }
             }
         }
 
@@ -465,16 +478,7 @@ namespace Image_Editing_app
             if (selectedLayer == null)
                 return;
 
-            // Remove from collections
-            int index = layers.IndexOf(selectedLayer);
-            foreach (Layer layer in layers)
-                if (layer.PictureBox.Parent == selectedLayer.PictureBox)
-                    layer.PictureBox.Parent = selectedLayer.PictureBox.Parent;
-
-            layers.RemoveAt(index);
-
-            // Hide the PictureBox
-            selectedLayer.Visible = false;
+            DeleteRow(selectedLayer);
 
             // Reset selected Layer
             selectedLayer = null;
@@ -482,10 +486,24 @@ namespace Image_Editing_app
             if (!undoToolStripMenuItem.Enabled)
                 undoToolStripMenuItem.Enabled = true;
         }
+        private void DeleteRow(Layer layerForDeletion)
+        {
+            foreach (Layer layer in layers)
+                if (layer.PictureBox.Parent == layerForDeletion.PictureBox)
+                    layer.PictureBox.Parent = layerForDeletion.PictureBox.Parent;
 
+            layers.Remove(layerForDeletion);
+
+            // Hide the PictureBox
+            layerForDeletion.Visible = false;
+
+            if (!undoToolStripMenuItem.Enabled)
+                undoToolStripMenuItem.Enabled = true;
+        }
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e) { SaveAs(); }
         private void SaveAs()
         {
+            g.Dispose();
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "Work File|*.wrk";
@@ -508,6 +526,7 @@ namespace Image_Editing_app
                     File.WriteAllText(fileName, json);
                 }
             }
+            g = CreateGraphics();
         }
 
         private void Save(object sender, EventArgs e)
@@ -559,7 +578,6 @@ namespace Image_Editing_app
                         {
                             Layer layer = new Layer(layerDTO.ToPictureBox(), layerDTO.IsDrawing);
                             layer.PictureBox.Location = layerDTO.Location;
-                            layers.Add(layer);
                             AddPictureBox(layer.PictureBox, layerDTO.IsDrawing);
                         }
                     }
@@ -579,11 +597,7 @@ namespace Image_Editing_app
         {
             foreach (Layer layer in layers)
             {
-                PictureBox pictureBox = layer.PictureBox;
-                Control parentContainer = pictureBox.Parent;
-
-                parentContainer.Controls.Remove(pictureBox);
-                pictureBox.Dispose();
+                layer?.PictureBox.Dispose();
             }
 
             layers.Clear();

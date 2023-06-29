@@ -1,4 +1,5 @@
 ﻿using Image_Editing_app;
+using System.Drawing.Imaging;
 using System.Text.Json;
 
 public class StateData
@@ -83,7 +84,7 @@ public class StateData
 
             using (MemoryStream ms = new MemoryStream())
             {
-                image.Save(ms, image.RawFormat);
+                image.Save(ms, ImageFormat.Png);
                 return ms.ToArray();
             }
         }
