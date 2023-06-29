@@ -3,7 +3,7 @@ using System.Text.Json;
 
 public class StateData
 {
-    public List<LayerDTO> Layers { get; set; }
+    public List<LayerDTO>? Layers { get; set; }
 
     public int Brojac { get; set; }
 
@@ -14,14 +14,14 @@ public class StateData
 
     public static StateData DeserializeFromJson(string json)
     {
-        return JsonSerializer.Deserialize<StateData>(json);
+        return JsonSerializer.Deserialize<StateData>(json)!;
     }
 
     public class LayerDTO
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public byte[] ImageBytes { get; set; }
+        public byte[]? ImageBytes { get; set; }
         public Point Location { get; set; }
         public bool IsDrawing { get; set; }
 
@@ -30,7 +30,7 @@ public class StateData
             PictureBox pictureBox = new PictureBox();
             pictureBox.Width = Width;
             pictureBox.Height = Height;
-            pictureBox.Image = ByteArrayToImage(ImageBytes);
+            pictureBox.Image = ByteArrayToImage(ImageBytes!);
             pictureBox.Location = Location;
             return pictureBox;
         }
@@ -73,8 +73,14 @@ public class StateData
             };
         }
 
-        private static byte[] ImageToByteArray(Image image)
+        private static byte[] ImageToByteArray(Image? image)
         {
+            if (image == null)
+            {
+                // Handle the case when 'image' is null
+                return new byte[0]; // or throw an exception, depending on your requirements
+            }
+
             using (MemoryStream ms = new MemoryStream())
             {
                 image.Save(ms, image.RawFormat);
