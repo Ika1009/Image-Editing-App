@@ -297,28 +297,31 @@ namespace Image_Editing_app
 
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (currentlySelectedButton == toolStripButton13)
             {
-                if (isDrawingPolygon)
+                if (e.Button == MouseButtons.Left)
                 {
+                    if (isDrawingPolygon)
+                    {
+                        polygonPoints.Add(e.Location);
+                        this.Invalidate();
+                    }
+
+                    else
+                    {
+                        isDrawingPolygon = true;
+                        polygonPoints.Clear();
+                        polygonPoints.Add(e.Location);
+                    }
+                }
+
+                else if (e.Button == MouseButtons.Right && isDrawingPolygon)
+                {
+                    isDrawingPolygon = false;
                     polygonPoints.Add(e.Location);
+                    SelektujIliDeselektuj(toolStripButton13);
                     this.Invalidate();
                 }
-
-                else
-                {
-                    isDrawingPolygon = true;
-                    polygonPoints.Clear();
-                    polygonPoints.Add(e.Location);
-                }
-            }
-
-            else if (e.Button == MouseButtons.Right && isDrawingPolygon)
-            {
-                isDrawingPolygon = false;
-                polygonPoints.Add(e.Location);
-                SelektujIliDeselektuj(toolStripButton13);
-                this.Invalidate();
             }
         }
 
@@ -621,7 +624,6 @@ namespace Image_Editing_app
             SelektujIliDeselektuj(toolStripButton13);
             addPictureBox();
             isDrawingPolygon = true;
-            polygonPoints.Clear();
         }
 
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -702,10 +704,10 @@ namespace Image_Editing_app
         {
             PictureBox pictureBox = new PictureBox();
 
-            if (layers.Count > 0)
+            if (layers.Count > 0 && selectedLayer != null)
             {
-                pictureBox.Size = new Size(layers[layers.Count - 1].PictureBox.Width, layers[layers.Count - 1].PictureBox.Height); // Set the desired size
-                pictureBox.Location = layers[layers.Count - 1].PictureBox.Location;
+                pictureBox.Size = new Size(selectedLayer.PictureBox.Width, selectedLayer.PictureBox.Height); // Set the desired size
+                pictureBox.Location = selectedLayer.PictureBox.Location;
             }
             
             else
