@@ -93,9 +93,29 @@ namespace Image_Editing_app.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap eyeIcon {
+            get {
+                object obj = ResourceManager.GetObject("eyeIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap folderIcon {
             get {
                 object obj = ResourceManager.GetObject("folderIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InkedeyeIcon {
+            get {
+                object obj = ResourceManager.GetObject("InkedeyeIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

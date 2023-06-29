@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Text.Json;
 using System.Reflection.Emit;
 using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
 
 namespace Image_Editing_app
 {
@@ -56,7 +57,8 @@ namespace Image_Editing_app
             nameColumn.DataPropertyName = "Name";
             nameColumn.HeaderText = "Layer name";
 
-            DataGridViewCheckBoxColumn visibleColumn = new DataGridViewCheckBoxColumn();
+            IconDataGridViewCheckBoxColumn visibleColumn = new IconDataGridViewCheckBoxColumn();
+
             visibleColumn.DataPropertyName = "Visible";
             visibleColumn.HeaderText = "View";
 
