@@ -27,11 +27,13 @@ namespace Image_Editing_app
         readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
         private Bitmap bm;
         private Graphics g;
-        int i;
-
-        bool draw = false;
-        int x, y, lx, ly = 0;
-        private List<Point> points = new List<Point>();
+        private bool isDragging = false;
+        private Point startPoint;
+        private bool isDrawingEllipse = false;
+        private Point initialMousePosition;
+        private bool isDrawingPolygon = false;
+        private List<Point> polygonPoints = new List<Point>();
+        int i, x, y, lx, ly = 0;
 
         public Form1()
         {
@@ -225,14 +227,6 @@ namespace Image_Editing_app
             selectedLayer.PictureBox.BorderStyle = BorderStyle.FixedSingle;
         }
 
-        private bool isDragging = false;
-        private Point startPoint;
-        private bool isDrawingEllipse = false;
-        private Point initialMousePosition;
-        private bool isDrawingPolygon = false;
-        private List<Point> polygonPoints = new List<Point>();
-
-
         private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && currentlySelectedButton == toolStripButton15)
@@ -251,7 +245,6 @@ namespace Image_Editing_app
                 polygonPoints.Add(e.Location);
             }
 
-            draw = true;
             x = e.X;
             y = e.Y;
         }
@@ -283,7 +276,6 @@ namespace Image_Editing_app
             isDragging = false;
             isDrawingEllipse = false;
 
-            draw = false;
             lx = e.X;
             ly = e.Y;
 
@@ -321,15 +313,12 @@ namespace Image_Editing_app
                     polygonPoints.Add(e.Location);
                     SelektujIliDeselektuj(toolStripButton13);
                     this.Invalidate();
-                }
-            }
-        }
 
-        private void PictureBox_Paint(object sender, PaintEventArgs e)
-        {
-            if (polygonPoints.Count >= 2)
-            {
-                e.Graphics.DrawPolygon(Pens.Blue, polygonPoints.ToArray());
+                    if (polygonPoints.Count >= 2)
+                    {
+                        g.DrawPolygon(Pens.Blue, polygonPoints.ToArray());
+                    }
+                }
             }
         }
 
@@ -751,7 +740,6 @@ namespace Image_Editing_app
             layer.PictureBox.MouseDown += PictureBox_MouseDown; // Renamed the event handler
             layer.PictureBox.MouseMove += PictureBox_MouseMove;
             layer.PictureBox.MouseUp += PictureBox_MouseUp;
-            layer.PictureBox.Paint += PictureBox_Paint;
             layer.PictureBox.MouseClick += PictureBox_MouseClick;
 
             undoStack.Push((layer, true, layers.Count - 1));
