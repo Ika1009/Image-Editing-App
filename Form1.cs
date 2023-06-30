@@ -342,31 +342,38 @@ namespace Image_Editing_app
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (undoStack.Count > 0)
+            try
             {
-                (Layer lastLayer, bool wasCreated, int index) = undoStack.Pop();
-                if (wasCreated)
+                if (undoStack.Count > 0)
                 {
-                    redoStack.Push((lastLayer, true, index));
-                    lastLayer.Visible = false;
-                    if (layers.Contains(lastLayer))
-                        layers.Remove(lastLayer);
+                    (Layer lastLayer, bool wasCreated, int index) = undoStack.Pop();
+                    if (wasCreated)
+                    {
+                        redoStack.Push((lastLayer, true, index));
+                        lastLayer.Visible = false;
+                        if (layers.Contains(lastLayer))
+                            layers.Remove(lastLayer);
+                    }
+                    else
+                    {
+                        redoStack.Push((lastLayer, false, index));
+                        lastLayer.Visible = true;
+                        if (!layers.Contains(lastLayer))
+                            layers.Insert(index, lastLayer);
+                    }
+
+                    if (undoStack.Count == 0)
+                        undoToolStripMenuItem.Enabled = false;
+
+                    if (!redoToolStripMenuItem.Enabled)
+                        redoToolStripMenuItem.Enabled = true;
+
+                    undoWasLastOperation = true; // Set the flag here
                 }
-                else
-                {
-                    redoStack.Push((lastLayer, false, index));
-                    lastLayer.Visible = true;
-                    if (!layers.Contains(lastLayer))
-                        layers.Insert(index, lastLayer);
-                }
-
-                if (undoStack.Count == 0)
-                    undoToolStripMenuItem.Enabled = false;
-
-                if (!redoToolStripMenuItem.Enabled)
-                    redoToolStripMenuItem.Enabled = true;
-
-                undoWasLastOperation = true; // Set the flag here
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred during the undo operation: " + ex.Message);
             }
         }
 
