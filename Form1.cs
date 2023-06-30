@@ -433,14 +433,45 @@ namespace Image_Editing_app
                     g.TranslateTransform(-minX, -minY);
 
                     // Loop through the PictureBoxes in your layers list
+                    Layer? previousLayer = null;
                     foreach (Layer layer in layers)
                     {
                         PictureBox pb = layer.PictureBox;
                         // If the PictureBox is visible and intersects with the panel's bounds, draw it on the bitmap
                         if (pb.Visible && pb.Bounds.IntersectsWith(panel1.Bounds))
                         {
-                            g.DrawImage(pb.Image, pb.Location);
+                            if (previousLayer is not null && layer.PictureBox.Parent == previousLayer.PictureBox)
+                            {
+                                // Get the intersection rectangle between the current and previous layers
+                                Rectangle intersection = Rectangle.Intersect(previousLayer.PictureBox.Bounds, pb.Bounds);
+
+                                // Check if there is any intersection
+                                if (!intersection.IsEmpty)
+                                {
+                                    // Calculate the location of the intersection on the current layer
+                                    Point intersectionLocation = new Point(
+                                        intersection.Left - pb.Left,
+                                        intersection.Top - pb.Top
+                                    );
+
+                                    // Calculate the destination location on the bitmap
+                                    PointF[] destinationLocations = new PointF[]
+                                    {
+                            new PointF(intersection.Left, intersection.Top),
+                            new PointF(intersection.Right, intersection.Top),
+                            new PointF(intersection.Left, intersection.Bottom)
+                                    };
+
+                                    // Draw the intersection part of the layer on the bitmap
+                                    g.DrawImage(pb.Image, destinationLocations, new RectangleF(intersectionLocation, intersection.Size), GraphicsUnit.Pixel);
+                                }
+                            }
+                            else
+                            {
+                                g.DrawImage(pb.Image, pb.Location);
+                            }
                         }
+                        previousLayer = layer;
                     }
 
                     // Dispose of the Graphics object now we're done with it
@@ -453,6 +484,7 @@ namespace Image_Editing_app
                     bmp.Dispose();
                 }
             }
+
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -787,5 +819,6 @@ namespace Image_Editing_app
 
             i++;
         }
+
     }
 }
