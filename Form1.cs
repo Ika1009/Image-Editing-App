@@ -273,15 +273,15 @@ namespace Image_Editing_app
 
             if (isDrawingEllipse && e.Button == MouseButtons.Left)
             {
-                using (Graphics g = CreateGraphics())
-                {
+                //using (Graphics g = CreateGraphics())
+                //{
                     int width = e.X - initialMousePosition.X;
                     int height = e.Y - initialMousePosition.Y;
                     Rectangle rect = new Rectangle(initialMousePosition.X, initialMousePosition.Y, width, height);
                     g.Clear(Color.Transparent);
                     g.DrawEllipse(Pens.White, rect);
                     g.FillEllipse(new SolidBrush(Color.White), rect);
-                }
+                //}
             }
         }
 
@@ -379,33 +379,40 @@ namespace Image_Editing_app
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // If undo was not the last operation, return early
-            if (!undoWasLastOperation) return;
-
-            if (redoStack.Count > 0)
+            try
             {
-                (Layer layer, bool wasCreated, int index) = redoStack.Pop();
+                // If undo was not the last operation, return early
+                if (!undoWasLastOperation) return;
 
-                if (wasCreated)
+                if (redoStack.Count > 0)
                 {
-                    layer.Visible = true;
-                    if (!layers.Contains(layer))
-                        layers.Insert(index, layer);
-                    undoStack.Push((layer, true, index));
-                }
-                else
-                {
-                    layer.Visible = false;
-                    if (layers.Contains(layer))
-                        layers.Remove(layer);
-                    undoStack.Push((layer, false, index));
-                }
+                    (Layer layer, bool wasCreated, int index) = redoStack.Pop();
 
-                if (redoStack.Count == 0)
-                    redoToolStripMenuItem.Enabled = false;
+                    if (wasCreated)
+                    {
+                        layer.Visible = true;
+                        if (!layers.Contains(layer))
+                            layers.Insert(index, layer);
+                        undoStack.Push((layer, true, index));
+                    }
+                    else
+                    {
+                        layer.Visible = false;
+                        if (layers.Contains(layer))
+                            layers.Remove(layer);
+                        undoStack.Push((layer, false, index));
+                    }
 
-                if (!undoToolStripMenuItem.Enabled)
-                    undoToolStripMenuItem.Enabled = true;
+                    if (redoStack.Count == 0)
+                        redoToolStripMenuItem.Enabled = false;
+
+                    if (!undoToolStripMenuItem.Enabled)
+                        undoToolStripMenuItem.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred during the redo operation: " + ex.Message);
             }
         }
 
