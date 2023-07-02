@@ -281,6 +281,7 @@ namespace Image_Editing_app
                     g.Clear(Color.Transparent);
                     g.DrawEllipse(Pens.White, rect);
                     g.FillEllipse(new SolidBrush(Color.White), rect);
+                    SelektujIliDeselektuj(toolStripButton11);
                 //}
             }
         }
@@ -328,7 +329,6 @@ namespace Image_Editing_app
                 else if (e.Button == MouseButtons.Right && isDrawingPolygon)
                 {
                     isDrawingPolygon = false;
-                    polygonPoints.Add(e.Location);
                     SelektujIliDeselektuj(toolStripButton13);
                     this.Invalidate();
 
@@ -336,6 +336,7 @@ namespace Image_Editing_app
                     {
                         g.DrawPolygon(Pens.White, polygonPoints.ToArray());
                         g.FillPolygon(new SolidBrush(Color.White), polygonPoints.ToArray());
+                        polygonPoints.Clear();
                     }
                 }
             }
