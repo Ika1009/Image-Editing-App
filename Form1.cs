@@ -295,7 +295,11 @@ namespace Image_Editing_app
 
             if (currentlySelectedButton == toolStripButton12)
             {
-                g.DrawLine(new Pen(new SolidBrush(Color.White), 3), new Point(x, y), new Point(lx, ly));
+                if (selectedLayer is not null)
+                    g.DrawLine(new Pen(new SolidBrush(Color.White), 6), new Point(x - selectedLayer.PictureBox.Left, y - selectedLayer.PictureBox.Top), new Point(lx - selectedLayer.PictureBox.Left, ly - selectedLayer.PictureBox.Top));
+                else
+                    g.DrawLine(new Pen(new SolidBrush(Color.White), 6), new Point(x, y), new Point(lx, ly));
+
                 g.Dispose();
                 SelektujIliDeselektuj(toolStripButton12);
             }
@@ -771,7 +775,7 @@ namespace Image_Editing_app
             if (layers.Count > 0 && selectedLayer != null)
             {
                 pictureBox.Size = new Size(selectedLayer.PictureBox.Width, selectedLayer.PictureBox.Height); // Set the desired size
-                pictureBox.Location = selectedLayer.PictureBox.Location;
+                pictureBox.Location = new Point(selectedLayer.PictureBox.Location.X - selectedLayer.PictureBox.Left, selectedLayer.PictureBox.Location.Y - selectedLayer.PictureBox.Top);
             }
             
             else
