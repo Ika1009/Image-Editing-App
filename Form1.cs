@@ -772,16 +772,22 @@ namespace Image_Editing_app
             PictureBox pictureBox = new PictureBox();
             pictureBox.BackColor = Color.Transparent;
 
-            if (layers.Count > 0 && selectedLayer != null)
+            if (layers.Count == 0 || selectedLayer == null)
+            {
+                pictureBox.Size = new Size(panel1.Width, panel1.Height); // Set the desired size
+                pictureBox.Location = new Point(0, 0);
+            }
+            
+            else if (!selectedLayer.isDrawing)
             {
                 pictureBox.Size = new Size(selectedLayer.PictureBox.Width, selectedLayer.PictureBox.Height); // Set the desired size
                 pictureBox.Location = new Point(selectedLayer.PictureBox.Location.X - selectedLayer.PictureBox.Left, selectedLayer.PictureBox.Location.Y - selectedLayer.PictureBox.Top);
             }
-            
+
             else
             {
-                pictureBox.Size = new Size(panel1.Width, panel1.Height); // Set the desired size
-                pictureBox.Location = new Point(0, 0);
+                pictureBox.Size = new Size(selectedLayer.PictureBox.Width, selectedLayer.PictureBox.Height); // Set the desired size
+                pictureBox.Location = selectedLayer.PictureBox.Location;
             }
 
             AddPictureBox(pictureBox, true);
