@@ -13,6 +13,7 @@ using System.Text.Json;
 using System.Reflection.Emit;
 using Microsoft.VisualBasic;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace Image_Editing_app
 {
@@ -32,6 +33,8 @@ namespace Image_Editing_app
         private Point initialMousePosition;
         private bool isDrawingPolygon = false;
         private List<Point> polygonPoints = new List<Point>();
+        private Point point1;
+        private Point point2;
         int i, x, y, lx, ly = 0;
 
         public Form1()
@@ -42,6 +45,7 @@ namespace Image_Editing_app
             layers = new();
             i = 0;
             g = CreateGraphics();
+            panel1.MouseClick += panel1_MouseClick;
         }
 
         private void Form_Load(object sender, EventArgs e)
@@ -742,6 +746,44 @@ namespace Image_Editing_app
             if (selectedLayer != null)
                 selectedLayer.PictureBox.BorderStyle = BorderStyle.None;
             selectedLayer = null;
+        }
+
+        private void toolStripButton16_Click(object sender, EventArgs e)
+        {
+            SelektujIliDeselektuj(toolStripButton16);
+        }
+
+        private double CalculateDistance(Point p1, Point p2)
+        {
+            double dx = p2.X - p1.X;
+            double dy = p2.Y - p1.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        private void panel1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (point1.IsEmpty)
+            {
+                panel1.Refresh();
+                point1 = e.Location;
+                panel1.CreateGraphics().FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
+            }
+            else if (point2.IsEmpty)
+            {
+                point2 = e.Location;
+                panel1.CreateGraphics().FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
+
+                // Calculate distance
+                double distance = CalculateDistance(point1, point2);
+
+                // Display distance
+                label1.ForeColor = Color.White;
+                label1.Text = $"Distance: {distance:F2}";
+
+                // Reset points for the next calculation
+                point1 = Point.Empty;
+                point2 = Point.Empty;
+            }
         }
 
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
