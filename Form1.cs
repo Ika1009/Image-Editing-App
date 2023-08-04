@@ -35,6 +35,7 @@ namespace Image_Editing_app
         private List<Point> polygonPoints = new List<Point>();
         private Point point1;
         private Point point2;
+        private Tuple<PictureBox, Image> originalPbImage;
         int i, x, y, lx, ly = 0;
 
         public Form1()
@@ -344,6 +345,53 @@ namespace Image_Editing_app
                     }
                 }
             }
+            else if (currentlySelectedButton == toolStripButton16)
+            {
+                if (selectedLayer == null || selectedLayer.PictureBox == null)
+                    return;
+
+                if (originalPbImage is not null && point1.IsEmpty)
+                    originalPbImage.Item1.Image = originalPbImage.Item2;
+
+                PictureBox pictureBox = selectedLayer.PictureBox;
+
+                if (pictureBox.Image == null)
+                    bitmap = new Bitmap(pictureBox.Width, pictureBox.Height);
+                else
+                    bitmap = new Bitmap(pictureBox.Image);
+
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+
+                    if (point1.IsEmpty)
+                    {
+                        originalPbImage = new Tuple<PictureBox, Image>(pictureBox, pictureBox.Image!);
+
+                        point1 = e.Location;
+                        g.FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
+                    }
+                    else if (point2.IsEmpty)
+                    {
+
+                        point2 = e.Location;
+                        g.FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
+
+                        // Calculate distance
+                        double distance = CalculateDistance(point1, point2);
+
+                        // Display distance
+                        label1.ForeColor = Color.White;
+                        label1.Text = $"Distance: {distance:F2}";
+
+                        // Reset points for the next calculation
+                        point1 = Point.Empty;
+                        point2 = Point.Empty;
+                    }
+                }
+
+                pictureBox.Image = bitmap;
+            }
+
         }
 
         // Add this field to your Form1 class
@@ -759,6 +807,7 @@ namespace Image_Editing_app
             double dy = p2.Y - p1.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
+        private Bitmap bitmap;
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
         {
