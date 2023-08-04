@@ -362,22 +362,25 @@ namespace Image_Editing_app
 
                 using (Graphics g = Graphics.FromImage(bitmap))
                 {
-
                     if (point1.IsEmpty)
                     {
                         originalPbImage = new Tuple<PictureBox, Image>(pictureBox, pictureBox.Image!);
 
+                        panel1.Refresh();
+                        label1.Text = "";
                         point1 = e.Location;
                         g.FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
                     }
                     else if (point2.IsEmpty)
                     {
-
                         point2 = e.Location;
                         g.FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
 
                         // Calculate distance
                         double distance = CalculateDistance(point1, point2);
+
+                        Pen pen = new Pen(Color.White, 2);
+                        g.DrawLine(pen, point1, point2);
 
                         // Display distance
                         label1.ForeColor = Color.White;
@@ -813,6 +816,9 @@ namespace Image_Editing_app
         {
             if (currentlySelectedButton == toolStripButton16)
             {
+                if (originalPbImage is not null && point1.IsEmpty)
+                    originalPbImage.Item1.Image = originalPbImage.Item2;
+
                 if (point1.IsEmpty)
                 {
                     panel1.Refresh();
