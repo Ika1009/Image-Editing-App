@@ -762,27 +762,34 @@ namespace Image_Editing_app
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (point1.IsEmpty)
+            if (currentlySelectedButton == toolStripButton16)
             {
-                panel1.Refresh();
-                point1 = e.Location;
-                panel1.CreateGraphics().FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
-            }
-            else if (point2.IsEmpty)
-            {
-                point2 = e.Location;
-                panel1.CreateGraphics().FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
+                if (point1.IsEmpty)
+                {
+                    panel1.Refresh();
+                    label1.Text = "";
+                    point1 = e.Location;
+                    panel1.CreateGraphics().FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
+                }
+                else if (point2.IsEmpty)
+                {
+                    point2 = e.Location;
+                    panel1.CreateGraphics().FillEllipse(Brushes.White, e.X - 3, e.Y - 3, 6, 6);
 
-                // Calculate distance
-                double distance = CalculateDistance(point1, point2);
+                    // Calculate distance
+                    double distance = CalculateDistance(point1, point2);
 
-                // Display distance
-                label1.ForeColor = Color.White;
-                label1.Text = $"Distance: {distance:F2}";
+                    // Display distance
+                    label1.ForeColor = Color.White;
+                    label1.Text = $"Distance: {distance:F2}";
 
-                // Reset points for the next calculation
-                point1 = Point.Empty;
-                point2 = Point.Empty;
+                    Pen pen = new Pen(Color.White, 2);
+                    panel1.CreateGraphics().DrawLine(pen, point1, point2);
+
+                    // Reset points for the next calculation
+                    point1 = Point.Empty;
+                    point2 = Point.Empty;
+                }
             }
         }
 
