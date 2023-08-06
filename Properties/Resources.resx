@@ -118,55 +118,124 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="copyIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\copyIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="zoomOutIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zoomOutIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="downArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\downArrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoomInT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zoomInT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redoT1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redoT1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="deleteIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\deleteIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ellipseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ellipseIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="eyeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\eyeIcon.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="folderIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\folderIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="InkedeyeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\InkedeyeIcon.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="lineIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lineIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="moveIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\moveIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="pasteIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pasteIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="polygonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\polygonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="redoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\redoIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="rotateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\rotate2Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="saveIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\saveIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="textIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\textIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pasteT1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pasteT1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lineT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lineT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refreshT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="undoT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\undoT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redoIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fileT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fileT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="upArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\upArrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eyeBlack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eyeBlack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redoT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redoT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ellipseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ellipseIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pasteT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pasteT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copyIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copyIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cropT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cropT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="undoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\undoIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="squareT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\squareT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rotateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rotate2Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lineIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lineIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pasteIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pasteIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="saveT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\saveT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="zoomOutT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zoomOutT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="moveT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\moveT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InkedeyeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InkedeyeIcon.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="textT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\textT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="zoomInIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\zoomInIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="zoomOutIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoomOutIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="folderIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folderIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="binT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\binT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rulerT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rulerT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eyeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eyeIcon.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="textIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\textIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copyT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copyT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="polygonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\polygonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eyeBlackClosed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eyeBlackClosed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

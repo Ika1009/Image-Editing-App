@@ -51,6 +51,8 @@ namespace Image_Editing_app
 
         private void Form_Load(object sender, EventArgs e)
         {
+            // Here are the properties of the datagrid view. It is bound to List<Layer> layers
+
             // Set up the DataGridView
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AllowDrop = true;
@@ -79,6 +81,9 @@ namespace Image_Editing_app
             dataGridView1.MouseDown += dataGridView1_MouseDown;
             dataGridView1.DragOver += dataGridView1_DragOver;
             dataGridView1.DragDrop += dataGridView1_DragDrop;
+
+            toolStripComboBox1.SelectedItem = 0;
+            toolStripComboBox1.SelectedText = "mm";
         }
         // Event handler for UserDeletingRow
 
@@ -846,6 +851,31 @@ namespace Image_Editing_app
                     point2 = Point.Empty;
                 }
             }
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void bottomMenuStripControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
 
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)

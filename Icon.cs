@@ -26,10 +26,11 @@ namespace Image_Editing_app
             bool isChecked = (bool)value;
 
             // Load your custom icon image
-            Image icon = Properties.Resources.eyeIcon;
-            Image icon2 = Properties.Resources.InkedeyeIcon;
+            Image icon = Properties.Resources.eyeBlack;
+            Image icon2 = Properties.Resources.eyeBlackClosed;
             int newWidth = 30; // Specify the desired width
             int newHeight = 20; // Specify the desired height
+
 
             Image resizedImage = icon.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero);
             Image resizedImage2 = icon2.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero);
