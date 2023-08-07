@@ -139,10 +139,11 @@
             this.toolStripButton49 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip3 = new System.Windows.Forms.MenuStrip();
             this.strokeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBox4 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
             this.opacityToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBox5 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -150,6 +151,7 @@
             this.panel1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             this.menuStrip3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -656,40 +658,49 @@
             // toolStripTextBox3
             // 
             this.toolStripTextBox3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripTextBox3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolStripTextBox3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 2);
             this.toolStripTextBox3.Name = "toolStripTextBox3";
-            this.toolStripTextBox3.Size = new System.Drawing.Size(50, 35);
+            this.toolStripTextBox3.Size = new System.Drawing.Size(50, 33);
             this.toolStripTextBox3.Text = "100%";
             this.toolStripTextBox3.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLabel1.Margin = new System.Windows.Forms.Padding(20, 1, 0, 2);
+            this.toolStripLabel1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolStripLabel1.Margin = new System.Windows.Forms.Padding(20, 1, 5, 2);
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(79, 32);
+            this.toolStripLabel1.Size = new System.Drawing.Size(105, 32);
             this.toolStripLabel1.Text = "Transparency:";
             // 
             // toolStripComboBox1
             // 
             this.toolStripComboBox1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripComboBox1.AutoSize = false;
+            this.toolStripComboBox1.BackColor = System.Drawing.Color.White;
+            this.toolStripComboBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.toolStripComboBox1.Items.AddRange(new object[] {
             "mm",
             "Inch",
             "Pixel"});
+            this.toolStripComboBox1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 2);
             this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(75, 35);
+            this.toolStripComboBox1.Size = new System.Drawing.Size(60, 29);
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLabel2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolStripLabel2.Margin = new System.Windows.Forms.Padding(0, 1, 5, 2);
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(32, 32);
+            this.toolStripLabel2.Size = new System.Drawing.Size(42, 32);
             this.toolStripLabel2.Text = "Unit:";
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.DimGray;
-            this.panel2.Location = new System.Drawing.Point(26, 71);
+            this.panel2.Location = new System.Drawing.Point(75, 71);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1, 1912);
             this.panel2.TabIndex = 0;
@@ -698,7 +709,7 @@
             // 
             this.panel3.BackColor = System.Drawing.Color.DimGray;
             this.panel3.ForeColor = System.Drawing.Color.White;
-            this.panel3.Location = new System.Drawing.Point(0, 98);
+            this.panel3.Location = new System.Drawing.Point(0, 147);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1928, 1);
             this.panel3.TabIndex = 0;
@@ -750,7 +761,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.panel1.Controls.Add(this.menuStrip2);
-            this.panel1.Location = new System.Drawing.Point(31, 102);
+            this.panel1.Location = new System.Drawing.Point(75, 147);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1912, 1013);
             this.panel1.TabIndex = 5;
@@ -805,7 +816,7 @@
             this.toolStripButton50,
             this.toolStripButton49});
             this.toolStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.toolStrip2.Location = new System.Drawing.Point(0, 598);
+            this.toolStrip2.Location = new System.Drawing.Point(0, 585);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Padding = new System.Windows.Forms.Padding(0, 5, 1, 5);
             this.toolStrip2.Size = new System.Drawing.Size(1419, 36);
@@ -1226,53 +1237,71 @@
             // 
             // menuStrip3
             // 
-            this.menuStrip3.AutoSize = false;
             this.menuStrip3.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.strokeToolStripMenuItem1,
-            this.toolStripTextBox4,
+            this.toolStripComboBox3,
             this.opacityToolStripMenuItem1,
-            this.toolStripTextBox5});
-            this.menuStrip3.Location = new System.Drawing.Point(0, 634);
+            this.toolStripComboBox2});
+            this.menuStrip3.Location = new System.Drawing.Point(0, 621);
             this.menuStrip3.Name = "menuStrip3";
-            this.menuStrip3.Size = new System.Drawing.Size(1419, 24);
+            this.menuStrip3.Padding = new System.Windows.Forms.Padding(6, 2, 0, 6);
+            this.menuStrip3.Size = new System.Drawing.Size(1419, 37);
             this.menuStrip3.TabIndex = 10;
             this.menuStrip3.Text = "menuStrip3";
             // 
             // strokeToolStripMenuItem1
             // 
+            this.strokeToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.strokeToolStripMenuItem1.Name = "strokeToolStripMenuItem1";
-            this.strokeToolStripMenuItem1.Size = new System.Drawing.Size(55, 20);
+            this.strokeToolStripMenuItem1.Size = new System.Drawing.Size(69, 29);
             this.strokeToolStripMenuItem1.Text = "Stroke:";
             // 
-            // toolStripTextBox4
+            // toolStripComboBox3
             // 
-            this.toolStripTextBox4.Margin = new System.Windows.Forms.Padding(1, 0, 20, 0);
-            this.toolStripTextBox4.Name = "toolStripTextBox4";
-            this.toolStripTextBox4.Size = new System.Drawing.Size(50, 20);
-            this.toolStripTextBox4.Text = "1pt";
+            this.toolStripComboBox3.AutoSize = false;
+            this.toolStripComboBox3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolStripComboBox3.Margin = new System.Windows.Forms.Padding(1, 0, 20, 0);
+            this.toolStripComboBox3.Name = "toolStripComboBox3";
+            this.toolStripComboBox3.Size = new System.Drawing.Size(50, 29);
+            this.toolStripComboBox3.Text = "1pt";
             // 
             // opacityToolStripMenuItem1
             // 
+            this.opacityToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.opacityToolStripMenuItem1.Name = "opacityToolStripMenuItem1";
-            this.opacityToolStripMenuItem1.Size = new System.Drawing.Size(63, 20);
+            this.opacityToolStripMenuItem1.Size = new System.Drawing.Size(78, 29);
             this.opacityToolStripMenuItem1.Text = "Opacity:";
             // 
-            // toolStripTextBox5
+            // toolStripComboBox2
             // 
-            this.toolStripTextBox5.Name = "toolStripTextBox5";
-            this.toolStripTextBox5.Size = new System.Drawing.Size(50, 20);
-            this.toolStripTextBox5.Text = "100%";
+            this.toolStripComboBox2.AutoSize = false;
+            this.toolStripComboBox2.DropDownWidth = 65;
+            this.toolStripComboBox2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolStripComboBox2.Name = "toolStripComboBox2";
+            this.toolStripComboBox2.Size = new System.Drawing.Size(65, 29);
+            this.toolStripComboBox2.Text = "100%";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.label1.Location = new System.Drawing.Point(763, 80);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 15);
             this.label1.TabIndex = 6;
             this.label1.Text = "label1";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBar1.Location = new System.Drawing.Point(1283, 75);
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.trackBar1.Size = new System.Drawing.Size(103, 45);
+            this.trackBar1.TabIndex = 9;
+            this.trackBar1.Visible = false;
             // 
             // Form1
             // 
@@ -1280,6 +1309,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(1684, 658);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.menuStrip3);
             this.Controls.Add(this.label1);
@@ -1306,6 +1336,7 @@
             this.toolStrip2.PerformLayout();
             this.menuStrip3.ResumeLayout(false);
             this.menuStrip3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1417,9 +1448,10 @@
         private ToolStripButton toolStripButton49;
         private MenuStrip menuStrip3;
         private ToolStripMenuItem strokeToolStripMenuItem1;
-        private ToolStripTextBox toolStripTextBox4;
         private ToolStripMenuItem opacityToolStripMenuItem1;
-        private ToolStripTextBox toolStripTextBox5;
         private Label label1;
+        private TrackBar trackBar1;
+        private ToolStripComboBox toolStripComboBox2;
+        private ToolStripComboBox toolStripComboBox3;
     }
 }
