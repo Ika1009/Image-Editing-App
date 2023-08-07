@@ -181,11 +181,17 @@
   <data name="cropT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cropT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="undoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\undoIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="squareT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\squareT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="textT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\textT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="rotateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rotate2Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,8 +214,8 @@
   <data name="InkedeyeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InkedeyeIcon.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="textT" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\textT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="eyeBlackClosed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eyeBlackClosed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="zoomInIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\zoomInIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -235,7 +241,7 @@
   <data name="polygonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\polygonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="eyeBlackClosed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\eyeBlackClosed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="x30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\x30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

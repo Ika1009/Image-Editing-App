@@ -96,6 +96,9 @@
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton58 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton59 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton60 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton17 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton18 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton19 = new System.Windows.Forms.ToolStripButton();
@@ -138,6 +141,7 @@
             this.toolStripButton50 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton49 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip3 = new System.Windows.Forms.MenuStrip();
+            this.colorSelectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.strokeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
             this.opacityToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -675,7 +679,7 @@
             this.toolStripTextBox3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.toolStripTextBox3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 2);
             this.toolStripTextBox3.Name = "toolStripTextBox3";
-            this.toolStripTextBox3.Size = new System.Drawing.Size(50, 51);
+            this.toolStripTextBox3.Size = new System.Drawing.Size(55, 51);
             this.toolStripTextBox3.Text = "100%";
             this.toolStripTextBox3.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -784,11 +788,13 @@
             // 
             // toolStrip2
             // 
-            this.toolStrip2.AutoSize = false;
             this.toolStrip2.BackColor = System.Drawing.SystemColors.Control;
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton58,
+            this.toolStripButton59,
+            this.toolStripButton60,
             this.toolStripButton17,
             this.toolStripButton18,
             this.toolStripButton19,
@@ -831,26 +837,62 @@
             this.toolStripButton50,
             this.toolStripButton49});
             this.toolStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.toolStrip2.Location = new System.Drawing.Point(0, 585);
+            this.toolStrip2.Location = new System.Drawing.Point(0, 578);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Padding = new System.Windows.Forms.Padding(0, 5, 1, 5);
-            this.toolStrip2.Size = new System.Drawing.Size(1419, 36);
+            this.toolStrip2.Size = new System.Drawing.Size(1419, 43);
             this.toolStrip2.TabIndex = 8;
             this.toolStrip2.Text = "toolStrip2";
             // 
+            // toolStripButton58
+            // 
+            this.toolStripButton58.AutoSize = false;
+            this.toolStripButton58.BackColor = System.Drawing.SystemColors.Control;
+            this.toolStripButton58.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.toolStripButton58.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton58.Image = global::Image_Editing_app.Properties.Resources.x;
+            this.toolStripButton58.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton58.Margin = new System.Windows.Forms.Padding(10, 1, 0, 2);
+            this.toolStripButton58.Name = "toolStripButton58";
+            this.toolStripButton58.Size = new System.Drawing.Size(30, 30);
+            this.toolStripButton58.Text = "toolStripButton58";
+            // 
+            // toolStripButton59
+            // 
+            this.toolStripButton59.AutoSize = false;
+            this.toolStripButton59.BackColor = System.Drawing.Color.Black;
+            this.toolStripButton59.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton59.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton59.Name = "toolStripButton59";
+            this.toolStripButton59.Size = new System.Drawing.Size(30, 30);
+            this.toolStripButton59.Text = "toolStripButton59";
+            // 
+            // toolStripButton60
+            // 
+            this.toolStripButton60.AutoSize = false;
+            this.toolStripButton60.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.toolStripButton60.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton60.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton60.Name = "toolStripButton60";
+            this.toolStripButton60.Size = new System.Drawing.Size(30, 30);
+            this.toolStripButton60.Text = "toolStripButton60";
+            this.toolStripButton60.Paint += new System.Windows.Forms.PaintEventHandler(this.toolStripButton60_Paint);
+            // 
             // toolStripButton17
             // 
+            this.toolStripButton17.AutoSize = false;
             this.toolStripButton17.BackColor = System.Drawing.Color.White;
             this.toolStripButton17.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton17.ForeColor = System.Drawing.Color.White;
             this.toolStripButton17.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton17.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.toolStripButton17.Margin = new System.Windows.Forms.Padding(60, 1, 2, 2);
             this.toolStripButton17.Name = "toolStripButton17";
             this.toolStripButton17.Size = new System.Drawing.Size(23, 23);
             this.toolStripButton17.Text = "toolStripButton17";
             // 
             // toolStripButton18
             // 
+            this.toolStripButton18.AutoSize = false;
             this.toolStripButton18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.toolStripButton18.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton18.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -861,6 +903,7 @@
             // 
             // toolStripButton19
             // 
+            this.toolStripButton19.AutoSize = false;
             this.toolStripButton19.BackColor = System.Drawing.Color.Silver;
             this.toolStripButton19.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton19.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -872,6 +915,7 @@
             // 
             // toolStripButton20
             // 
+            this.toolStripButton20.AutoSize = false;
             this.toolStripButton20.BackColor = System.Drawing.Color.Gray;
             this.toolStripButton20.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton20.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -882,6 +926,7 @@
             // 
             // toolStripButton21
             // 
+            this.toolStripButton21.AutoSize = false;
             this.toolStripButton21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.toolStripButton21.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton21.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -892,6 +937,7 @@
             // 
             // toolStripButton22
             // 
+            this.toolStripButton22.AutoSize = false;
             this.toolStripButton22.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.toolStripButton22.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton22.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -902,6 +948,7 @@
             // 
             // toolStripButton23
             // 
+            this.toolStripButton23.AutoSize = false;
             this.toolStripButton23.BackColor = System.Drawing.Color.Black;
             this.toolStripButton23.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton23.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -912,6 +959,7 @@
             // 
             // toolStripButton24
             // 
+            this.toolStripButton24.AutoSize = false;
             this.toolStripButton24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.toolStripButton24.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton24.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -922,6 +970,7 @@
             // 
             // toolStripButton37
             // 
+            this.toolStripButton37.AutoSize = false;
             this.toolStripButton37.BackColor = System.Drawing.Color.Red;
             this.toolStripButton37.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton37.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -932,6 +981,7 @@
             // 
             // toolStripButton36
             // 
+            this.toolStripButton36.AutoSize = false;
             this.toolStripButton36.BackColor = System.Drawing.Color.Green;
             this.toolStripButton36.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton36.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -942,6 +992,7 @@
             // 
             // toolStripButton35
             // 
+            this.toolStripButton35.AutoSize = false;
             this.toolStripButton35.BackColor = System.Drawing.Color.Yellow;
             this.toolStripButton35.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton35.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -952,6 +1003,7 @@
             // 
             // toolStripButton34
             // 
+            this.toolStripButton34.AutoSize = false;
             this.toolStripButton34.BackColor = System.Drawing.Color.Teal;
             this.toolStripButton34.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton34.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -962,6 +1014,7 @@
             // 
             // toolStripButton33
             // 
+            this.toolStripButton33.AutoSize = false;
             this.toolStripButton33.BackColor = System.Drawing.Color.Cyan;
             this.toolStripButton33.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton33.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -972,6 +1025,7 @@
             // 
             // toolStripButton32
             // 
+            this.toolStripButton32.AutoSize = false;
             this.toolStripButton32.BackColor = System.Drawing.Color.Blue;
             this.toolStripButton32.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton32.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -982,6 +1036,7 @@
             // 
             // toolStripButton31
             // 
+            this.toolStripButton31.AutoSize = false;
             this.toolStripButton31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.toolStripButton31.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton31.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -992,6 +1047,7 @@
             // 
             // toolStripButton30
             // 
+            this.toolStripButton30.AutoSize = false;
             this.toolStripButton30.BackColor = System.Drawing.Color.Purple;
             this.toolStripButton30.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton30.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1002,6 +1058,7 @@
             // 
             // toolStripButton29
             // 
+            this.toolStripButton29.AutoSize = false;
             this.toolStripButton29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.toolStripButton29.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton29.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1012,6 +1069,7 @@
             // 
             // toolStripButton28
             // 
+            this.toolStripButton28.AutoSize = false;
             this.toolStripButton28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(20)))), ((int)(((byte)(0)))));
             this.toolStripButton28.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton28.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1022,6 +1080,7 @@
             // 
             // toolStripButton27
             // 
+            this.toolStripButton27.AutoSize = false;
             this.toolStripButton27.BackColor = System.Drawing.Color.Maroon;
             this.toolStripButton27.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton27.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1032,6 +1091,7 @@
             // 
             // toolStripButton26
             // 
+            this.toolStripButton26.AutoSize = false;
             this.toolStripButton26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.toolStripButton26.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton26.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1042,6 +1102,7 @@
             // 
             // toolStripButton25
             // 
+            this.toolStripButton25.AutoSize = false;
             this.toolStripButton25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(60)))), ((int)(((byte)(20)))));
             this.toolStripButton25.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton25.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1052,6 +1113,7 @@
             // 
             // toolStripButton40
             // 
+            this.toolStripButton40.AutoSize = false;
             this.toolStripButton40.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.toolStripButton40.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton40.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1062,6 +1124,7 @@
             // 
             // toolStripButton39
             // 
+            this.toolStripButton39.AutoSize = false;
             this.toolStripButton39.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.toolStripButton39.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton39.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1072,6 +1135,7 @@
             // 
             // toolStripButton38
             // 
+            this.toolStripButton38.AutoSize = false;
             this.toolStripButton38.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.toolStripButton38.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton38.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1082,6 +1146,7 @@
             // 
             // toolStripButton48
             // 
+            this.toolStripButton48.AutoSize = false;
             this.toolStripButton48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.toolStripButton48.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton48.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1092,6 +1157,7 @@
             // 
             // toolStripButton47
             // 
+            this.toolStripButton47.AutoSize = false;
             this.toolStripButton47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.toolStripButton47.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton47.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1102,6 +1168,7 @@
             // 
             // toolStripButton46
             // 
+            this.toolStripButton46.AutoSize = false;
             this.toolStripButton46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.toolStripButton46.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton46.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1112,6 +1179,7 @@
             // 
             // toolStripButton45
             // 
+            this.toolStripButton45.AutoSize = false;
             this.toolStripButton45.BackColor = System.Drawing.Color.Teal;
             this.toolStripButton45.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton45.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1122,6 +1190,7 @@
             // 
             // toolStripButton44
             // 
+            this.toolStripButton44.AutoSize = false;
             this.toolStripButton44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.toolStripButton44.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton44.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1132,6 +1201,7 @@
             // 
             // toolStripButton43
             // 
+            this.toolStripButton43.AutoSize = false;
             this.toolStripButton43.BackColor = System.Drawing.Color.Cyan;
             this.toolStripButton43.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton43.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1142,6 +1212,7 @@
             // 
             // toolStripButton42
             // 
+            this.toolStripButton42.AutoSize = false;
             this.toolStripButton42.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.toolStripButton42.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton42.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1152,6 +1223,7 @@
             // 
             // toolStripButton41
             // 
+            this.toolStripButton41.AutoSize = false;
             this.toolStripButton41.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.toolStripButton41.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton41.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1162,6 +1234,7 @@
             // 
             // toolStripButton57
             // 
+            this.toolStripButton57.AutoSize = false;
             this.toolStripButton57.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(30)))));
             this.toolStripButton57.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton57.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1172,6 +1245,7 @@
             // 
             // toolStripButton56
             // 
+            this.toolStripButton56.AutoSize = false;
             this.toolStripButton56.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(80)))));
             this.toolStripButton56.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton56.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1182,6 +1256,7 @@
             // 
             // toolStripButton55
             // 
+            this.toolStripButton55.AutoSize = false;
             this.toolStripButton55.BackColor = System.Drawing.Color.Navy;
             this.toolStripButton55.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton55.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1192,6 +1267,7 @@
             // 
             // toolStripButton54
             // 
+            this.toolStripButton54.AutoSize = false;
             this.toolStripButton54.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.toolStripButton54.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton54.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1202,6 +1278,7 @@
             // 
             // toolStripButton53
             // 
+            this.toolStripButton53.AutoSize = false;
             this.toolStripButton53.BackColor = System.Drawing.Color.Blue;
             this.toolStripButton53.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton53.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1212,6 +1289,7 @@
             // 
             // toolStripButton52
             // 
+            this.toolStripButton52.AutoSize = false;
             this.toolStripButton52.BackColor = System.Drawing.Color.DodgerBlue;
             this.toolStripButton52.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton52.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1222,6 +1300,7 @@
             // 
             // toolStripButton51
             // 
+            this.toolStripButton51.AutoSize = false;
             this.toolStripButton51.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.toolStripButton51.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton51.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1232,6 +1311,7 @@
             // 
             // toolStripButton50
             // 
+            this.toolStripButton50.AutoSize = false;
             this.toolStripButton50.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.toolStripButton50.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton50.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1242,6 +1322,7 @@
             // 
             // toolStripButton49
             // 
+            this.toolStripButton49.AutoSize = false;
             this.toolStripButton49.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.toolStripButton49.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton49.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -1255,6 +1336,7 @@
             this.menuStrip3.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.colorSelectionToolStripMenuItem,
             this.strokeToolStripMenuItem1,
             this.toolStripComboBox3,
             this.opacityToolStripMenuItem1,
@@ -1266,9 +1348,18 @@
             this.menuStrip3.TabIndex = 10;
             this.menuStrip3.Text = "menuStrip3";
             // 
+            // colorSelectionToolStripMenuItem
+            // 
+            this.colorSelectionToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.colorSelectionToolStripMenuItem.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            this.colorSelectionToolStripMenuItem.Name = "colorSelectionToolStripMenuItem";
+            this.colorSelectionToolStripMenuItem.Size = new System.Drawing.Size(112, 29);
+            this.colorSelectionToolStripMenuItem.Text = "Color Selection";
+            // 
             // strokeToolStripMenuItem1
             // 
             this.strokeToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.strokeToolStripMenuItem1.Margin = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.strokeToolStripMenuItem1.Name = "strokeToolStripMenuItem1";
             this.strokeToolStripMenuItem1.Size = new System.Drawing.Size(69, 29);
             this.strokeToolStripMenuItem1.Text = "Stroke:";
@@ -1277,6 +1368,18 @@
             // 
             this.toolStripComboBox3.AutoSize = false;
             this.toolStripComboBox3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolStripComboBox3.Items.AddRange(new object[] {
+            "1pt",
+            "2pt",
+            "4pt",
+            "6pt",
+            "8pt",
+            "10pt",
+            "12pt",
+            "14pt",
+            "16pt",
+            "20pt",
+            "24pt"});
             this.toolStripComboBox3.Margin = new System.Windows.Forms.Padding(1, 0, 20, 0);
             this.toolStripComboBox3.Name = "toolStripComboBox3";
             this.toolStripComboBox3.Size = new System.Drawing.Size(50, 29);
@@ -1294,6 +1397,12 @@
             this.toolStripComboBox2.AutoSize = false;
             this.toolStripComboBox2.DropDownWidth = 65;
             this.toolStripComboBox2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolStripComboBox2.Items.AddRange(new object[] {
+            "100%",
+            "75%",
+            "50%",
+            "25%",
+            "0%"});
             this.toolStripComboBox2.Name = "toolStripComboBox2";
             this.toolStripComboBox2.Size = new System.Drawing.Size(65, 29);
             this.toolStripComboBox2.Text = "100%";
@@ -1468,5 +1577,9 @@
         private TrackBar trackBar1;
         private ToolStripComboBox toolStripComboBox2;
         private ToolStripComboBox toolStripComboBox3;
+        private ToolStripButton toolStripButton58;
+        private ToolStripButton toolStripButton59;
+        private ToolStripButton toolStripButton60;
+        private ToolStripMenuItem colorSelectionToolStripMenuItem;
     }
 }

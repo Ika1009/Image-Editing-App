@@ -14,6 +14,7 @@ using System.Reflection.Emit;
 using Microsoft.VisualBasic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Drawing.Drawing2D;
 
 namespace Image_Editing_app
 {
@@ -911,6 +912,24 @@ namespace Image_Editing_app
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButton60_Paint(object sender, PaintEventArgs e)
+        {
+            Color startColor = SystemColors.ControlDarkDark; // Replace with your desired start color.
+            Color endColor = SystemColors.ActiveBorder; // Replace with your desired end color.
+
+            // Create a linear gradient brush for the background.
+            Rectangle rect = new Rectangle(Point.Empty, toolStripButton60.Size);
+            LinearGradientBrush brush = new LinearGradientBrush(rect, startColor, endColor, LinearGradientMode.Vertical);
+
+            // Draw the gradient background on the button.
+            e.Graphics.FillRectangle(brush, rect);
         }
 
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
