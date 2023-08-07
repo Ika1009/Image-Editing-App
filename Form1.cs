@@ -25,7 +25,7 @@ namespace Image_Editing_app
         private BindingList<Layer> layers;
         private ToolStripButton? currentlySelectedButton = null;
         private Layer? selectedLayer = null;
-        readonly Color obicnaBackgroundColor = Color.FromArgb(92, 224, 231); // rgba(92,224,231,255)
+        readonly Color obicnaBackgroundColor = Color.FromArgb(226, 227, 226); // control light color
         private Graphics g;
         private bool isDragging = false;
         private Point startPoint;
@@ -293,6 +293,18 @@ namespace Image_Editing_app
                     g.FillEllipse(new SolidBrush(Color.White), rect);
                     SelektujIliDeselektuj(toolStripButton11);
                 //}
+            }
+            if (showCoordinates)
+            {
+                Point mousePositionInScreen = this.PointToClient(MousePosition);
+                // subtracting the panel coordinates 
+                string coordinates = "X: " + (mousePositionInScreen.X - panel1.Location.X) + ", Y: " + (mousePositionInScreen.Y - panel1.Location.Y);
+                Point newLocation = new Point(MousePosition.X + 15, MousePosition.Y - 15);
+                toolTip.Show(coordinates, this, newLocation.X - this.Location.X, newLocation.Y - this.Location.Y, 5000);
+            }
+            else
+            {
+                toolTip.Hide(this);
             }
         }
 
@@ -804,11 +816,29 @@ namespace Image_Editing_app
             selectedLayer = null;
         }
 
+        private ToolTip toolTip = new ToolTip();
+        private bool showCoordinates = false;
         private void toolStripButton16_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton16);
-        }
+            showCoordinates = !showCoordinates; // Toggle the state
 
+        }
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (showCoordinates)
+            {
+                Point mousePositionInScreen = this.PointToClient(MousePosition);
+                // subtracting the panel coordinates 
+                string coordinates = "X: " + (mousePositionInScreen.X - panel1.Location.X) + ", Y: " + (mousePositionInScreen.Y - panel1.Location.Y);
+                Point newLocation = new Point(MousePosition.X + 15, MousePosition.Y - 15);
+                toolTip.Show(coordinates, this, newLocation.X - this.Location.X, newLocation.Y - this.Location.Y, 5000);
+            }
+            else
+            {
+                toolTip.Hide(this);
+            }
+        }
         private double CalculateDistance(Point p1, Point p2)
         {
             double dx = p2.X - p1.X;
