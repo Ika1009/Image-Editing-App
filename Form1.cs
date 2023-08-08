@@ -293,7 +293,7 @@ namespace Image_Editing_app
                     g.Clear(Color.Transparent);
                     g.DrawEllipse(Pens.White, rect);
                     g.FillEllipse(new SolidBrush(selectedColor), rect);
-                    SelektujIliDeselektuj(toolStripButton11);
+                    SelektujIliDeselektuj(toolStripButton13);
                 //}
             }
             if (showCoordinates)
@@ -737,7 +737,7 @@ namespace Image_Editing_app
 
         private void DrawCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SelektujIliDeselektuj(toolStripButton11);
+            SelektujIliDeselektuj(toolStripButton13);
             addPictureBox();
             isDrawingEllipse = true;
         }
