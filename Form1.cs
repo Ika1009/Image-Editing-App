@@ -39,7 +39,7 @@ namespace Image_Editing_app
         private Tuple<PictureBox, Image> originalPbImage;
         int i, x, y, lx, ly = 0;
         private Color selectedColor = Color.White;
-
+        private int strokeValue = 1, opacityValue = 100; // opacity is in percentage
         public Form1()
         {
             InitializeComponent();
@@ -321,9 +321,9 @@ namespace Image_Editing_app
             if (currentlySelectedButton == toolStripButton12)
             {
                 if (selectedLayer is not null)
-                    g.DrawLine(new Pen(new SolidBrush(selectedColor), 6), new Point(x - selectedLayer.PictureBox.Left, y - selectedLayer.PictureBox.Top), new Point(lx - selectedLayer.PictureBox.Left, ly - selectedLayer.PictureBox.Top));
+                    g.DrawLine(new Pen(new SolidBrush(selectedColor), strokeValue), new Point(x - selectedLayer.PictureBox.Left, y - selectedLayer.PictureBox.Top), new Point(lx - selectedLayer.PictureBox.Left, ly - selectedLayer.PictureBox.Top));
                 else
-                    g.DrawLine(new Pen(new SolidBrush(selectedColor), 6), new Point(x, y), new Point(lx, ly));
+                    g.DrawLine(new Pen(new SolidBrush(selectedColor), strokeValue), new Point(x, y), new Point(lx, ly));
 
                 g.Dispose();
                 SelektujIliDeselektuj(toolStripButton12);
@@ -939,6 +939,46 @@ namespace Image_Editing_app
             e.Graphics.FillRectangle(brush, rect);
         }
 
+        private void strokeComboBox_Click(object sender, EventArgs e)
+        {
+            if (strokeComboBox.SelectedItem != null)
+            {
+                string selectedStroke = strokeComboBox.SelectedItem.ToString(); // Get the selected item as a string
+                selectedStroke = selectedStroke.Replace("pt", "").Trim(); // Remove "pt" from the string
+
+                // Try to convert the remaining string to an integer and assign it to strokeValue
+                if (int.TryParse(selectedStroke, out int value))
+                {
+                    strokeValue = value;
+                }
+                else
+                {
+                    // Handle the error if the conversion fails
+                    MessageBox.Show("Invalid stroke value selected!");
+                }
+            }
+        }
+        private void opacityComboBox_Click(object sender, EventArgs e)
+        {
+            if (opacityComboBox.SelectedItem != null)
+            {
+                string selectedopacity = opacityComboBox.SelectedItem.ToString(); // Get the selected item as a string
+                selectedopacity = selectedopacity.Replace("%", "").Trim(); // Remove "%" from the string
+
+                if (int.TryParse(selectedopacity, out int value))
+                {
+                    opacityValue = value;
+                    int alphaValue = (int)(255 * (value / 100.0)); // Convert percentage to alpha value between 0 and 255
+                    selectedColor = Color.FromArgb(alphaValue, selectedColor.R, selectedColor.G, selectedColor.B);
+                }
+                else
+                {
+                    // Handle the error if the conversion fails
+                    MessageBox.Show("Invalid opacity value selected!");
+                }     
+            }
+        }
+
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelektujIliDeselektuj(toolStripButton5);
@@ -955,6 +995,12 @@ namespace Image_Editing_app
             if (sender is ToolStripButton btn)
             {
                 selectedColor = btn.BackColor;
+                
+                if(opacityValue != 100)
+                {
+                    int alphaValue = (int)(255 * (opacityValue / 100.0)); // Convert percentage to alpha value between 0 and 255
+                    selectedColor = Color.FromArgb(alphaValue, selectedColor.R, selectedColor.G, selectedColor.B);
+                }
             }
         }
 
