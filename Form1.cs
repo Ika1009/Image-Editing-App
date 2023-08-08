@@ -38,6 +38,7 @@ namespace Image_Editing_app
         private Point point2;
         private Tuple<PictureBox, Image> originalPbImage;
         int i, x, y, lx, ly = 0;
+        private Color selectedColor = Color.White;
 
         public Form1()
         {
@@ -291,7 +292,7 @@ namespace Image_Editing_app
                     Rectangle rect = new Rectangle(initialMousePosition.X, initialMousePosition.Y, width, height);
                     g.Clear(Color.Transparent);
                     g.DrawEllipse(Pens.White, rect);
-                    g.FillEllipse(new SolidBrush(Color.White), rect);
+                    g.FillEllipse(new SolidBrush(selectedColor), rect);
                     SelektujIliDeselektuj(toolStripButton11);
                 //}
             }
@@ -320,9 +321,9 @@ namespace Image_Editing_app
             if (currentlySelectedButton == toolStripButton12)
             {
                 if (selectedLayer is not null)
-                    g.DrawLine(new Pen(new SolidBrush(Color.White), 6), new Point(x - selectedLayer.PictureBox.Left, y - selectedLayer.PictureBox.Top), new Point(lx - selectedLayer.PictureBox.Left, ly - selectedLayer.PictureBox.Top));
+                    g.DrawLine(new Pen(new SolidBrush(selectedColor), 6), new Point(x - selectedLayer.PictureBox.Left, y - selectedLayer.PictureBox.Top), new Point(lx - selectedLayer.PictureBox.Left, ly - selectedLayer.PictureBox.Top));
                 else
-                    g.DrawLine(new Pen(new SolidBrush(Color.White), 6), new Point(x, y), new Point(lx, ly));
+                    g.DrawLine(new Pen(new SolidBrush(selectedColor), 6), new Point(x, y), new Point(lx, ly));
 
                 g.Dispose();
                 SelektujIliDeselektuj(toolStripButton12);
@@ -358,7 +359,7 @@ namespace Image_Editing_app
                     if (polygonPoints.Count >= 2)
                     {
                         g.DrawPolygon(Pens.White, polygonPoints.ToArray());
-                        g.FillPolygon(new SolidBrush(Color.White), polygonPoints.ToArray());
+                        g.FillPolygon(new SolidBrush(selectedColor), polygonPoints.ToArray());
                         polygonPoints.Clear();
                     }
                 }
@@ -397,11 +398,11 @@ namespace Image_Editing_app
                         // Calculate distance
                         double distance = CalculateDistance(point1, point2);
 
-                        Pen pen = new Pen(Color.White, 2);
+                        Pen pen = new Pen(selectedColor, 2);
                         g.DrawLine(pen, point1, point2);
 
                         // Display distance
-                        label1.ForeColor = Color.White;
+                        label1.ForeColor = selectedColor;
                         label1.Text = $"Distance: {distance:F2}";
 
                         // Reset points for the next calculation
@@ -756,10 +757,16 @@ namespace Image_Editing_app
 
         private void TextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Brush brush = Brushes.Black;
-            SelektujIliDeselektuj(toolStripButton14);
+            // Create a brush using the selectedColor variable
+            Brush brush = new SolidBrush(selectedColor);
+
             string stringText = addString();
+
+            // Draw the string using the brush with the selected color
             g.DrawString(stringText, new Font("Poppins", 12), brush, new Point(0, 0));
+
+            // Dispose of the brush when done to free resources
+            brush.Dispose();
         }
 
         private string addString()
@@ -871,10 +878,10 @@ namespace Image_Editing_app
                     double distance = CalculateDistance(point1, point2);
 
                     // Display distance
-                    label1.ForeColor = Color.White;
+                    label1.ForeColor = selectedColor;
                     label1.Text = $"Distance: {distance:F2}";
 
-                    Pen pen = new Pen(Color.White, 2);
+                    Pen pen = new Pen(selectedColor, 2);
                     panel1.CreateGraphics().DrawLine(pen, point1, point2);
 
                     // Reset points for the next calculation
@@ -940,6 +947,14 @@ namespace Image_Editing_app
             {
                 selectedLayer.PictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
                 selectedLayer.PictureBox.Invalidate();
+            }
+        }
+        
+        private void SelektujIliDeselektujBoje(object sender, EventArgs e)
+        {
+            if (sender is ToolStripButton btn)
+            {
+                selectedColor = btn.BackColor;
             }
         }
 

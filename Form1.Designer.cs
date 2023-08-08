@@ -81,8 +81,8 @@
             this.toolStripButton11 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton14 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton15 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton16 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton15 = new System.Windows.Forms.ToolStripButton();
             this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
@@ -99,17 +99,17 @@
             this.toolStripButton58 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton59 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton60 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton17 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton18 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton19 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton20 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton21 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton22 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton23 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton24 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton37 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton36 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton35 = new System.Windows.Forms.ToolStripButton();
+            this.white = new System.Windows.Forms.ToolStripButton();
+            this.light_gray = new System.Windows.Forms.ToolStripButton();
+            this.silver = new System.Windows.Forms.ToolStripButton();
+            this.gray = new System.Windows.Forms.ToolStripButton();
+            this.dark_gray = new System.Windows.Forms.ToolStripButton();
+            this.black = new System.Windows.Forms.ToolStripButton();
+            this.light_black = new System.Windows.Forms.ToolStripButton();
+            this.bordeaux = new System.Windows.Forms.ToolStripButton();
+            this.red = new System.Windows.Forms.ToolStripButton();
+            this.green = new System.Windows.Forms.ToolStripButton();
+            this.yellow = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton34 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton33 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton32 = new System.Windows.Forms.ToolStripButton();
@@ -482,8 +482,8 @@
             this.toolStripButton11,
             this.toolStripButton14,
             this.toolStripButton5,
-            this.toolStripButton15,
             this.toolStripButton16,
+            this.toolStripButton15,
             this.toolStripTextBox3,
             this.toolStripLabel1,
             this.toolStripComboBox1,
@@ -500,12 +500,13 @@
             // toolStripButton1
             // 
             this.toolStripButton1.AutoSize = false;
+            this.toolStripButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton1.Image = global::Image_Editing_app.Properties.Resources.fileT;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Text = "Open";
             this.toolStripButton1.Click += new System.EventHandler(this.Open);
             // 
             // toolStripButton2
@@ -516,7 +517,7 @@
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Text = "Save";
             this.toolStripButton2.Click += new System.EventHandler(this.Save);
             // 
             // toolStripButton6
@@ -527,7 +528,7 @@
             this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton6.Name = "toolStripButton6";
             this.toolStripButton6.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton6.Text = "toolStripButton6";
+            this.toolStripButton6.Text = "Copy";
             this.toolStripButton6.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // toolStripButton7
@@ -538,7 +539,7 @@
             this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton7.Name = "toolStripButton7";
             this.toolStripButton7.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton7.Text = "toolStripButton7";
+            this.toolStripButton7.Text = "Paste";
             this.toolStripButton7.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // toolStripButton9
@@ -549,7 +550,7 @@
             this.toolStripButton9.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton9.Name = "toolStripButton9";
             this.toolStripButton9.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton9.Text = "toolStripButton9";
+            this.toolStripButton9.Text = "Zoom In";
             this.toolStripButton9.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
             // toolStripButton10
@@ -560,7 +561,7 @@
             this.toolStripButton10.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton10.Name = "toolStripButton10";
             this.toolStripButton10.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton10.Text = "toolStripButton10";
+            this.toolStripButton10.Text = "Zoom Out";
             this.toolStripButton10.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // toolStripButton13
@@ -571,7 +572,7 @@
             this.toolStripButton13.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton13.Name = "toolStripButton13";
             this.toolStripButton13.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton13.Text = "toolStripButton13";
+            this.toolStripButton13.Text = "Crop";
             this.toolStripButton13.Click += new System.EventHandler(this.DrawPolygonToolStripMenuItem_Click);
             // 
             // toolStripButton3
@@ -582,7 +583,7 @@
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.Text = "Undo";
             this.toolStripButton3.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
             // 
             // toolStripButton4
@@ -593,7 +594,7 @@
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
             this.toolStripButton4.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton4.Text = "toolStripButton4";
+            this.toolStripButton4.Text = "Redo";
             this.toolStripButton4.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
             // toolStripButton8
@@ -604,7 +605,7 @@
             this.toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton8.Name = "toolStripButton8";
             this.toolStripButton8.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton8.Text = "toolStripButton8";
+            this.toolStripButton8.Text = "Delete";
             this.toolStripButton8.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // toolStripButton12
@@ -615,7 +616,7 @@
             this.toolStripButton12.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton12.Name = "toolStripButton12";
             this.toolStripButton12.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton12.Text = "toolStripButton12";
+            this.toolStripButton12.Text = "Line";
             this.toolStripButton12.Click += new System.EventHandler(this.DrawLineToolStripMenuItem_Click);
             // 
             // toolStripButton11
@@ -626,8 +627,8 @@
             this.toolStripButton11.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton11.Name = "toolStripButton11";
             this.toolStripButton11.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton11.Text = "toolStripButton11";
-            this.toolStripButton11.Click += new System.EventHandler(this.DrawCircleToolStripMenuItem_Click);
+            this.toolStripButton11.Text = "Polygon";
+            this.toolStripButton11.Click += new System.EventHandler(this.DrawPolygonToolStripMenuItem_Click);
             // 
             // toolStripButton14
             // 
@@ -637,7 +638,7 @@
             this.toolStripButton14.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton14.Name = "toolStripButton14";
             this.toolStripButton14.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton14.Text = "toolStripButton14";
+            this.toolStripButton14.Text = "Text";
             this.toolStripButton14.Click += new System.EventHandler(this.TextToolStripMenuItem_Click);
             // 
             // toolStripButton5
@@ -648,19 +649,8 @@
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
             this.toolStripButton5.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton5.Text = "toolStripButton5";
+            this.toolStripButton5.Text = "Rotate";
             this.toolStripButton5.Click += new System.EventHandler(this.RotateToolStripMenuItem_Click);
-            // 
-            // toolStripButton15
-            // 
-            this.toolStripButton15.AutoSize = false;
-            this.toolStripButton15.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton15.Image = global::Image_Editing_app.Properties.Resources.rulerT;
-            this.toolStripButton15.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton15.Name = "toolStripButton15";
-            this.toolStripButton15.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton15.Text = "toolStripButton15";
-            this.toolStripButton15.Click += new System.EventHandler(this.MoveToolStripMenuItem_Click);
             // 
             // toolStripButton16
             // 
@@ -670,8 +660,19 @@
             this.toolStripButton16.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton16.Name = "toolStripButton16";
             this.toolStripButton16.Size = new System.Drawing.Size(50, 50);
-            this.toolStripButton16.Text = "toolStripButton16";
-            this.toolStripButton16.Click += new System.EventHandler(this.toolStripButton16_Click);
+            this.toolStripButton16.Text = "Move";
+            this.toolStripButton16.Click += new System.EventHandler(this.MoveToolStripMenuItem_Click);
+            // 
+            // toolStripButton15
+            // 
+            this.toolStripButton15.AutoSize = false;
+            this.toolStripButton15.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton15.Image = global::Image_Editing_app.Properties.Resources.rulerT;
+            this.toolStripButton15.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton15.Name = "toolStripButton15";
+            this.toolStripButton15.Size = new System.Drawing.Size(50, 50);
+            this.toolStripButton15.Text = "Ruler";
+            this.toolStripButton15.Click += new System.EventHandler(this.toolStripButton16_Click);
             // 
             // toolStripTextBox3
             // 
@@ -795,17 +796,17 @@
             this.toolStripButton58,
             this.toolStripButton59,
             this.toolStripButton60,
-            this.toolStripButton17,
-            this.toolStripButton18,
-            this.toolStripButton19,
-            this.toolStripButton20,
-            this.toolStripButton21,
-            this.toolStripButton22,
-            this.toolStripButton23,
-            this.toolStripButton24,
-            this.toolStripButton37,
-            this.toolStripButton36,
-            this.toolStripButton35,
+            this.white,
+            this.light_gray,
+            this.silver,
+            this.gray,
+            this.dark_gray,
+            this.black,
+            this.light_black,
+            this.bordeaux,
+            this.red,
+            this.green,
+            this.yellow,
             this.toolStripButton34,
             this.toolStripButton33,
             this.toolStripButton32,
@@ -878,128 +879,139 @@
             this.toolStripButton60.Text = "toolStripButton60";
             this.toolStripButton60.Paint += new System.Windows.Forms.PaintEventHandler(this.toolStripButton60_Paint);
             // 
-            // toolStripButton17
+            // white
             // 
-            this.toolStripButton17.AutoSize = false;
-            this.toolStripButton17.BackColor = System.Drawing.Color.White;
-            this.toolStripButton17.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton17.ForeColor = System.Drawing.Color.White;
-            this.toolStripButton17.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton17.Margin = new System.Windows.Forms.Padding(60, 1, 2, 2);
-            this.toolStripButton17.Name = "toolStripButton17";
-            this.toolStripButton17.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton17.Text = "toolStripButton17";
+            this.white.AutoSize = false;
+            this.white.BackColor = System.Drawing.Color.White;
+            this.white.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.white.ForeColor = System.Drawing.Color.White;
+            this.white.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.white.Margin = new System.Windows.Forms.Padding(60, 1, 2, 2);
+            this.white.Name = "white";
+            this.white.Size = new System.Drawing.Size(23, 23);
+            this.white.Text = "White";
+            this.white.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton18
+            // light_gray
             // 
-            this.toolStripButton18.AutoSize = false;
-            this.toolStripButton18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.toolStripButton18.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton18.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton18.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton18.Name = "toolStripButton18";
-            this.toolStripButton18.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton18.Text = "toolStripButton18";
+            this.light_gray.AutoSize = false;
+            this.light_gray.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.light_gray.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.light_gray.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.light_gray.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.light_gray.Name = "light_gray";
+            this.light_gray.Size = new System.Drawing.Size(23, 23);
+            this.light_gray.Text = "Light Gray";
+            this.light_gray.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton19
+            // silver
             // 
-            this.toolStripButton19.AutoSize = false;
-            this.toolStripButton19.BackColor = System.Drawing.Color.Silver;
-            this.toolStripButton19.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton19.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.toolStripButton19.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton19.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton19.Name = "toolStripButton19";
-            this.toolStripButton19.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton19.Text = "toolStripButton19";
+            this.silver.AutoSize = false;
+            this.silver.BackColor = System.Drawing.Color.Silver;
+            this.silver.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.silver.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.silver.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.silver.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.silver.Name = "silver";
+            this.silver.Size = new System.Drawing.Size(23, 23);
+            this.silver.Text = "Silver";
+            this.silver.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton20
+            // gray
             // 
-            this.toolStripButton20.AutoSize = false;
-            this.toolStripButton20.BackColor = System.Drawing.Color.Gray;
-            this.toolStripButton20.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton20.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton20.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton20.Name = "toolStripButton20";
-            this.toolStripButton20.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton20.Text = "toolStripButton20";
+            this.gray.AutoSize = false;
+            this.gray.BackColor = System.Drawing.Color.Gray;
+            this.gray.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gray.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.gray.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.gray.Name = "gray";
+            this.gray.Size = new System.Drawing.Size(23, 23);
+            this.gray.Text = "Gray";
+            this.gray.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton21
+            // dark_gray
             // 
-            this.toolStripButton21.AutoSize = false;
-            this.toolStripButton21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.toolStripButton21.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton21.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton21.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton21.Name = "toolStripButton21";
-            this.toolStripButton21.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton21.Text = "toolStripButton21";
+            this.dark_gray.AutoSize = false;
+            this.dark_gray.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dark_gray.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.dark_gray.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.dark_gray.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.dark_gray.Name = "dark_gray";
+            this.dark_gray.Size = new System.Drawing.Size(23, 23);
+            this.dark_gray.Text = "Dark Gray";
+            this.dark_gray.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton22
+            // black
             // 
-            this.toolStripButton22.AutoSize = false;
-            this.toolStripButton22.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.toolStripButton22.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton22.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton22.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton22.Name = "toolStripButton22";
-            this.toolStripButton22.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton22.Text = "toolStripButton22";
+            this.black.AutoSize = false;
+            this.black.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.black.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.black.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.black.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.black.Name = "black";
+            this.black.Size = new System.Drawing.Size(23, 23);
+            this.black.Text = "Black";
+            this.black.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton23
+            // light_black
             // 
-            this.toolStripButton23.AutoSize = false;
-            this.toolStripButton23.BackColor = System.Drawing.Color.Black;
-            this.toolStripButton23.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton23.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton23.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton23.Name = "toolStripButton23";
-            this.toolStripButton23.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton23.Text = "toolStripButton23";
+            this.light_black.AutoSize = false;
+            this.light_black.BackColor = System.Drawing.Color.Black;
+            this.light_black.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.light_black.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.light_black.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.light_black.Name = "light_black";
+            this.light_black.Size = new System.Drawing.Size(23, 23);
+            this.light_black.Text = "Very Dark Gray";
+            this.light_black.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton24
+            // bordeaux
             // 
-            this.toolStripButton24.AutoSize = false;
-            this.toolStripButton24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.toolStripButton24.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton24.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton24.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton24.Name = "toolStripButton24";
-            this.toolStripButton24.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton24.Text = "toolStripButton24";
+            this.bordeaux.AutoSize = false;
+            this.bordeaux.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.bordeaux.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bordeaux.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bordeaux.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.bordeaux.Name = "bordeaux";
+            this.bordeaux.Size = new System.Drawing.Size(23, 23);
+            this.bordeaux.Text = "Bordeaux";
+            this.bordeaux.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton37
+            // red
             // 
-            this.toolStripButton37.AutoSize = false;
-            this.toolStripButton37.BackColor = System.Drawing.Color.Red;
-            this.toolStripButton37.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton37.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton37.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton37.Name = "toolStripButton37";
-            this.toolStripButton37.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton37.Text = "toolStripButton24";
+            this.red.AutoSize = false;
+            this.red.BackColor = System.Drawing.Color.Red;
+            this.red.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.red.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.red.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.red.Name = "red";
+            this.red.Size = new System.Drawing.Size(23, 23);
+            this.red.Text = "Red";
+            this.red.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton36
+            // green
             // 
-            this.toolStripButton36.AutoSize = false;
-            this.toolStripButton36.BackColor = System.Drawing.Color.Green;
-            this.toolStripButton36.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton36.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton36.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton36.Name = "toolStripButton36";
-            this.toolStripButton36.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton36.Text = "toolStripButton24";
+            this.green.AutoSize = false;
+            this.green.BackColor = System.Drawing.Color.Green;
+            this.green.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.green.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.green.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.green.Name = "green";
+            this.green.Size = new System.Drawing.Size(23, 23);
+            this.green.Text = "Green";
+            this.green.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
-            // toolStripButton35
+            // yellow
             // 
-            this.toolStripButton35.AutoSize = false;
-            this.toolStripButton35.BackColor = System.Drawing.Color.Yellow;
-            this.toolStripButton35.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton35.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton35.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
-            this.toolStripButton35.Name = "toolStripButton35";
-            this.toolStripButton35.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton35.Text = "toolStripButton24";
+            this.yellow.AutoSize = false;
+            this.yellow.BackColor = System.Drawing.Color.Yellow;
+            this.yellow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.yellow.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.yellow.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
+            this.yellow.Name = "yellow";
+            this.yellow.Size = new System.Drawing.Size(23, 23);
+            this.yellow.Text = "Yellow";
+            this.yellow.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton34
             // 
@@ -1010,7 +1022,8 @@
             this.toolStripButton34.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton34.Name = "toolStripButton34";
             this.toolStripButton34.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton34.Text = "toolStripButton24";
+            this.toolStripButton34.Text = "Teal";
+            this.toolStripButton34.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton33
             // 
@@ -1021,7 +1034,8 @@
             this.toolStripButton33.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton33.Name = "toolStripButton33";
             this.toolStripButton33.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton33.Text = "toolStripButton24";
+            this.toolStripButton33.Text = "Cyan";
+            this.toolStripButton33.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton32
             // 
@@ -1032,7 +1046,8 @@
             this.toolStripButton32.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton32.Name = "toolStripButton32";
             this.toolStripButton32.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton32.Text = "toolStripButton24";
+            this.toolStripButton32.Text = "Blue";
+            this.toolStripButton32.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton31
             // 
@@ -1043,7 +1058,8 @@
             this.toolStripButton31.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton31.Name = "toolStripButton31";
             this.toolStripButton31.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton31.Text = "toolStripButton24";
+            this.toolStripButton31.Text = "Magenta";
+            this.toolStripButton31.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton30
             // 
@@ -1054,7 +1070,8 @@
             this.toolStripButton30.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton30.Name = "toolStripButton30";
             this.toolStripButton30.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton30.Text = "toolStripButton24";
+            this.toolStripButton30.Text = "Purple";
+            this.toolStripButton30.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton29
             // 
@@ -1065,7 +1082,8 @@
             this.toolStripButton29.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton29.Name = "toolStripButton29";
             this.toolStripButton29.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton29.Text = "toolStripButton24";
+            this.toolStripButton29.Text = "Brown";
+            this.toolStripButton29.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton28
             // 
@@ -1076,7 +1094,8 @@
             this.toolStripButton28.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton28.Name = "toolStripButton28";
             this.toolStripButton28.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton28.Text = "toolStripButton24";
+            this.toolStripButton28.Text = "Orange";
+            this.toolStripButton28.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton27
             // 
@@ -1087,7 +1106,8 @@
             this.toolStripButton27.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton27.Name = "toolStripButton27";
             this.toolStripButton27.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton27.Text = "toolStripButton24";
+            this.toolStripButton27.Text = "Maroon";
+            this.toolStripButton27.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton26
             // 
@@ -1098,7 +1118,8 @@
             this.toolStripButton26.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton26.Name = "toolStripButton26";
             this.toolStripButton26.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton26.Text = "toolStripButton24";
+            this.toolStripButton26.Text = "Light Brown";
+            this.toolStripButton26.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton25
             // 
@@ -1109,7 +1130,8 @@
             this.toolStripButton25.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton25.Name = "toolStripButton25";
             this.toolStripButton25.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton25.Text = "toolStripButton24";
+            this.toolStripButton25.Text = "Light Orange";
+            this.toolStripButton25.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton40
             // 
@@ -1120,7 +1142,8 @@
             this.toolStripButton40.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton40.Name = "toolStripButton40";
             this.toolStripButton40.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton40.Text = "toolStripButton24";
+            this.toolStripButton40.Text = "Skin";
+            this.toolStripButton40.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton39
             // 
@@ -1131,7 +1154,8 @@
             this.toolStripButton39.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton39.Name = "toolStripButton39";
             this.toolStripButton39.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton39.Text = "toolStripButton24";
+            this.toolStripButton39.Text = "Coral";
+            this.toolStripButton39.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton38
             // 
@@ -1142,29 +1166,33 @@
             this.toolStripButton38.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton38.Name = "toolStripButton38";
             this.toolStripButton38.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton38.Text = "toolStripButton24";
+            this.toolStripButton38.Text = "Pink";
+            this.toolStripButton38.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton48
             // 
             this.toolStripButton48.AutoSize = false;
-            this.toolStripButton48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.toolStripButton48.BackColor = System.Drawing.Color.Olive;
             this.toolStripButton48.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton48.ForeColor = System.Drawing.Color.Olive;
             this.toolStripButton48.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton48.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton48.Name = "toolStripButton48";
             this.toolStripButton48.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton48.Text = "toolStripButton24";
+            this.toolStripButton48.Text = "Olive";
+            this.toolStripButton48.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton47
             // 
             this.toolStripButton47.AutoSize = false;
-            this.toolStripButton47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.toolStripButton47.BackColor = System.Drawing.Color.YellowGreen;
             this.toolStripButton47.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton47.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton47.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton47.Name = "toolStripButton47";
             this.toolStripButton47.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton47.Text = "toolStripButton24";
+            this.toolStripButton47.Text = "Yellow Green";
+            this.toolStripButton47.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton46
             // 
@@ -1175,7 +1203,8 @@
             this.toolStripButton46.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton46.Name = "toolStripButton46";
             this.toolStripButton46.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton46.Text = "toolStripButton24";
+            this.toolStripButton46.Text = "Dark Cyan";
+            this.toolStripButton46.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton45
             // 
@@ -1186,7 +1215,8 @@
             this.toolStripButton45.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton45.Name = "toolStripButton45";
             this.toolStripButton45.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton45.Text = "toolStripButton24";
+            this.toolStripButton45.Text = "Teal";
+            this.toolStripButton45.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton44
             // 
@@ -1197,7 +1227,8 @@
             this.toolStripButton44.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton44.Name = "toolStripButton44";
             this.toolStripButton44.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton44.Text = "toolStripButton24";
+            this.toolStripButton44.Text = "Light Blue";
+            this.toolStripButton44.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton43
             // 
@@ -1208,7 +1239,8 @@
             this.toolStripButton43.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton43.Name = "toolStripButton43";
             this.toolStripButton43.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton43.Text = "toolStripButton24";
+            this.toolStripButton43.Text = "Cyan";
+            this.toolStripButton43.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton42
             // 
@@ -1219,7 +1251,8 @@
             this.toolStripButton42.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton42.Name = "toolStripButton42";
             this.toolStripButton42.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton42.Text = "toolStripButton24";
+            this.toolStripButton42.Text = "Baby Blue";
+            this.toolStripButton42.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton41
             // 
@@ -1230,7 +1263,8 @@
             this.toolStripButton41.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton41.Name = "toolStripButton41";
             this.toolStripButton41.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton41.Text = "toolStripButton24";
+            this.toolStripButton41.Text = "Cloud";
+            this.toolStripButton41.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton57
             // 
@@ -1241,7 +1275,8 @@
             this.toolStripButton57.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton57.Name = "toolStripButton57";
             this.toolStripButton57.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton57.Text = "toolStripButton24";
+            this.toolStripButton57.Text = "Ultra Dark Blue";
+            this.toolStripButton57.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton56
             // 
@@ -1252,7 +1287,8 @@
             this.toolStripButton56.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton56.Name = "toolStripButton56";
             this.toolStripButton56.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton56.Text = "toolStripButton24";
+            this.toolStripButton56.Text = "Crimson";
+            this.toolStripButton56.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton55
             // 
@@ -1263,7 +1299,8 @@
             this.toolStripButton55.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton55.Name = "toolStripButton55";
             this.toolStripButton55.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton55.Text = "toolStripButton24";
+            this.toolStripButton55.Text = "Navy";
+            this.toolStripButton55.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton54
             // 
@@ -1274,7 +1311,8 @@
             this.toolStripButton54.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton54.Name = "toolStripButton54";
             this.toolStripButton54.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton54.Text = "toolStripButton24";
+            this.toolStripButton54.Text = "Dark Blue";
+            this.toolStripButton54.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton53
             // 
@@ -1285,7 +1323,8 @@
             this.toolStripButton53.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton53.Name = "toolStripButton53";
             this.toolStripButton53.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton53.Text = "toolStripButton24";
+            this.toolStripButton53.Text = "Blue";
+            this.toolStripButton53.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton52
             // 
@@ -1296,7 +1335,8 @@
             this.toolStripButton52.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton52.Name = "toolStripButton52";
             this.toolStripButton52.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton52.Text = "toolStripButton24";
+            this.toolStripButton52.Text = "Dodger Blue";
+            this.toolStripButton52.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton51
             // 
@@ -1307,7 +1347,8 @@
             this.toolStripButton51.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton51.Name = "toolStripButton51";
             this.toolStripButton51.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton51.Text = "toolStripButton24";
+            this.toolStripButton51.Text = "Dark Magenta";
+            this.toolStripButton51.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton50
             // 
@@ -1318,7 +1359,8 @@
             this.toolStripButton50.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton50.Name = "toolStripButton50";
             this.toolStripButton50.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton50.Text = "toolStripButton24";
+            this.toolStripButton50.Text = "Light Magenta";
+            this.toolStripButton50.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // toolStripButton49
             // 
@@ -1329,7 +1371,8 @@
             this.toolStripButton49.Margin = new System.Windows.Forms.Padding(0, 1, 2, 2);
             this.toolStripButton49.Name = "toolStripButton49";
             this.toolStripButton49.Size = new System.Drawing.Size(23, 23);
-            this.toolStripButton49.Text = "toolStripButton24";
+            this.toolStripButton49.Text = "Dark Purple";
+            this.toolStripButton49.Click += new System.EventHandler(this.SelektujIliDeselektujBoje);
             // 
             // menuStrip3
             // 
@@ -1530,17 +1573,17 @@
         private ToolStripTextBox toolStripTextBox2;
         private Panel panel1;
         private ToolStrip toolStrip2;
-        private ToolStripButton toolStripButton17;
-        private ToolStripButton toolStripButton18;
-        private ToolStripButton toolStripButton19;
-        private ToolStripButton toolStripButton20;
-        private ToolStripButton toolStripButton21;
-        private ToolStripButton toolStripButton22;
-        private ToolStripButton toolStripButton23;
-        private ToolStripButton toolStripButton24;
-        private ToolStripButton toolStripButton37;
-        private ToolStripButton toolStripButton36;
-        private ToolStripButton toolStripButton35;
+        private ToolStripButton white;
+        private ToolStripButton light_gray;
+        private ToolStripButton silver;
+        private ToolStripButton gray;
+        private ToolStripButton dark_gray;
+        private ToolStripButton black;
+        private ToolStripButton light_black;
+        private ToolStripButton bordeaux;
+        private ToolStripButton red;
+        private ToolStripButton green;
+        private ToolStripButton yellow;
         private ToolStripButton toolStripButton34;
         private ToolStripButton toolStripButton33;
         private ToolStripButton toolStripButton32;
