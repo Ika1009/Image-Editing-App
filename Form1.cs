@@ -962,22 +962,41 @@ namespace Image_Editing_app
         {
             if (opacityComboBox.SelectedItem != null)
             {
-                string selectedopacity = opacityComboBox.SelectedItem.ToString(); // Get the selected item as a string
-                selectedopacity = selectedopacity.Replace("%", "").Trim(); // Remove "%" from the string
+                string selectedopacity = opacityComboBox.SelectedItem!.ToString()!; // Get the selected item as a string
 
-                if (int.TryParse(selectedopacity, out int value))
+                // Check if the selected string contains the percentage symbol
+                if (selectedopacity!.Contains("%"))
                 {
-                    opacityValue = value;
-                    int alphaValue = (int)(255 * (value / 100.0)); // Convert percentage to alpha value between 0 and 255
-                    selectedColor = Color.FromArgb(alphaValue, selectedColor.R, selectedColor.G, selectedColor.B);
+                    selectedopacity = selectedopacity.Replace("%", "").Trim(); // Remove "%" from the string
+
+                    if (int.TryParse(selectedopacity, out int value))
+                    {
+                        if (value >= 0 && value <= 100) // Check if the value is in the correct range
+                        {
+                            opacityValue = value;
+                            int alphaValue = (int)(255 * (value / 100.0)); // Convert percentage to alpha value between 0 and 255
+                            selectedColor = Color.FromArgb(alphaValue, selectedColor.R, selectedColor.G, selectedColor.B);
+                        }
+                        else
+                        {
+                            // The value is outside the expected range
+                            MessageBox.Show("Opacity value must be between 0% and 100%!");
+                        }
+                    }
+                    else
+                    {
+                        // Handle the error if the conversion fails
+                        MessageBox.Show("Invalid opacity value selected!");
+                    }
                 }
                 else
                 {
-                    // Handle the error if the conversion fails
-                    MessageBox.Show("Invalid opacity value selected!");
-                }     
+                    // The selected string does not contain a percentage symbol
+                    MessageBox.Show("Opacity value must be a percentage!");
+                }
             }
         }
+
 
         private void RotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
