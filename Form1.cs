@@ -40,6 +40,7 @@ namespace Image_Editing_app
         int i, x, y, lx, ly = 0;
         private Color selectedColor = Color.White;
         private int strokeValue = 1, opacityValue = 100; // opacity is in percentage
+        private int transparencyValue, unitIndex;
         public Form1()
         {
             InitializeComponent();
@@ -84,8 +85,8 @@ namespace Image_Editing_app
             dataGridView1.DragOver += dataGridView1_DragOver;
             dataGridView1.DragDrop += dataGridView1_DragDrop;
 
-            toolStripComboBox1.SelectedItem = 0;
-            toolStripComboBox1.SelectedText = "mm";
+            unitComboBox.SelectedItem = 0;
+            unitComboBox.SelectedText = "mm";
         }
         // Event handler for UserDeletingRow
 
@@ -847,11 +848,37 @@ namespace Image_Editing_app
                 toolTip.Hide(this);
             }
         }
+
+        private double CalculateConversionFactorToMillimeters()
+        {
+            using (Graphics g = this.CreateGraphics())
+            {
+                float dpiX = g.DpiX;
+                // 1 inch is 25.4 millimeters
+                // so 1 pixel is 25.4 / dpiX millimeters
+                return 25.4 / dpiX;
+            }
+        }
+
+
+        double conversionFactorToMillimeters = 0;
         private double CalculateDistance(Point p1, Point p2)
         {
+            if (conversionFactorToMillimeters == 0)
+                conversionFactorToMillimeters = CalculateConversionFactorToMillimeters();
+
             double dx = p2.X - p1.X;
             double dy = p2.Y - p1.Y;
-            return Math.Sqrt(dx * dx + dy * dy);
+            double distanceInPixels = Math.Sqrt(dx * dx + dy * dy);
+
+            // Convert distance from pixels to the selected unit
+            return unitIndex switch
+            {
+                0 => distanceInPixels * conversionFactorToMillimeters, // millimeters (mm)
+                1 => distanceInPixels * conversionFactorToMillimeters * 1000, // micrometers (µm)
+                2 => distanceInPixels * conversionFactorToMillimeters * 1000 * 1000, // nanometers (nm)
+                _ => distanceInPixels, // Default to pixels if no valid unitIndex is provided
+            };
         }
         private Bitmap bitmap;
 
@@ -877,9 +904,17 @@ namespace Image_Editing_app
                     // Calculate distance
                     double distance = CalculateDistance(point1, point2);
 
+                    string unitLabel = unitIndex switch
+                    {
+                        0 => "mm",
+                        1 => "µm",
+                        2 => "nm",
+                        _ => "pixels",
+                    };
+
                     // Display distance
                     label1.ForeColor = selectedColor;
-                    label1.Text = $"Distance: {distance:F2}";
+                    label1.Text = $"Distance: {distance:F2} {unitLabel}";
 
                     Pen pen = new Pen(selectedColor, 2);
                     panel1.CreateGraphics().DrawLine(pen, point1, point2);
@@ -958,6 +993,17 @@ namespace Image_Editing_app
                 }
             }
         }
+
+        private void unitComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ToolStripComboBox comboBox = sender as ToolStripComboBox;
+            if (comboBox != null)
+            {
+                unitIndex = comboBox.SelectedIndex;
+            }
+        }
+
+
         private void opacityComboBox_Click(object sender, EventArgs e)
         {
             if (opacityComboBox.SelectedItem != null)
@@ -965,7 +1011,7 @@ namespace Image_Editing_app
                 string selectedopacity = opacityComboBox.SelectedItem!.ToString()!; // Get the selected item as a string
 
                 // Check if the selected string contains the percentage symbol
-                if (selectedopacity!.Contains("%"))
+                if (selectedopacity!.Contains('%'))
                 {
                     selectedopacity = selectedopacity.Replace("%", "").Trim(); // Remove "%" from the string
 
