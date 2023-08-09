@@ -40,7 +40,7 @@ namespace Image_Editing_app
         int i, x, y, lx, ly = 0;
         private Color selectedColor = Color.White;
         private int strokeValue = 1, opacityValue = 100; // opacity is in percentage
-        private int transparencyValue, unitIndex;
+        private int transparencyValue = 100, unitIndex = 1;
         public Form1()
         {
             InitializeComponent();
@@ -50,6 +50,7 @@ namespace Image_Editing_app
             i = 0;
             g = CreateGraphics();
             panel1.MouseClick += panel1_MouseClick;
+            unitComboBox.SelectedIndex = unitIndex;
         }
 
         private void Form_Load(object sender, EventArgs e)
@@ -225,8 +226,25 @@ namespace Image_Editing_app
                         MessageBox.Show("Error loading the image: " + ex.Message);
                         return;
                     }
-                    pictureBox.Size = importedImage.Size; // set size of PictureBox to the size of the imported image
-                    pictureBox.Image = importedImage;
+
+                    // Apply transparency
+                    Bitmap bmp = new Bitmap(importedImage);
+                    if(transparencyValue != 100)
+                    {
+                        int transparencyAlphaValue = (int)((transparencyValue / 100.0) * 255); // Assuming transparencyValue is from 0 to 100
+                        for (int y = 0; y < bmp.Height; y++)
+                        {
+                            for (int x = 0; x < bmp.Width; x++)
+                            {
+                                Color c = bmp.GetPixel(x, y);
+                                bmp.SetPixel(x, y, Color.FromArgb(transparencyAlphaValue, c.R, c.G, c.B));
+                            }
+                        }
+                    }
+
+
+                    pictureBox.Size = bmp.Size; // set size of PictureBox to the size of the imported image
+                    pictureBox.Image = bmp;
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox.Location = new Point(200, 100);
                     pictureBox.BackColor = Color.Transparent;
@@ -1003,6 +1021,12 @@ namespace Image_Editing_app
             }
         }
 
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            int value = trackBar1.Value; // Gets the current value of the track bar
+            transparencyTextBox.Text = value * 10 + "%";
+            transparencyValue = value * 10;
+        }
 
         private void opacityComboBox_Click(object sender, EventArgs e)
         {
