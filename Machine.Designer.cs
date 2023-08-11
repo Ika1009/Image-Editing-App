@@ -39,10 +39,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(149, 126);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(159, 133);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 37);
+            this.label1.Size = new System.Drawing.Size(78, 32);
             this.label1.TabIndex = 0;
             this.label1.Text = "Name";
             // 
@@ -71,7 +71,7 @@
             this.textBox1.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBox1.Location = new System.Drawing.Point(243, 126);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(202, 43);
+            this.textBox1.Size = new System.Drawing.Size(200, 43);
             this.textBox1.TabIndex = 3;
             // 
             // textBox2
@@ -79,18 +79,19 @@
             this.textBox2.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBox2.Location = new System.Drawing.Point(243, 199);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(202, 43);
+            this.textBox2.Size = new System.Drawing.Size(200, 43);
             this.textBox2.TabIndex = 4;
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
             this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Location = new System.Drawing.Point(243, 272);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(202, 50);
+            this.button1.Size = new System.Drawing.Size(200, 50);
             this.button1.TabIndex = 6;
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = false;

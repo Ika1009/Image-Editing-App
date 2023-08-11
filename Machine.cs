@@ -15,6 +15,8 @@ namespace Image_Editing_app
         public Machine()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterParent;
+
         }
     }
 }
