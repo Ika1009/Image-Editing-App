@@ -763,9 +763,16 @@ namespace Image_Editing_app
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { Environment.Exit(0); }
 
+        public void BackToOrigin(object sender, EventArgs e)
+        {
+            if(selectedLayer is not null)
+            {
+                selectedLayer.PictureBox.Location = new Point(0, 0);
+            }
+        }
         private void MoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SelektujIliDeselektuj(toolStripButton15);
+            SelektujIliDeselektuj((sender as ToolStripButton)!);
         }
 
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
@@ -803,7 +810,7 @@ namespace Image_Editing_app
         private bool showCoordinates = false;
         private void toolStripButton16_Click(object sender, EventArgs e)
         {
-            SelektujIliDeselektuj(toolStripButton16);
+            SelektujIliDeselektuj((sender as ToolStripButton)!);
             showCoordinates = !showCoordinates; // Toggle the state
 
         }
