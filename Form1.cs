@@ -760,7 +760,7 @@ namespace Image_Editing_app
 
         private void DrawCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SelektujIliDeselektuj(toolStripButton13);
+            SelektujIliDeselektuj(toolStripButton18);
             addPictureBox();
             isDrawingEllipse = true;
         }
